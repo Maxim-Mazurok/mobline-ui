@@ -118,7 +118,13 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
                       <ListItemAvatar>
                         <Avatar alt={competitor.username} src={competitor.profilePicUrl} />
                       </ListItemAvatar>
-                      <ListItemText primary={competitor.username} secondary={`ID: ${competitor.userPk}`} />
+                      <ListItemText primary={competitor.username}
+                                    secondary={
+                                      competitor.userPk !== "" ?
+                                        `ID: ${competitor.userPk}`
+                                        :
+                                        competitor.status && competitor.status
+                                    } />
                     </ListItem>
                   )}
                 </List>

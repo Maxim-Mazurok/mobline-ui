@@ -15,6 +15,7 @@ export interface Competitor {
   userPk: string,
   username: string,
   profilePicUrl: string,
+  status: string,
 }
 
 export default interface GlobalState {
