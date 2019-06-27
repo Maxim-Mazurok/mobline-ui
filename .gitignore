@@ -8,8 +8,8 @@
 # testing
 /coverage
 
-# production
-/build
+# damn Heroku
+# /build
 
 # misc
 .DS_Store
