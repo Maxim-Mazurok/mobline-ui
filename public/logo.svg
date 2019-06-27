@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+		xmlns:dc="http://purl.org/dc/elements/1.1/"
+		xmlns:cc="http://creativecommons.org/ns#"
+		xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+		xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 500 500"
+		version="1.1"
+		id="svg_null"
+		sodipodi:docname="logo.svg"
+		inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+	<metadata
+			id="metadata48">
+		<rdf:RDF>
+			<cc:Work
+					rdf:about="">
+				<dc:format>image/svg+xml</dc:format>
+				<dc:type
+						rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+			</cc:Work>
+		</rdf:RDF>
+	</metadata>
+	<defs
+			id="defs46"/>
+	<sodipodi:namedview
+			pagecolor="#ffffff"
+			bordercolor="#666666"
+			borderopacity="1"
+			objecttolerance="10"
+			gridtolerance="10"
+			guidetolerance="10"
+			inkscape:pageopacity="0"
+			inkscape:pageshadow="2"
+			inkscape:window-width="1366"
+			inkscape:window-height="669"
+			id="namedview44"
+			showgrid="false"
+			inkscape:zoom="0.988"
+			inkscape:cx="236.33603"
+			inkscape:cy="250"
+			inkscape:window-x="0"
+			inkscape:window-y="284"
+			inkscape:window-maximized="1"
+			inkscape:current-layer="Group"/>
+	<g
+			id="root"
+			stroke="none"
+			stroke-width="1"
+			fill="none"
+			fill-rule="evenodd">
+		<rect
+				id="background"
+				fill="#FFF"
+				x="0"
+				y="0"
+				width="500"
+				height="500"/>
+		<g
+				id="Group"
+				transform="translate(40.000000, 309.000000)">
+			<rect
+					id="Rectangle-82"
+					x="0"
+					y="0"
+					width="420"
+					height="45"/>
+			<text
+					id="headerText"
+					font-size="40"
+					font-weight="800"
+					line-spacing="40"
+					letter-spacing="4"
+					data-text-alignment="C"
+					font-style="normal"
+					x="-8.0859375"
+					style="font-style:normal;font-weight:800;font-size:40px;font-family:Dosis;letter-spacing:4;fill:#000000">
+				<tspan
+						x="124.09375"
+						y="37"
+						id="tspan12"
+						style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-family:'Roboto Black';-inkscape-font-specification:'Roboto Black,  Heavy'">
+					Mobline
+				</tspan>
+			</text>
+		</g>
+		<g
+				id="Group-2"
+				transform="translate(40.000000, 362.000000)">
+			<rect
+					id="Rectangle"
+					x="0"
+					y="0"
+					width="420"
+					height="32"/>
+			<text
+					id="captionText"
+					font-family="Dosis"
+					font-size="25"
+					font-weight="500"
+					letter-spacing="2.5"
+					fill="#000"
+					data-text-alignment="C"
+					font-style="normal">
+				<tspan
+						x="210"
+						y="140"
+						id="tspan17"/>
+			</text>
+		</g>
+		<g
+				id="shape"
+				transform="translate(149.000000, 109.000000)">
+			<polygon
+					id="shape.secondary"
+					fill-opacity=".02"
+					fill="#645fce"
+					points="85.089 99.343 85.089 79.769 94.916 89.557"/>
+			<polygon
+					id="polygon22"
+					fill-opacity=".6"
+					fill="#645fce"
+					points="116.912 168 85.658 168 85.658 115.861 116.912 84.736"/>
+			<polygon
+					id="polygon24"
+					fill-opacity=".8"
+					fill="#645fce"
+					points="159.455 168 128.201 168 128.201 80.341 159.455 49.217"/>
+			<polygon
+					id="polygon26"
+					fill="#645fce"
+					points="202 168 170.746 168 170.746 31.123 202 0"/>
+			<polygon
+					id="polygon28"
+					fill-opacity=".4"
+					fill="#645fce"
+					points="74.367 127.105 74.367 168 33.301 168"/>
+			<polygon
+					id="polygon30"
+					fill-opacity=".5"
+					fill="#645fce"
+					points="130.037 0 101 28.917 71.963 0"/>
+			<polygon
+					id="shape.primary"
+					fill-opacity=".5"
+					fill="#40356f"
+					points="130.037 0 101 28.917 71.963 0"/>
+			<polygon
+					id="polygon33"
+					fill-opacity=".8"
+					fill="#40356f"
+					points="42.545 140.47 42.545 43.008 73.799 74.132 73.799 109.346"/>
+			<polygon
+					id="polygon35"
+					fill-opacity=".6"
+					fill="#40356f"
+					points="85.089 99.343 85.089 79.769 94.916 89.557"/>
+			<polygon
+					id="polygon37"
+					fill="#40356f"
+					points="21.134 168 0 168 0 0 31.254 31.123 31.254 157.923"/>
+			<polygon
+					id="polygon39"
+					fill-opacity=".6"
+					fill="#40356f"
+					points="74.367 127.105 74.367 168 33.301 168"/>
+		</g>
+	</g>
+</svg>
