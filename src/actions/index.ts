@@ -12,7 +12,7 @@ import { GetCustomerIdAction } from "./getCustomerId";
 import { AddCompetitorAction } from "./addCompetitor";
 import { SHOW_SNACKBAR, SnackbarAction, SnackbarData } from "./snackbar";
 
-export const API_URL = process.env.REACT_API_URL;
+export const API_URL = process.env.REACT_APP_API_URL;
 
 export const SELECT_MENU = 'selectMenuAction';
 export const OPEN_DRAWER = 'openDrawerAction';
