@@ -4,17 +4,19 @@ import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import GlobalState from "../types/GlobalState";
 import { loadCompetitors } from "../actions/loadCompetitors";
 import {
+  Avatar,
   CircularProgress,
   createStyles,
   Fab,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   Paper,
   StyledComponentProps,
   Theme,
   Typography,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
 import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from "../actions/addCompetitor";
 import AddIcon from '@material-ui/icons/Add';
@@ -109,8 +111,14 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
               <Paper>
                 <List>
                   {this.props.loadCompetitorsCompetitors.map((competitor, index) =>
-                    <ListItem key={index}>
-                      <ListItemText primary={competitor.userPk} />
+                    <ListItem
+                      alignItems={"flex-start"}
+                      key={index}
+                    >
+                      <ListItemAvatar>
+                        <Avatar alt={competitor.username} src={competitor.profilePicUrl} />
+                      </ListItemAvatar>
+                      <ListItemText primary={competitor.username} secondary={`ID: ${competitor.userPk}`} />
                     </ListItem>
                   )}
                 </List>
