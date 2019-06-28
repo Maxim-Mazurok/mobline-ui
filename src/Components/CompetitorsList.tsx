@@ -4,14 +4,10 @@ import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import GlobalState from "../types/GlobalState";
 import { loadCompetitors } from "../actions/loadCompetitors";
 import {
-  Avatar,
   CircularProgress,
   createStyles,
   Fab,
   List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Paper,
   StyledComponentProps,
   Theme,
@@ -21,6 +17,7 @@ import {
 import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from "../actions/addCompetitor";
 import AddIcon from '@material-ui/icons/Add';
 import { grey, red } from "@material-ui/core/colors";
+import CompetitorItem from "./CompetitorItem";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -111,21 +108,16 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
               <Paper>
                 <List>
                   {this.props.loadCompetitorsCompetitors.map((competitor, index) =>
-                    <ListItem
-                      alignItems={"flex-start"}
+                    <React.Fragment
                       key={index}
                     >
-                      <ListItemAvatar>
-                        <Avatar alt={competitor.username} src={competitor.profilePicUrl} />
-                      </ListItemAvatar>
-                      <ListItemText primary={competitor.username}
-                                    secondary={
-                                      competitor.userPk !== "" ?
-                                        `ID: ${competitor.userPk}`
-                                        :
-                                        competitor.status && competitor.status
-                                    } />
-                    </ListItem>
+                      <CompetitorItem
+                        username={competitor.username}
+                        profilePicUrl={competitor.profilePicUrl}
+                        userPk={competitor.userPk}
+                        status={competitor.status}
+                      />
+                    </React.Fragment>
                   )}
                 </List>
               </Paper>
