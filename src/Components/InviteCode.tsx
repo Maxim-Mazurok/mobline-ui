@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import {
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   IconButton,
   InputAdornment,
   Link,
-  Modal,
   StyledComponentProps,
   TextField,
   Typography
@@ -15,7 +17,6 @@ import { connect } from "react-redux";
 import { inviteCodeIsCorrect } from "../selectors";
 import GlobalState from "../types/GlobalState";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { MyPaper } from "./AddCompetitor";
 import { showSnackbarAction, SnackbarType } from "../actions/snackbar";
 
 const mapStateToProps = ({ user }: GlobalState) => ({
@@ -55,11 +56,13 @@ class InviteCode extends Component<InviteCodeProps, InviteCodeState> {
 
   render() {
     return (
-      <Modal open={!this.props.inviteCodeIsCorrect}>
-        <MyPaper>
-          <Typography variant="h5" component="h3">
-            Enter your invite code.
-          </Typography>
+      <Dialog
+        open={!this.props.inviteCodeIsCorrect}
+        fullWidth
+        maxWidth={"sm"}
+      >
+        <DialogTitle>Enter your invite code</DialogTitle>
+        <DialogContent>
           <Typography component="p" style={{ maxWidth: 365 }}>
             Mobline is currently in beta, so we only let the very limited number of users access our service.<br />
           </Typography>
@@ -109,8 +112,8 @@ class InviteCode extends Component<InviteCodeProps, InviteCodeState> {
           >
             Let me in!
           </Button>
-        </MyPaper>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
   }
 }

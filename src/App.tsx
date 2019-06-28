@@ -106,7 +106,7 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
           className={classes.mainContainer}
         >
           <Grid container spacing={3}>
-            <Grid item xs={10}>
+            <Grid item xs={12} sm={10} md={8} xl={6}>
               {this.props.userCustomerIdLoading ?
                 <CircularProgress />
                 :

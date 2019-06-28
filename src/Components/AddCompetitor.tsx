@@ -3,16 +3,16 @@ import {
   Button,
   CircularProgress,
   createStyles,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Link,
-  Modal,
-  Paper,
   StyledComponentProps,
   TextField,
   Theme,
   Typography,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
-import { styled } from "@material-ui/core/styles";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import GlobalState from "../types/GlobalState";
@@ -50,16 +50,6 @@ export type AddCompetitorProps =
 
 type AddCompetitorState = {};
 
-export const MyPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3, 2),
-  margin: "auto",
-  position: "absolute",
-  outline: "none",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-}));
-
 const loadingIconSize = 24;
 
 const styles = (theme: Theme) =>
@@ -87,16 +77,16 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
     const { classes } = this.props;
 
     return (
-      <Modal
+      <Dialog
+        fullWidth
+        maxWidth={"md"}
         open={this.props.showModal}
         disableBackdropClick={false}
         onClose={() => this.props.addCompetitorShowModal(false)}
         onBackdropClick={() => this.props.addCompetitorShowModal(false)}
       >
-        <MyPaper>
-          <Typography variant="h5" component="h3">
-            Add competitor
-          </Typography>
+        <DialogTitle>Add competitor</DialogTitle>
+        <DialogContent>
           <Typography component="p" style={{ maxWidth: 365 }}>
             Enter instagram handle of your competitor.<br />
           </Typography>
@@ -135,8 +125,8 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
               {this.props.loading && <CircularProgress size={loadingIconSize} className={classes.buttonProgress} />}
             </div>
           </form>
-        </MyPaper>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     );
   }
 }
