@@ -85,6 +85,7 @@ export const addCompetitor = (): ThunkResult<Promise<void>> => {
             }));
             break;
           case 'Request timed out.':
+            dispatch(loadCompetitors()).then();
             dispatch(showSnackbarAction({
               title: 'Worker is busy, your action is queued',
               type: SnackbarType.INFO,
