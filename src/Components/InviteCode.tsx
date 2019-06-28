@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   Button,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -63,10 +64,10 @@ class InviteCode extends Component<InviteCodeProps, InviteCodeState> {
       >
         <DialogTitle>Enter your invite code</DialogTitle>
         <DialogContent>
-          <Typography component="p" style={{ maxWidth: 365 }}>
+          <Typography component="p">
             Mobline is currently in beta, so we only let the very limited number of users access our service.<br />
           </Typography>
-          <Typography component="p" style={{ maxWidth: 365 }}>
+          <Typography component="p">
             You may <Link
             target="_blank"
             rel="noopener"
@@ -96,6 +97,8 @@ class InviteCode extends Component<InviteCodeProps, InviteCodeState> {
               ),
             }}
           />
+        </DialogContent>
+        <DialogActions>
           <Button
             variant="contained"
             color="primary"
@@ -112,7 +115,7 @@ class InviteCode extends Component<InviteCodeProps, InviteCodeState> {
           >
             Let me in!
           </Button>
-        </DialogContent>
+        </DialogActions>
       </Dialog>
     );
   }
