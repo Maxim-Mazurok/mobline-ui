@@ -6,7 +6,7 @@ import { userReducer } from "./reducers/user";
 import { Auth0UserProfile } from "auth0-js";
 import thunk, { ThunkMiddleware } from "redux-thunk";
 import { loadCompetitorsReducer } from "./reducers/loadCompetitors";
-import { menuReducer } from "./reducers/menu";
+import { menuItems, menuReducer } from "./reducers/menu";
 import { addCompetitorReducer } from "./reducers/addCompetitor";
 import { snackbarReducer } from "./reducers/snackbar";
 import { SnackbarType } from "./actions/snackbar";
@@ -33,7 +33,7 @@ const getInitialCustomerId = (): number | null => {
 
 export const defaultState: GlobalState = {
   menu: {
-    selectedMenuIndex: undefined,
+    selectedMenuItem: menuItems[0],
     drawerIsOpen: false,
   },
   user: {

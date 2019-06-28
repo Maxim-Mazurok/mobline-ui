@@ -1,8 +1,8 @@
 import { Auth0UserProfile } from "auth0-js";
 import { IGUsername } from "../actions/addCompetitor";
 import { SnackbarData } from "../actions/snackbar";
+import { MenuItem } from "../reducers/menu";
 
-export type SelectedMenuIndex = number | undefined;
 export type DrawerIsOpen = boolean;
 
 export interface UserInfo {
@@ -20,7 +20,7 @@ export interface Competitor {
 
 export default interface GlobalState {
   menu: {
-    selectedMenuIndex: SelectedMenuIndex,
+    selectedMenuItem: MenuItem,
     drawerIsOpen: DrawerIsOpen,
   },
   user: {

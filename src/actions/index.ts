@@ -1,6 +1,6 @@
 import { SelectMenuAction } from "./selectMenuAction";
 import { action } from 'typesafe-actions';
-import { SelectedMenuIndex, UserInfo } from "../types/GlobalState";
+import { UserInfo } from "../types/GlobalState";
 import { OpenDrawerAction } from "./openDrawerAction";
 import { CloseDrawerAction } from "./closeDrawerAction";
 import { Auth0UserProfile } from "auth0-js";
@@ -11,6 +11,7 @@ import { LoadCompetitorsAction } from "./loadCompetitors";
 import { GetCustomerIdAction } from "./getCustomerId";
 import { AddCompetitorAction } from "./addCompetitor";
 import { SHOW_SNACKBAR, SnackbarAction, SnackbarData } from "./snackbar";
+import { MenuItem } from "../reducers/menu";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -49,7 +50,7 @@ export type Actions =
   & SnackbarAction
   ;
 
-export const selectMenu = (index: SelectedMenuIndex) => action(SELECT_MENU, index);
+export const selectMenu = (menuItem: MenuItem) => action(SELECT_MENU, menuItem);
 export const openDrawer = () => action(OPEN_DRAWER);
 export const closeDrawer = () => action(CLOSE_DRAWER);
 export const handleLogin = (userInfo: UserInfo) => action(HANDLE_LOGIN, userInfo);

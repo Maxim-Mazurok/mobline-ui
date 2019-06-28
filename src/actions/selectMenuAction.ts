@@ -1,12 +1,12 @@
 import { SELECT_MENU } from "./index";
-import { SelectedMenuIndex } from "../types/GlobalState";
+import { MenuItem } from "../reducers/menu";
 
-export const selectMenuAction = (index: SelectedMenuIndex = undefined): SelectMenuAction => ({
+export const selectMenuAction = (menuItem: MenuItem): SelectMenuAction => ({
   type: SELECT_MENU,
-  payload: index,
+  payload: menuItem,
 });
 
 export interface SelectMenuAction {
   type: typeof SELECT_MENU,
-  payload: SelectedMenuIndex,
+  payload: MenuItem,
 }

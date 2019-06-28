@@ -26,7 +26,6 @@ import {
 } from "@material-ui/core";
 import AddCompetitor from "./Components/AddCompetitor";
 import { red } from "@material-ui/core/colors";
-import { Dashboard, People, Settings, SvgIconComponent } from "@material-ui/icons";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -39,45 +38,6 @@ const styles = (theme: Theme) =>
     },
   });
 
-export enum MenuItemType {
-  ITEM = 'item',
-  DIVIDER = 'divider',
-  MARGIN_TOP_AUTO = 'mt-auto',
-}
-
-export type MenuItem = {
-  type: MenuItemType,
-  text?: string,
-  icon?: SvgIconComponent,
-}
-
-const menuItems: MenuItem[] = [
-  {
-    type: MenuItemType.ITEM,
-    text: 'Dashboard',
-    icon: Dashboard,
-  },
-  {
-    type: MenuItemType.DIVIDER,
-  },
-  {
-    type: MenuItemType.ITEM,
-    text: 'Followers explorer',
-    icon: People,
-  },
-  {
-    type: MenuItemType.MARGIN_TOP_AUTO,
-  },
-  {
-    type: MenuItemType.DIVIDER,
-  },
-  {
-    type: MenuItemType.ITEM,
-    text: 'Settings',
-    icon: Settings,
-  }
-];
-
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
@@ -87,7 +47,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     dispatch
   );
 
-const mapStateToProps = ({ user, loadCompetitors }: GlobalState) => ({
+const mapStateToProps = ({ user, loadCompetitors, menu }: GlobalState) => ({
   inviteCodeIsCorrect: inviteCodeIsCorrect(user),
   isLoggedIn: isLoggedIn(user),
   userProfile: user.userProfile || { name: "Not logged in" },
@@ -95,6 +55,7 @@ const mapStateToProps = ({ user, loadCompetitors }: GlobalState) => ({
   userCustomerId: user.customerId,
   userCustomerIdLoading: user.customerIdLoading,
   userCustomerIdError: user.customerIdError,
+  selectedMenuItem: menu.selectedMenuItem,
 });
 
 export type AppProps =
@@ -108,6 +69,7 @@ export type AppProps =
   }
 };
 
+// noinspection JSUnusedGlobalSymbols
 export type RouterAppProps = RouteComponentProps<{}>;
 
 type AppState = {}
@@ -132,14 +94,14 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
       <React.Fragment>
         <CssBaseline />
         <TopBarConnected title="Mobline" />
-        <MainDrawerConnected menuItems={menuItems} />
+        <MainDrawerConnected />
         <InviteCode />
         <AddCompetitor />
-        {this.props.inviteCodeIsCorrect && !this.props.isLoggedIn ? <Lock /> : null}
+        {this.props.inviteCodeIsCorrect && !this.props.isLoggedIn && <Lock />}
         {/*<h1>*/}
         {/*  {this.props.userProfile.name}*/}
         {/*</h1>*/}
-        {this.props.isLoggedIn &&
+        {this.props.isLoggedIn && this.props.selectedMenuItem.text === 'Dashboard' &&
         <Container
           className={classes.mainContainer}
         >
