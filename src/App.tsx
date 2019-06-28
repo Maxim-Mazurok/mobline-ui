@@ -26,6 +26,7 @@ import {
 } from "@material-ui/core";
 import AddCompetitor from "./Components/AddCompetitor";
 import { red } from "@material-ui/core/colors";
+import { Dashboard, People, Settings, SvgIconComponent } from "@material-ui/icons";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,42 +48,22 @@ export enum MenuItemType {
 export type MenuItem = {
   type: MenuItemType,
   text?: string,
+  icon?: SvgIconComponent,
 }
 
 const menuItems: MenuItem[] = [
   {
     type: MenuItemType.ITEM,
     text: 'Dashboard',
+    icon: Dashboard,
   },
   {
     type: MenuItemType.DIVIDER,
   },
   {
     type: MenuItemType.ITEM,
-    text: 'Posts',
-  },
-  {
-    type: MenuItemType.ITEM,
-    text: 'Stories',
-  },
-  {
-    type: MenuItemType.ITEM,
-    text: 'IGTV',
-  },
-  {
-    type: MenuItemType.ITEM,
-    text: 'Promoted Content',
-  },
-  {
-    type: MenuItemType.DIVIDER,
-  },
-  {
-    type: MenuItemType.ITEM,
-    text: 'Positive sentiment',
-  },
-  {
-    type: MenuItemType.ITEM,
-    text: 'Negative sentiment',
+    text: 'Followers explorer',
+    icon: People,
   },
   {
     type: MenuItemType.MARGIN_TOP_AUTO,
@@ -93,6 +74,7 @@ const menuItems: MenuItem[] = [
   {
     type: MenuItemType.ITEM,
     text: 'Settings',
+    icon: Settings,
   }
 ];
 

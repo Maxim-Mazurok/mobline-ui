@@ -3,7 +3,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import { closeDrawer, openDrawer } from "../actions";
-import { Divider, List, SwipeableDrawer } from "@material-ui/core";
+import { Divider, List, ListItemIcon, SwipeableDrawer } from "@material-ui/core";
 import { connect } from "react-redux";
 import { MenuItem, MenuItemType } from "../App";
 import GlobalState from "../types/GlobalState";
@@ -36,8 +36,6 @@ class MainDrawer extends Component<MainDrawerProps, MainDrawerState> {
       <div
         role="presentation"
         style={{ height: '100%' }}
-        onClick={this.toggleDrawer(false)}
-        onKeyDown={this.toggleDrawer(false)}
       >
         <List
           style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -46,9 +44,10 @@ class MainDrawer extends Component<MainDrawerProps, MainDrawerState> {
             this.props.menuItems.map((menuItem, index) => {
               switch (menuItem.type) {
                 case MenuItemType.ITEM:
+                  const Icon = menuItem.hasOwnProperty('icon') ? menuItem.icon : null;
                   return (
                     <ListItem button key={index}>
-                      {/*<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>*/}
+                      {Icon && <ListItemIcon><Icon /></ListItemIcon>}
                       <ListItemText primary={menuItem.text} />
                     </ListItem>
                   );

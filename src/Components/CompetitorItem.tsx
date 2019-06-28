@@ -10,11 +10,7 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core";
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import DeleteIcon from '@material-ui/icons/Delete';
-import SyncIcon from '@material-ui/icons/Sync';
-import PeopleIcon from '@material-ui/icons/People';
-import { SvgIconComponent } from "@material-ui/icons";
+import { Delete, MoreVert, People, SvgIconComponent, Sync } from "@material-ui/icons";
 
 export type CompetitorItemProps =
   & {
@@ -38,15 +34,15 @@ type CompetitorItemMenuOption = {
 const options: CompetitorItemMenuOption[] = [
   {
     title: "Followers",
-    icon: PeopleIcon,
+    icon: People,
   },
   {
     title: "Sync",
-    icon: SyncIcon,
+    icon: Sync,
   },
   {
     title: "Delete",
-    icon: DeleteIcon,
+    icon: Delete,
   },
 ];
 
@@ -98,7 +94,7 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
             aria-haspopup="true"
             onClick={this.handleClick}
           >
-            <MoreVertIcon />
+            <MoreVert />
           </IconButton>
           <Menu
             anchorEl={this.state.anchorEl}
