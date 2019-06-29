@@ -10,6 +10,7 @@ import { addCompetitorReducer } from "./reducers/addCompetitor";
 import { snackbarReducer } from "./reducers/snackbar";
 import { selectedCompetitorsReducer } from "./reducers/selectedCompetitors";
 import { defaultState } from "./defaultState";
+import { loadFollowersReducer } from "./reducers/loadFollowers";
 
 const configureStore = (state: GlobalState = defaultState): Store => {
   const rootReducer: Reducer<GlobalState, Actions> = combineReducers({
@@ -19,6 +20,7 @@ const configureStore = (state: GlobalState = defaultState): Store => {
     addCompetitor: addCompetitorReducer,
     snackbar: snackbarReducer,
     selectedCompetitors: selectedCompetitorsReducer,
+    loadFollowers: loadFollowersReducer,
   });
   return createStore(
     rootReducer as Reducer<GlobalState, Actions>,

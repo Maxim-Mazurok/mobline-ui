@@ -17,7 +17,7 @@ export type MenuItem = {
 
 export enum MenuItemId {
   DASHBOARD,
-  EXPLORER,
+  FOLLOWERS_EXPLORER,
   SETTINGS,
 }
 
@@ -35,7 +35,7 @@ export const menuItems: MenuItem[] = [
     type: MenuItemType.ITEM,
     text: 'Followers explorer',
     icon: People,
-    id: MenuItemId.EXPLORER,
+    id: MenuItemId.FOLLOWERS_EXPLORER,
   },
   {
     type: MenuItemType.MARGIN_TOP_AUTO,

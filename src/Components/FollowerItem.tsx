@@ -10,38 +10,33 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core";
-import { Delete, MoreVert, People, SvgIconComponent, Sync } from "@material-ui/icons";
+import { MoreVert, SvgIconComponent, Sync } from "@material-ui/icons";
 import { connect } from "react-redux";
-import { Competitor } from "../types/GlobalState";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { selectMenu, selectSingleCompetitor } from "../actions";
-import { MenuItemId } from "../reducers/menu";
+import { Follower } from "../reducers/loadFollowers";
 
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
-    {
-      selectSingleCompetitor,
-      selectMenu,
-    },
+    {},
     dispatch
   );
 
-export type CompetitorItemProps =
+export type FollowerItemProps =
   & ReturnType<typeof mapStateToProps>
   & ReturnType<typeof mapDispatchToProps>
   & {
-  competitor: Competitor,
+  follower: Follower,
 };
 
-type CompetitorItemState =
+type FollowerItemState =
   & {
   anchorEl: null | HTMLElement,
   open: boolean,
 };
 
-type CompetitorItemMenuOption = {
+type FollowerItemMenuOption = {
   title: string,
   icon: SvgIconComponent,
   id: OptionId,
@@ -53,25 +48,15 @@ enum OptionId {
   DELETE,
 }
 
-const options: CompetitorItemMenuOption[] = [
-  {
-    title: "Followers",
-    icon: People,
-    id: OptionId.FOLLOWERS,
-  },
+const options: FollowerItemMenuOption[] = [
   {
     title: "Sync",
     icon: Sync,
     id: OptionId.SYNC,
   },
-  {
-    title: "Delete",
-    icon: Delete,
-    id: OptionId.DELETE,
-  },
 ];
 
-class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState> {
+class FollowerItem extends Component<FollowerItemProps, FollowerItemState> {
   state = {
     anchorEl: null,
     open: false,
@@ -91,15 +76,14 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
     });
   };
 
-  handleSelect = (optionId: OptionId, userPk: Competitor["userPk"]) => {
+  // noinspection JSUnusedLocalSymbols
+  handleSelect = (optionId: OptionId, userPk: Follower["userPk"]) => {
     this.handleClose();
+    //TODO: implement
+
+    // noinspection JSRedundantSwitchStatement
     switch (optionId) {
-      case OptionId.FOLLOWERS:
-        this.props.selectSingleCompetitor(userPk);
-        this.props.selectMenu(MenuItemId.FOLLOWERS_EXPLORER);
-        break;
       case OptionId.SYNC:
-      case OptionId.DELETE:
         console.log('TODO: implement');
         break;
       default:
@@ -107,20 +91,20 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
     }
   };
 
-  render(): React.ReactElement<CompetitorItemProps, React.JSXElementConstructor<CompetitorItemState>> {
+  render(): React.ReactElement<FollowerItemProps, React.JSXElementConstructor<FollowerItemState>> {
     return (
       <ListItem
         alignItems={"flex-start"}
       >
         <ListItemAvatar>
-          <Avatar alt={this.props.competitor.username} src={this.props.competitor.profilePicUrl} />
+          <Avatar alt={this.props.follower.username} src={this.props.follower.profilePicUrl} />
         </ListItemAvatar>
-        <ListItemText primary={this.props.competitor.username}
+        <ListItemText primary={this.props.follower.username}
                       secondary={
-                        this.props.competitor.userPk !== "" ?
-                          `ID: ${this.props.competitor.userPk}`
+                        this.props.follower.userPk !== "" ?
+                          `ID: ${this.props.follower.userPk}`
                           :
-                          this.props.competitor.status && this.props.competitor.status
+                          "No information yet"
                       }
         />
         <ListItemSecondaryAction>
@@ -140,11 +124,11 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
           >
             {options.map((option, index) => {
               const Icon = option.icon;
-              if (option.id === OptionId.FOLLOWERS && this.props.competitor.userPk === "") return null;
+              if (option.id === OptionId.FOLLOWERS && this.props.follower.userPk === "") return null;
               return (
                 <MenuItem
                   key={index}
-                  onClick={() => this.handleSelect(option.id, this.props.competitor.userPk)}
+                  onClick={() => this.handleSelect(option.id, this.props.follower.userPk)}
                 >
                   <ListItemIcon>
                     <Icon />
@@ -161,7 +145,7 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
   }
 }
 
-export const CompetitorItemConnected = connect(
+export const FollowerItemConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CompetitorItem);
+)(FollowerItem);

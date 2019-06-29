@@ -93,7 +93,7 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
     switch (this.props.selectedMenuItemId) {
       case MenuItemId.DASHBOARD:
         return <CompetitorsListConnected />;
-      case MenuItemId.EXPLORER:
+      case MenuItemId.FOLLOWERS_EXPLORER:
         return <FollowersExplorerConnected />;
       case MenuItemId.SETTINGS:
         return <p>Setting will be here soon...</p>;

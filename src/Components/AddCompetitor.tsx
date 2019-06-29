@@ -84,7 +84,7 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
     return (
       <Dialog
         fullWidth
-        maxWidth={"md"}
+        maxWidth={"sm"}
         open={this.props.showModal}
         disableBackdropClick={false}
         onClose={this.closeDialog}

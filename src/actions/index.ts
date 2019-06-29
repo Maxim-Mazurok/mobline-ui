@@ -14,6 +14,7 @@ import { SHOW_SNACKBAR, SnackbarAction, SnackbarData } from "./snackbar";
 import { MenuItemId } from "../reducers/menu";
 import { SelectCompetitorAction } from "./selectCompetitors";
 import { SELECT_COMPETITOR, SELECT_SINGLE_COMPETITOR, UNSELECT_COMPETITOR } from "../reducers/selectedCompetitors";
+import { LoadFollowersAction } from "./loadFollowers";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -51,6 +52,7 @@ export type Actions =
   & AddCompetitorAction
   & SnackbarAction
   & SelectCompetitorAction
+  & LoadFollowersAction
   ;
 
 export const selectMenu = (menuItemId: MenuItemId) => action(SELECT_MENU, menuItemId);

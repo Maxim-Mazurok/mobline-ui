@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import GlobalState from "../types/GlobalState";
+import GlobalState, { Competitor } from "../types/GlobalState";
 import { loadCompetitors } from "../actions/loadCompetitors";
 import {
   CircularProgress,
@@ -106,15 +106,12 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
             this.props.loadCompetitorsCompetitors.length > 0 ?
               <Paper>
                 <List>
-                  {this.props.loadCompetitorsCompetitors.map((competitor, index) =>
+                  {this.props.loadCompetitorsCompetitors.map((competitor: Competitor, index) =>
                     <React.Fragment
                       key={index}
                     >
                       <CompetitorItemConnected
-                        username={competitor.username}
-                        profilePicUrl={competitor.profilePicUrl}
-                        userPk={competitor.userPk}
-                        status={competitor.status}
+                        competitor={competitor}
                       />
                     </React.Fragment>
                   )}

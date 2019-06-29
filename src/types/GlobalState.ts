@@ -2,6 +2,7 @@ import { Auth0UserProfile } from "auth0-js";
 import { IGUsername } from "../actions/addCompetitor";
 import { SnackbarData } from "../actions/snackbar";
 import { MenuItemId } from "../reducers/menu";
+import { Follower } from "../reducers/loadFollowers";
 
 export type DrawerIsOpen = boolean;
 
@@ -44,4 +45,9 @@ export default interface GlobalState {
   },
   snackbar: SnackbarData,
   selectedCompetitors: Competitor["userPk"][],
+  loadFollowers: {
+    loading: boolean,
+    followers: Follower[],
+    error: string | null,
+  },
 }

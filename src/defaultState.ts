@@ -56,4 +56,9 @@ export const defaultState: GlobalState = {
     title: "",
   },
   selectedCompetitors: [],
+  loadFollowers: {
+    loading: false,
+    followers: [],
+    error: null,
+  },
 };

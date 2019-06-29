@@ -93,6 +93,7 @@ export const addCompetitor = (): ThunkResult<Promise<void>> => {
             break;
           default:
             dispatch(loadCompetitors()).then();
+            dispatch(addCompetitorShowModal(false));
             dispatch(showSnackbarAction({
               title: 'Competitor added',
               type: SnackbarType.SUCCESS,
