@@ -8,10 +8,9 @@ import { connect } from "react-redux";
 import GlobalState from "../types/GlobalState";
 import { drawerIsOpen } from "../selectors";
 import { menuItems, MenuItemType } from "../reducers/menu";
-import isEqual from "lodash.isequal";
 
 const mapStateToProps = ({ menu }: GlobalState) => ({
-  selectedMenuItem: menu.selectedMenuItem,
+  selectedMenuItemId: menu.selectedMenuItemId,
   drawerIsOpen: drawerIsOpen(menu),
 });
 
@@ -73,11 +72,11 @@ class MainDrawer extends Component<MainDrawerProps, MainDrawerState> {
                       const Icon = menuItem.hasOwnProperty('icon') ? menuItem.icon : null;
                       return (
                         <ListItem
-                          selected={isEqual(this.props.selectedMenuItem, menuItem)}
+                          selected={menuItem.hasOwnProperty('id') && this.props.selectedMenuItemId === menuItem.id}
                           button
                           key={index}
                           onClick={() => {
-                            this.props.selectMenu(menuItem);
+                            this.props.selectMenu(menuItem.id || 0);
                             this.toggleDrawer(false);
                           }}
                         >

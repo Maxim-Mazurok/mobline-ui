@@ -1,5 +1,5 @@
-import { defaultState } from "../store";
 import { AddCompetitorAction } from "../actions/addCompetitor";
+import { defaultState } from "../defaultState";
 
 export const ADD_COMPETITOR_SET_USERNAME = 'addCompetitorSetUsername';
 export type ADD_COMPETITOR_SET_USERNAME = 'addCompetitorSetUsername';

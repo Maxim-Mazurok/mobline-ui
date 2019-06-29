@@ -1,4 +1,4 @@
-import { defaultState } from "./store";
+import { defaultState } from "./defaultState";
 
 export const drawerIsOpen = (state: typeof defaultState.menu = defaultState.menu): boolean => state.drawerIsOpen;
 export const inviteCodeIsCorrect = (state: typeof defaultState.user = defaultState.user): boolean => state.inviteCode === 'moblinebeta';

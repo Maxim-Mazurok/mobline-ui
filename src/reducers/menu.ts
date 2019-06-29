@@ -1,5 +1,5 @@
 import { CLOSE_DRAWER, MenuAction, OPEN_DRAWER, SELECT_MENU } from "../actions";
-import { defaultState } from "../store";
+import { defaultState } from "../defaultState";
 import { Dashboard, People, Settings, SvgIconComponent } from "@material-ui/icons";
 
 export enum MenuItemType {
@@ -12,6 +12,13 @@ export type MenuItem = {
   type: MenuItemType,
   text?: string,
   icon?: SvgIconComponent,
+  id?: MenuItemId,
+}
+
+export enum MenuItemId {
+  DASHBOARD,
+  EXPLORER,
+  SETTINGS,
 }
 
 export const menuItems: MenuItem[] = [
@@ -19,6 +26,7 @@ export const menuItems: MenuItem[] = [
     type: MenuItemType.ITEM,
     text: 'Dashboard',
     icon: Dashboard,
+    id: MenuItemId.DASHBOARD,
   },
   {
     type: MenuItemType.DIVIDER,
@@ -27,6 +35,7 @@ export const menuItems: MenuItem[] = [
     type: MenuItemType.ITEM,
     text: 'Followers explorer',
     icon: People,
+    id: MenuItemId.EXPLORER,
   },
   {
     type: MenuItemType.MARGIN_TOP_AUTO,
@@ -38,6 +47,7 @@ export const menuItems: MenuItem[] = [
     type: MenuItemType.ITEM,
     text: 'Settings',
     icon: Settings,
+    id: MenuItemId.SETTINGS,
   }
 ];
 
@@ -46,7 +56,7 @@ export const menuReducer = (state: typeof defaultState.menu = defaultState.menu,
     case SELECT_MENU:
       return {
         ...state,
-        selectedMenuItem: action.payload,
+        selectedMenuItemId: action.payload,
       };
     case OPEN_DRAWER:
       return {

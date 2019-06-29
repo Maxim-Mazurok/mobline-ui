@@ -1,4 +1,4 @@
-import { defaultState } from "../store";
+import { defaultState } from "../defaultState";
 import { SHOW_SNACKBAR, SnackbarAction } from "../actions/snackbar";
 
 export const snackbarReducer = (state: typeof defaultState.snackbar = defaultState.snackbar, action: SnackbarAction): typeof defaultState.snackbar => {

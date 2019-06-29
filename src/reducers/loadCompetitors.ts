@@ -1,4 +1,4 @@
-import { defaultState } from "../store";
+import { defaultState } from "../defaultState";
 import { LoadCompetitorsAction } from "../actions/loadCompetitors";
 
 export const LOAD_COMPETITORS_SUCCESS = 'loadCompetitorsSuccess';

@@ -26,6 +26,8 @@ import {
 } from "@material-ui/core";
 import AddCompetitor from "./Components/AddCompetitor";
 import { red } from "@material-ui/core/colors";
+import { FollowersExplorerConnected } from "./Components/FollowersExplorer";
+import { MenuItemId } from "./reducers/menu";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -55,7 +57,7 @@ const mapStateToProps = ({ user, loadCompetitors, menu }: GlobalState) => ({
   userCustomerId: user.customerId,
   userCustomerIdLoading: user.customerIdLoading,
   userCustomerIdError: user.customerIdError,
-  selectedMenuItem: menu.selectedMenuItem,
+  selectedMenuItemId: menu.selectedMenuItemId,
 });
 
 export type AppProps =
@@ -87,6 +89,20 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
     alert('logout');
   };
 
+  renderCurrentSection() {
+    switch (this.props.selectedMenuItemId) {
+      case MenuItemId.DASHBOARD:
+        return <CompetitorsListConnected />;
+      case MenuItemId.EXPLORER:
+        return <FollowersExplorerConnected />;
+      case MenuItemId.SETTINGS:
+        return <p>Setting will be here soon...</p>;
+      default:
+        console.error(`Unknown section id: ${this.props.selectedMenuItemId}`);
+        return null;
+    }
+  }
+
   render(): React.ReactElement {
     const { classes } = this.props;
 
@@ -101,7 +117,7 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
         {/*<h1>*/}
         {/*  {this.props.userProfile.name}*/}
         {/*</h1>*/}
-        {this.props.isLoggedIn && this.props.selectedMenuItem.text === 'Dashboard' &&
+        {this.props.isLoggedIn &&
         <Container
           className={classes.mainContainer}
         >
@@ -119,7 +135,7 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
                     {this.props.userCustomerIdError}
                   </Typography>
                   :
-                  this.props.userCustomerId === null ? null : <CompetitorsListConnected />
+                  this.props.userCustomerId && this.renderCurrentSection()
               }
             </Grid>
           </Grid>

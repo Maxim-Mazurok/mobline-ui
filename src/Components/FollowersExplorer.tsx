@@ -4,10 +4,10 @@ import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import GlobalState from "../types/GlobalState";
 import { loadCompetitors } from "../actions/loadCompetitors";
 import {
+  Avatar,
+  Chip,
   CircularProgress,
   createStyles,
-  Fab,
-  List,
   Paper,
   StyledComponentProps,
   Theme,
@@ -15,32 +15,28 @@ import {
   withStyles,
 } from "@material-ui/core";
 import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from "../actions/addCompetitor";
-import AddIcon from '@material-ui/icons/Add';
 import { grey, red } from "@material-ui/core/colors";
-import CompetitorItem from "./CompetitorItem";
+import { selectCompetitor, unselectCompetitor } from "../actions";
+import { ChipProps } from "@material-ui/core/Chip";
 
 const styles = (theme: Theme) =>
   createStyles({
-    fabWrapper: {
-      margin: 0,
-      top: 'auto',
-      right: theme.spacing(3),
-      bottom: theme.spacing(3),
-      left: 'auto',
-      position: 'fixed',
-    },
     noCompetitorsFound: {
       color: grey[600],
     },
     errorMessage: {
       color: red[900],
     },
+    chip: {
+      margin: theme.spacing(1),
+    },
   });
 
-const mapStateToProps = ({ loadCompetitors }: GlobalState) => ({
+const mapStateToProps = ({ loadCompetitors, selectedCompetitors }: GlobalState) => ({
   loadCompetitorsError: loadCompetitors.error,
   loadCompetitorsCompetitors: loadCompetitors.competitors,
   loadCompetitorsLoading: loadCompetitors.loading,
+  selectedCompetitors,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
@@ -50,47 +46,36 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       addCompetitor,
       addCompetitorSetUsername,
       addCompetitorShowModal,
+      selectCompetitor,
+      unselectCompetitor,
     },
     dispatch
   );
 
-export type CompetitorsListProps =
+export type FollowersExplorerProps =
   ReturnType<typeof mapStateToProps>
   & ReturnType<typeof mapDispatchToProps>
   & StyledComponentProps
   & {
   classes: {
-    fabWrapper: string,
     noCompetitorsFound: string,
     errorMessage: string,
+    chip: string,
   },
 };
 
-type CompetitorsListState = {}
+type FollowersExplorerState = {}
 
-class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListState> {
+class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplorerState> {
   componentDidMount(): void {
     this.props.loadCompetitors();
   }
 
-  render(): React.ReactElement<CompetitorsListProps, React.JSXElementConstructor<CompetitorsListState>> {
+  render(): React.ReactElement<FollowersExplorerProps, React.JSXElementConstructor<FollowersExplorerState>> {
     const { classes } = this.props;
 
     return (
       <React.Fragment>
-        <div
-          className={`${classes.fabWrapper} mui-fixed`}
-        >
-          <Fab
-            color="primary"
-            variant="extended"
-            aria-label="Add"
-            onClick={() => this.props.addCompetitorShowModal()}
-          >
-            <AddIcon />
-            Add new competitor
-          </Fab>
-        </div>
         {this.props.loadCompetitorsLoading ?
           <CircularProgress />
           :
@@ -105,20 +90,31 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
             :
             this.props.loadCompetitorsCompetitors.length > 0 ?
               <Paper>
-                <List>
-                  {this.props.loadCompetitorsCompetitors.map((competitor, index) =>
-                    <React.Fragment
-                      key={index}
-                    >
-                      <CompetitorItem
-                        username={competitor.username}
-                        profilePicUrl={competitor.profilePicUrl}
-                        userPk={competitor.userPk}
-                        status={competitor.status}
+                {this.props.loadCompetitorsCompetitors.map((competitor, index) => {
+                    const isSelected = this.props.selectedCompetitors.indexOf(competitor.userPk) !== -1;
+                    const props: ChipProps = {
+                      color: isSelected ? "primary" : "default",
+                    };
+                    if (isSelected) {
+                      props.onDelete = () => {
+                        this.props.unselectCompetitor(competitor.userPk);
+                      };
+                    } else {
+                      props.onClick = () => {
+                        this.props.selectCompetitor(competitor.userPk);
+                      };
+                    }
+                    return (
+                      <Chip
+                        {...props}
+                        className={classes.chip}
+                        key={index}
+                        avatar={<Avatar alt={competitor.username} src={competitor.profilePicUrl} />}
+                        label={competitor.username}
                       />
-                    </React.Fragment>
-                  )}
-                </List>
+                    );
+                  }
+                )}
               </Paper>
               :
               <Typography
@@ -134,7 +130,7 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
   }
 }
 
-export const CompetitorsListConnected = connect(
+export const FollowersExplorerConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(CompetitorsList));
+)(withStyles(styles)(FollowersExplorer));

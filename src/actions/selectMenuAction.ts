@@ -1,12 +1,12 @@
 import { SELECT_MENU } from "./index";
-import { MenuItem } from "../reducers/menu";
+import { MenuItemId } from "../reducers/menu";
 
-export const selectMenuAction = (menuItem: MenuItem): SelectMenuAction => ({
+export const selectMenuAction = (menuItemId: MenuItemId): SelectMenuAction => ({
   type: SELECT_MENU,
-  payload: menuItem,
+  payload: menuItemId,
 });
 
 export interface SelectMenuAction {
   type: typeof SELECT_MENU,
-  payload: MenuItem,
+  payload: MenuItemId,
 }

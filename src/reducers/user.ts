@@ -7,7 +7,7 @@ import {
   USER_PROFILE,
   UserAction
 } from "../actions";
-import { defaultState } from "../store";
+import { defaultState } from "../defaultState";
 
 export const userReducer = (state: typeof defaultState.user = defaultState.user, action: UserAction): typeof defaultState.user => {
   switch (action.type) {

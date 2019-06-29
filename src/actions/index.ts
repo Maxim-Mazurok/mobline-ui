@@ -1,6 +1,6 @@
 import { SelectMenuAction } from "./selectMenuAction";
 import { action } from 'typesafe-actions';
-import { UserInfo } from "../types/GlobalState";
+import { Competitor, UserInfo } from "../types/GlobalState";
 import { OpenDrawerAction } from "./openDrawerAction";
 import { CloseDrawerAction } from "./closeDrawerAction";
 import { Auth0UserProfile } from "auth0-js";
@@ -11,7 +11,9 @@ import { LoadCompetitorsAction } from "./loadCompetitors";
 import { GetCustomerIdAction } from "./getCustomerId";
 import { AddCompetitorAction } from "./addCompetitor";
 import { SHOW_SNACKBAR, SnackbarAction, SnackbarData } from "./snackbar";
-import { MenuItem } from "../reducers/menu";
+import { MenuItemId } from "../reducers/menu";
+import { SelectCompetitorAction } from "./selectCompetitors";
+import { SELECT_COMPETITOR, UNSELECT_COMPETITOR } from "../reducers/selectedCompetitors";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -48,12 +50,15 @@ export type Actions =
   & LoadCompetitorsAction
   & AddCompetitorAction
   & SnackbarAction
+  & SelectCompetitorAction
   ;
 
-export const selectMenu = (menuItem: MenuItem) => action(SELECT_MENU, menuItem);
+export const selectMenu = (menuItemId: MenuItemId) => action(SELECT_MENU, menuItemId);
 export const openDrawer = () => action(OPEN_DRAWER);
 export const closeDrawer = () => action(CLOSE_DRAWER);
 export const handleLogin = (userInfo: UserInfo) => action(HANDLE_LOGIN, userInfo);
 export const handleUserProfile = (profile: Auth0UserProfile) => action(USER_PROFILE, profile);
 export const setInviteCode = (inviteCode: string) => action(SET_INVITE_CODE, inviteCode);
 export const showSnackbar = (data: SnackbarData) => action(SHOW_SNACKBAR, data);
+export const selectCompetitor = (competitorPk: Competitor["userPk"]) => action(SELECT_COMPETITOR, competitorPk);
+export const unselectCompetitor = (competitorPk: Competitor["userPk"]) => action(UNSELECT_COMPETITOR, competitorPk);
