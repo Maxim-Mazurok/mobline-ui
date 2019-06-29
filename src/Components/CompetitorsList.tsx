@@ -17,7 +17,7 @@ import {
 import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from "../actions/addCompetitor";
 import AddIcon from '@material-ui/icons/Add';
 import { grey, red } from "@material-ui/core/colors";
-import CompetitorItem from "./CompetitorItem";
+import { CompetitorItemConnected } from "./CompetitorItem";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -110,7 +110,7 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
                     <React.Fragment
                       key={index}
                     >
-                      <CompetitorItem
+                      <CompetitorItemConnected
                         username={competitor.username}
                         profilePicUrl={competitor.profilePicUrl}
                         userPk={competitor.userPk}

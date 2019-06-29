@@ -11,8 +11,26 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { Delete, MoreVert, People, SvgIconComponent, Sync } from "@material-ui/icons";
+import { connect } from "react-redux";
+import { Competitor } from "../types/GlobalState";
+import { AnyAction, bindActionCreators, Dispatch } from "redux";
+import { selectMenu, selectSingleCompetitor } from "../actions";
+import { MenuItemId } from "../reducers/menu";
+
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
+  bindActionCreators(
+    {
+      selectSingleCompetitor,
+      selectMenu,
+    },
+    dispatch
+  );
 
 export type CompetitorItemProps =
+  ReturnType<typeof mapStateToProps>
+  & ReturnType<typeof mapDispatchToProps>
   & {
   username: string,
   profilePicUrl: string,
@@ -29,20 +47,30 @@ type CompetitorItemState =
 type CompetitorItemMenuOption = {
   title: string,
   icon: SvgIconComponent,
+  id: OptionId,
 };
+
+enum OptionId {
+  FOLLOWERS,
+  SYNC,
+  DELETE,
+}
 
 const options: CompetitorItemMenuOption[] = [
   {
     title: "Followers",
     icon: People,
+    id: OptionId.FOLLOWERS,
   },
   {
     title: "Sync",
     icon: Sync,
+    id: OptionId.SYNC,
   },
   {
     title: "Delete",
     icon: Delete,
+    id: OptionId.DELETE,
   },
 ];
 
@@ -66,9 +94,20 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
     });
   };
 
-  handleSelect = (option: CompetitorItemMenuOption) => {
+  handleSelect = (optionId: OptionId, userPk: Competitor["userPk"]) => {
     this.handleClose();
-    console.log(option, "selected");
+    switch (optionId) {
+      case OptionId.FOLLOWERS:
+        this.props.selectSingleCompetitor(userPk);
+        this.props.selectMenu(MenuItemId.EXPLORER);
+        break;
+      case OptionId.SYNC:
+      case OptionId.DELETE:
+        console.log('TODO: implement');
+        break;
+      default:
+        console.error(`Unknown option selected: ${optionId}`);
+    }
   };
 
   render(): React.ReactElement<CompetitorItemProps, React.JSXElementConstructor<CompetitorItemState>> {
@@ -104,10 +143,11 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
           >
             {options.map((option, index) => {
               const Icon = option.icon;
+              if (option.id === OptionId.FOLLOWERS && this.props.userPk === "") return null;
               return (
                 <MenuItem
                   key={index}
-                  onClick={() => this.handleSelect(option)}
+                  onClick={() => this.handleSelect(option.id, this.props.userPk)}
                 >
                   <ListItemIcon>
                     <Icon />
@@ -124,4 +164,7 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
   }
 }
 
-export default CompetitorItem;
+export const CompetitorItemConnected = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CompetitorItem);

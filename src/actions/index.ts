@@ -13,7 +13,7 @@ import { AddCompetitorAction } from "./addCompetitor";
 import { SHOW_SNACKBAR, SnackbarAction, SnackbarData } from "./snackbar";
 import { MenuItemId } from "../reducers/menu";
 import { SelectCompetitorAction } from "./selectCompetitors";
-import { SELECT_COMPETITOR, UNSELECT_COMPETITOR } from "../reducers/selectedCompetitors";
+import { SELECT_COMPETITOR, SELECT_SINGLE_COMPETITOR, UNSELECT_COMPETITOR } from "../reducers/selectedCompetitors";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -61,4 +61,5 @@ export const handleUserProfile = (profile: Auth0UserProfile) => action(USER_PROF
 export const setInviteCode = (inviteCode: string) => action(SET_INVITE_CODE, inviteCode);
 export const showSnackbar = (data: SnackbarData) => action(SHOW_SNACKBAR, data);
 export const selectCompetitor = (competitorPk: Competitor["userPk"]) => action(SELECT_COMPETITOR, competitorPk);
+export const selectSingleCompetitor = (competitorPk: Competitor["userPk"]) => action(SELECT_SINGLE_COMPETITOR, competitorPk);
 export const unselectCompetitor = (competitorPk: Competitor["userPk"]) => action(UNSELECT_COMPETITOR, competitorPk);
