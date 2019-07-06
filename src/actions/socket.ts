@@ -7,7 +7,7 @@ import {
   addCompetitorSuccess,
   IGUsername
 } from "./addCompetitor";
-import { WS_HOST, WS_PORT } from "./index";
+import { WS_HOST, WS_PORT, WS_SCHEME } from "./index";
 import { showSnackbarAction, SnackbarAction, SnackbarType } from "./snackbar";
 import { LoadCompetitorsAction } from "./loadCompetitors";
 import { ThunkDispatch } from "redux-thunk";
@@ -172,7 +172,7 @@ export type SocketAction =
   ;
 
 const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompetitorAction> & ThunkDispatch<GlobalState, undefined, LoadCompetitorsAction>, getState: () => GlobalState): WebSocket => {
-  const socket = new WebSocket(`ws://${WS_HOST}:${WS_PORT}`);
+  const socket = new WebSocket(`${WS_SCHEME}://${WS_HOST}:${WS_PORT}`);
 
   socket.onopen = () => {
     dispatch(wsOpened(true));
