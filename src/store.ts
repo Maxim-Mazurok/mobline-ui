@@ -1,9 +1,9 @@
-import { applyMiddleware, combineReducers, compose, createStore, Reducer, Store } from "redux";
+import { applyMiddleware, combineReducers, compose, createStore, Dispatch, Reducer, Store } from "redux";
 import GlobalState from "./types/GlobalState";
 import { Actions } from "./actions";
 import { devToolsEnhancer } from 'redux-devtools-extension';
 import { userReducer } from "./reducers/user";
-import thunk, { ThunkMiddleware } from "redux-thunk";
+import thunk, { ThunkDispatch, ThunkMiddleware } from "redux-thunk";
 import { loadCompetitorsReducer } from "./reducers/loadCompetitors";
 import { menuReducer } from "./reducers/menu";
 import { addCompetitorReducer } from "./reducers/addCompetitor";
@@ -11,8 +11,14 @@ import { snackbarReducer } from "./reducers/snackbar";
 import { selectedCompetitorsReducer } from "./reducers/selectedCompetitors";
 import { defaultState } from "./defaultState";
 import { loadFollowersReducer } from "./reducers/loadFollowers";
+import setupSocket, { SocketAction } from "./actions/socket";
+import createSagaMiddleware from 'redux-saga';
+import handleWSOutgoingMessage from "./sagas";
+import { SnackbarAction } from "./actions/snackbar";
+import { AddCompetitorAction } from "./actions/addCompetitor";
+import { LoadCompetitorsAction } from "./actions/loadCompetitors";
 
-const configureStore = (state: GlobalState = defaultState): Store => {
+const configureStore = (state: GlobalState = defaultState): Store<GlobalState, Actions> => {
   const rootReducer: Reducer<GlobalState, Actions> = combineReducers({
     menu: menuReducer,
     user: userReducer,
@@ -22,16 +28,25 @@ const configureStore = (state: GlobalState = defaultState): Store => {
     selectedCompetitors: selectedCompetitorsReducer,
     loadFollowers: loadFollowersReducer,
   });
-  return createStore(
+
+  const sagaMiddleware = createSagaMiddleware();
+
+  const store = createStore(
     rootReducer as Reducer<GlobalState, Actions>,
     state as any,
     compose(
       applyMiddleware(
         thunk as ThunkMiddleware<GlobalState, Actions>,
+        sagaMiddleware,
       ),
       devToolsEnhancer({ trace: true })
     )
   );
+
+  const socket = setupSocket(store.dispatch as Dispatch<SocketAction | SnackbarAction | AddCompetitorAction> & ThunkDispatch<GlobalState, undefined, LoadCompetitorsAction>, store.getState);
+  sagaMiddleware.run(handleWSOutgoingMessage, socket);
+
+  return store;
 };
 
 export const store = configureStore();

@@ -78,19 +78,6 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
 
     return (
       <React.Fragment>
-        <div
-          className={`${classes.fabWrapper} mui-fixed`}
-        >
-          <Fab
-            color="primary"
-            variant="extended"
-            aria-label="Add"
-            onClick={() => this.props.addCompetitorShowModal()}
-          >
-            <AddIcon />
-            Add new competitor
-          </Fab>
-        </div>
         {this.props.loadCompetitorsLoading ?
           <CircularProgress />
           :
@@ -126,6 +113,19 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
                 No competitors found, add them first.
               </Typography>
         }
+        <div
+          className={`${classes.fabWrapper} mui-fixed`}
+        >
+          <Fab
+            color="primary"
+            variant="extended"
+            aria-label="Add"
+            onClick={() => this.props.addCompetitorShowModal()}
+          >
+            <AddIcon />
+            Add new competitor
+          </Fab>
+        </div>
       </React.Fragment>
     );
   }

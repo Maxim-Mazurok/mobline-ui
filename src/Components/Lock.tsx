@@ -92,7 +92,6 @@ class Lock extends Component<LockProps, LockState> {
     if (!(/access_token|id_token|error/.test(this.props.location.hash))) {
       if (this.props.isLoggedIn) {
         this.lock.checkSession({}, (error, authResult) => {
-          console.log('callback: ', error, authResult);
           if (error || !authResult) {
             this.forceUpdate(() => {
               this.lock.show();

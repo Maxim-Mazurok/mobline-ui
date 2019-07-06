@@ -17,6 +17,18 @@ export interface Competitor {
   username: string,
   profilePicUrl: string,
   status: string,
+  parseFollowersStarted?: boolean,
+  parseFollowersFinished?: boolean,
+  parseFollowersProgress?: {
+    done: number,
+    total: number,
+  },
+  parseFollowersListStarted?: boolean,
+  parseFollowersListFinished?: boolean,
+  parseFollowersListProgress?: {
+    done: number,
+    total: number,
+  },
 }
 
 export default interface GlobalState {

@@ -84,7 +84,7 @@ class FollowerItem extends Component<FollowerItemProps, FollowerItemState> {
     // noinspection JSRedundantSwitchStatement
     switch (optionId) {
       case OptionId.SYNC:
-        console.log('TODO: implement');
+        //TODO: implement
         break;
       default:
         console.error(`Unknown option selected: ${optionId}`);

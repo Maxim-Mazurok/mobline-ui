@@ -28,6 +28,7 @@ import AddCompetitor from "./Components/AddCompetitor";
 import { red } from "@material-ui/core/colors";
 import { FollowersExplorerConnected } from "./Components/FollowersExplorer";
 import { MenuItemId } from "./reducers/menu";
+import { wsSubscribe } from "./actions/socket";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -45,6 +46,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       loadCompetitors,
       getCustomerId,
+      wsSubscribe,
     },
     dispatch
   );
@@ -81,7 +83,6 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
     if (this.props.isLoggedIn && this.props.userCustomerId === null) {
       this.props.getCustomerId();
     }
-    // this.props.loadCompetitors();
   }
 
   logout: () => void = () => {

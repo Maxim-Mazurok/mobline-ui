@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {
   Avatar,
   IconButton,
+  LinearProgress,
   ListItem,
   ListItemAvatar,
   ListItemIcon,
@@ -91,6 +92,20 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
     });
   };
 
+  getFollowersParsedProgress = (): number => {
+    if (this.props.competitor.hasOwnProperty('parseFollowersProgress') && this.props.competitor.parseFollowersProgress !== undefined) {
+      return this.props.competitor.parseFollowersProgress.done / this.props.competitor.parseFollowersProgress.total * 100;
+    }
+    return 0;
+  };
+
+  getFollowersListParsedProgress = (): number => {
+    if (this.props.competitor.hasOwnProperty('parseFollowersListProgress') && this.props.competitor.parseFollowersListProgress !== undefined) {
+      return this.props.competitor.parseFollowersListProgress.done / this.props.competitor.parseFollowersListProgress.total * 100;
+    }
+    return 0;
+  };
+
   handleSelect = (optionId: OptionId, userPk: Competitor["userPk"]) => {
     this.handleClose();
     switch (optionId) {
@@ -100,7 +115,7 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
         break;
       case OptionId.SYNC:
       case OptionId.DELETE:
-        console.log('TODO: implement');
+        //TODO: implement
         break;
       default:
         console.error(`Unknown option selected: ${optionId}`);
@@ -118,7 +133,22 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
         <ListItemText primary={this.props.competitor.username}
                       secondary={
                         this.props.competitor.userPk !== "" ?
-                          `ID: ${this.props.competitor.userPk}`
+                          <React.Fragment>
+                            <span>ID: {this.props.competitor.userPk}</span>
+                            {
+                              this.props.competitor.hasOwnProperty('parseFollowersStarted') && this.props.competitor.parseFollowersStarted &&
+                              this.props.competitor.hasOwnProperty('parseFollowersListStarted') && this.props.competitor.parseFollowersListStarted &&
+                              !(
+                                this.props.competitor.hasOwnProperty('parseFollowersFinished') && this.props.competitor.parseFollowersFinished &&
+                                this.props.competitor.hasOwnProperty('parseFollowersListFinished') && this.props.competitor.parseFollowersListFinished
+                              ) &&
+                              <React.Fragment>
+                                <br />
+                                <LinearProgress variant="buffer" value={this.getFollowersParsedProgress()}
+                                                valueBuffer={this.getFollowersListParsedProgress()} />
+                              </React.Fragment>
+                            }
+                          </React.Fragment>
                           :
                           this.props.competitor.status && this.props.competitor.status
                       }

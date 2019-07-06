@@ -17,6 +17,8 @@ import { SELECT_COMPETITOR, SELECT_SINGLE_COMPETITOR, UNSELECT_COMPETITOR } from
 import { LoadFollowersAction } from "./loadFollowers";
 
 export const API_URL = process.env.REACT_APP_API_URL;
+export const WS_HOST = process.env.REACT_APP_WS_HOST;
+export const WS_PORT = process.env.REACT_APP_WS_PORT;
 
 export const SELECT_MENU = 'selectMenuAction';
 export const OPEN_DRAWER = 'openDrawerAction';
