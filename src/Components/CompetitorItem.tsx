@@ -131,22 +131,29 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
           <Avatar alt={this.props.competitor.username} src={this.props.competitor.profilePicUrl} />
         </ListItemAvatar>
         <ListItemText primary={this.props.competitor.username}
+                      secondaryTypographyProps={{ component: "div" }}
                       secondary={
                         this.props.competitor.userPk !== "" ?
                           <React.Fragment>
-                            <span>ID: {this.props.competitor.userPk}</span>
+                            ID: {this.props.competitor.userPk}
                             {
-                              this.props.competitor.hasOwnProperty('parseFollowersStarted') && this.props.competitor.parseFollowersStarted &&
-                              this.props.competitor.hasOwnProperty('parseFollowersListStarted') && this.props.competitor.parseFollowersListStarted &&
+                              (
+                                (
+                                  (this.props.competitor.hasOwnProperty('parseFollowersStarted') && this.props.competitor.parseFollowersStarted)
+                                  || this.getFollowersParsedProgress() > 0
+                                )
+                                ||
+                                (
+                                  (this.props.competitor.hasOwnProperty('parseFollowersListStarted') && this.props.competitor.parseFollowersListStarted)
+                                  || this.getFollowersListParsedProgress() > 0
+                                )
+                              ) &&
                               !(
                                 this.props.competitor.hasOwnProperty('parseFollowersFinished') && this.props.competitor.parseFollowersFinished &&
                                 this.props.competitor.hasOwnProperty('parseFollowersListFinished') && this.props.competitor.parseFollowersListFinished
                               ) &&
-                              <React.Fragment>
-                                <br />
-                                <LinearProgress variant="buffer" value={this.getFollowersParsedProgress()}
-                                                valueBuffer={this.getFollowersListParsedProgress()} />
-                              </React.Fragment>
+                              <LinearProgress variant="buffer" value={this.getFollowersParsedProgress()}
+                                              valueBuffer={this.getFollowersListParsedProgress()} />
                             }
                           </React.Fragment>
                           :
