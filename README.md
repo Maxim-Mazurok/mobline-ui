@@ -4,6 +4,7 @@
 - [ ] Don't send request to get followers when no competitor is selected
 - [ ] Don't reload competitors when navigation to dashboard, instead, show current and sync them on the background
 - [ ] Create pagination for followers explorer
+- [ ] Fix customerId:null in wsSubscribe when connecting right after auth on fresh new session
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
