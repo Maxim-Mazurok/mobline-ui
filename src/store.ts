@@ -8,7 +8,7 @@ import { loadCompetitorsReducer } from "./reducers/loadCompetitors";
 import { menuReducer } from "./reducers/menu";
 import { addCompetitorReducer } from "./reducers/addCompetitor";
 import { snackbarReducer } from "./reducers/snackbar";
-import { selectedCompetitorsReducer } from "./reducers/selectedCompetitors";
+import { followersExplorerReducer } from "./reducers/followersExplorer";
 import { defaultState } from "./defaultState";
 import { loadFollowersReducer } from "./reducers/loadFollowers";
 import setupSocket, { SocketAction } from "./actions/socket";
@@ -25,7 +25,7 @@ const configureStore = (state: GlobalState = defaultState): Store<GlobalState, A
     loadCompetitors: loadCompetitorsReducer,
     addCompetitor: addCompetitorReducer,
     snackbar: snackbarReducer,
-    selectedCompetitors: selectedCompetitorsReducer,
+    followersExplorer: followersExplorerReducer,
     loadFollowers: loadFollowersReducer,
   });
 

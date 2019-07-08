@@ -16,6 +16,8 @@ export interface Competitor {
   userPk: string,
   username: string,
   profilePicUrl: string,
+  isVerified?: boolean,
+  followersCount?: number,
   status: string,
   parseFollowersStarted?: boolean,
   parseFollowersFinished?: boolean,
@@ -56,7 +58,19 @@ export default interface GlobalState {
     showModal: boolean,
   },
   snackbar: SnackbarData,
-  selectedCompetitors: Competitor["userPk"][],
+  followersExplorer: {
+    selectedCompetitors: Competitor["userPk"][],
+    verifiedOnly: boolean,
+    hideBots: boolean,
+    followersCount: {
+      from: number,
+      to: number,
+    },
+    engagementRate: {
+      from: number,
+      to: number,
+    }
+  }
   loadFollowers: {
     loading: boolean,
     followers: Follower[],

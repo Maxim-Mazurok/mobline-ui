@@ -15,6 +15,8 @@ export type Follower = {
   username: Competitor["username"],
   userPk: Competitor["userPk"],
   profilePicUrl: Competitor["profilePicUrl"],
+  isVerified?: Competitor["isVerified"],
+  followersCount?: Competitor["followersCount"],
 }
 
 export const loadFollowersReducer = (state: typeof defaultState.loadFollowers = defaultState.loadFollowers, action: LoadFollowersAction): typeof defaultState.loadFollowers => {

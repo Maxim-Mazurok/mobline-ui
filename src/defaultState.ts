@@ -55,7 +55,19 @@ export const defaultState: GlobalState = {
     type: SnackbarType.HIDDEN,
     title: "",
   },
-  selectedCompetitors: [],
+  followersExplorer: {
+    selectedCompetitors: [],
+    verifiedOnly: true,
+    hideBots: false,
+    followersCount: {
+      from: 10000,
+      to: 100000,
+    },
+    engagementRate: {
+      from: 0,
+      to: 100,
+    }
+  },
   loadFollowers: {
     loading: false,
     followers: [],

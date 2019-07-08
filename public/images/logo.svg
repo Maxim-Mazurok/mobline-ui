@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+	<g fill="none" fill-rule="evenodd">
+		<path fill="#FFF" d="M0 0h500v500H0z"/>
+		<path d="M40 309h420v45H40z"/>
+		<text x="-8.0859375" fill="#000" font-family="Dosis" font-size="40" font-weight="800"
+			  letter-spacing="4" transform="translate(40 309)">
+			<tspan x="124.09375" y="37" style="-inkscape-font-specification:'Roboto Black, Heavy'"
+				   font-family="Roboto Black" font-weight="900">Mobline
+			</tspan>
+		</text>
+		<path d="M40 362h420v32H40z"/>
+		<text fill="#000" font-family="Dosis" font-size="25" font-weight="500"
+			  letter-spacing="2.5" transform="translate(40 362)"/>
+		<g>
+			<path fill="#645fce" fill-opacity=".02" d="M234.089 208.343v-19.574l9.827 9.788z"/>
+			<path fill="#645fce" fill-opacity=".6" d="M265.912 277h-31.254v-52.139l31.254-31.125z"/>
+			<path fill="#645fce" fill-opacity=".8" d="M308.455 277h-31.254v-87.659l31.254-31.124z"/>
+			<path fill="#645fce" d="M351 277h-31.254V140.123L351 109z"/>
+			<path fill="#645fce" fill-opacity=".4" d="M223.367 236.105V277h-41.066z"/>
+			<path fill="#645fce" fill-opacity=".5" d="M279.037 109L250 137.917 220.963 109z"/>
+			<path fill="#40356f" fill-opacity=".5" d="M279.037 109L250 137.917 220.963 109z"/>
+			<path fill="#40356f" fill-opacity=".8" d="M191.545 249.47v-97.462l31.254 31.124v35.214z"/>
+			<path fill="#40356f" fill-opacity=".6" d="M234.089 208.343v-19.574l9.827 9.788z"/>
+			<path fill="#40356f" d="M170.134 277H149V109l31.254 31.123v126.8z"/>
+			<path fill="#40356f" fill-opacity=".6" d="M223.367 236.105V277h-41.066z"/>
+		</g>
+	</g>
+</svg>

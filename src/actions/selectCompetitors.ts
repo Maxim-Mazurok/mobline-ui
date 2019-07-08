@@ -1,5 +1,5 @@
 import { Competitor } from "../types/GlobalState";
-import { SELECT_COMPETITOR, SELECT_SINGLE_COMPETITOR, UNSELECT_COMPETITOR } from "../reducers/selectedCompetitors";
+import { SELECT_COMPETITOR, SELECT_SINGLE_COMPETITOR, UNSELECT_COMPETITOR } from "../reducers/followersExplorer";
 
 const selectCompetitor = (competitorPk: Competitor["userPk"]): {
   type: SELECT_COMPETITOR,

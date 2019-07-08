@@ -176,16 +176,12 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
 
   socket.onopen = () => {
     dispatch(wsOpened(true));
-    dispatch(showSnackbarAction({
-      title: "WS Connected",
-      type: SnackbarType.INFO,
-    }));
     dispatch(wsSubscribe(getState().user.customerId));
   };
   socket.onclose = () => {
     dispatch(wsOpened(false));
     dispatch(showSnackbarAction({
-      title: "WS Closed",
+      title: "Disconnected from server, reload the page",
       type: SnackbarType.INFO,
     }));
   };

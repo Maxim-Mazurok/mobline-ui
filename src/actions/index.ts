@@ -12,9 +12,14 @@ import { GetCustomerIdAction } from "./getCustomerId";
 import { AddCompetitorAction } from "./addCompetitor";
 import { SHOW_SNACKBAR, SnackbarAction, SnackbarData } from "./snackbar";
 import { MenuItemId } from "../reducers/menu";
-import { SelectCompetitorAction } from "./selectCompetitors";
-import { SELECT_COMPETITOR, SELECT_SINGLE_COMPETITOR, UNSELECT_COMPETITOR } from "../reducers/selectedCompetitors";
+import {
+  SELECT_COMPETITOR,
+  SELECT_SINGLE_COMPETITOR,
+  SET_VERIFIED_ONLY,
+  UNSELECT_COMPETITOR
+} from "../reducers/followersExplorer";
 import { LoadFollowersAction } from "./loadFollowers";
+import { FollowersExplorerAction } from "./followersExplorer";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 export const WS_HOST = process.env.REACT_APP_WS_HOST;
@@ -54,7 +59,7 @@ export type Actions =
   & LoadCompetitorsAction
   & AddCompetitorAction
   & SnackbarAction
-  & SelectCompetitorAction
+  & FollowersExplorerAction
   & LoadFollowersAction
   ;
 
@@ -66,5 +71,6 @@ export const handleUserProfile = (profile: Auth0UserProfile) => action(USER_PROF
 export const setInviteCode = (inviteCode: string) => action(SET_INVITE_CODE, inviteCode);
 export const showSnackbar = (data: SnackbarData) => action(SHOW_SNACKBAR, data);
 export const selectCompetitor = (competitorPk: Competitor["userPk"]) => action(SELECT_COMPETITOR, competitorPk);
+export const setVerifiedOnly = (verifiedOnly: boolean) => action(SET_VERIFIED_ONLY, verifiedOnly);
 export const selectSingleCompetitor = (competitorPk: Competitor["userPk"]) => action(SELECT_SINGLE_COMPETITOR, competitorPk);
 export const unselectCompetitor = (competitorPk: Competitor["userPk"]) => action(UNSELECT_COMPETITOR, competitorPk);

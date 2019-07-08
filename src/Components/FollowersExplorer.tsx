@@ -6,9 +6,12 @@ import { loadCompetitors } from "../actions/loadCompetitors";
 import {
   Avatar,
   Box,
+  Checkbox,
   Chip,
   CircularProgress,
   createStyles,
+  FormControlLabel,
+  FormGroup,
   List,
   Paper,
   StyledComponentProps,
@@ -17,7 +20,7 @@ import {
   withStyles,
 } from "@material-ui/core";
 import { grey, red } from "@material-ui/core/colors";
-import { selectCompetitor, unselectCompetitor } from "../actions";
+import { selectCompetitor, setVerifiedOnly, unselectCompetitor } from "../actions";
 import { ChipProps } from "@material-ui/core/Chip";
 import { loadFollowers } from "../actions/loadFollowers";
 import { Follower } from "../reducers/loadFollowers";
@@ -40,11 +43,12 @@ const styles = (theme: Theme) =>
     }
   });
 
-const mapStateToProps = ({ loadCompetitors, selectedCompetitors, loadFollowers }: GlobalState) => ({
+const mapStateToProps = ({ loadCompetitors, followersExplorer, loadFollowers }: GlobalState) => ({
   loadCompetitorsError: loadCompetitors.error,
   loadCompetitorsCompetitors: loadCompetitors.competitors,
   loadCompetitorsLoading: loadCompetitors.loading,
-  selectedCompetitors: selectedCompetitors,
+  followersExplorerSelectedCompetitors: followersExplorer.selectedCompetitors,
+  followersExplorerVerifiedOnly: followersExplorer.verifiedOnly,
   loadFollowersError: loadFollowers.error,
   loadFollowersFollowers: loadFollowers.followers,
   loadFollowersLoading: loadFollowers.loading,
@@ -57,6 +61,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       selectCompetitor,
       unselectCompetitor,
       loadFollowers,
+      setVerifiedOnly,
     },
     dispatch
   );
@@ -78,7 +83,7 @@ type FollowersExplorerState = {}
 
 class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplorerState> {
   componentDidUpdate(prevProps: FollowersExplorerProps) {
-    if (prevProps.selectedCompetitors !== this.props.selectedCompetitors) {
+    if (prevProps.followersExplorerSelectedCompetitors !== this.props.followersExplorerSelectedCompetitors) {
       this.props.loadFollowers();
     }
   }
@@ -87,6 +92,10 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
     this.props.loadCompetitors();
     this.props.loadFollowers();
   }
+
+  handleVerifiedOnlyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.props.setVerifiedOnly(event.target.checked);
+  };
 
   render(): React.ReactElement<FollowersExplorerProps, React.JSXElementConstructor<FollowersExplorerState>> {
     const { classes } = this.props;
@@ -111,7 +120,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
               >
                 <Box mx={1} my={2}>
                   {this.props.loadCompetitorsCompetitors.map((competitor, index) => {
-                      const isSelected = this.props.selectedCompetitors.indexOf(competitor.userPk) !== -1;
+                    const isSelected = this.props.followersExplorerSelectedCompetitors.indexOf(competitor.userPk) !== -1;
                       const props: ChipProps = {
                         color: isSelected ? "primary" : "default",
                       };
@@ -136,6 +145,23 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                     }
                   )}
                 </Box>
+                <Box mx={2} mb={2}>
+                  <FormGroup row>
+                    <FormControlLabel
+                      value="verified only"
+                      control={
+                        <Checkbox
+                          checked={this.props.followersExplorerVerifiedOnly}
+                          onChange={this.handleVerifiedOnlyChange}
+                          value="verified only"
+                          color="primary"
+                        />
+                      }
+                      label="Verified only"
+                      labelPlacement="end"
+                    />
+                  </FormGroup>
+                </Box>
                 {
                   this.props.loadFollowersLoading ?
                     <Box mx={2} my={2}> {/*TODO: fix a lot of boxes*/}
@@ -155,15 +181,19 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                       :
                       this.props.loadFollowersFollowers.length > 0 ?
                         <List>
-                          {this.props.loadFollowersFollowers.map((follower: Follower, index) =>
-                            <React.Fragment
-                              key={index}
-                            >
-                              <FollowerItemConnected
-                                follower={follower}
-                              />
-                            </React.Fragment>
-                          )}
+                          {
+                            this.props.loadFollowersFollowers
+                              .filter((follower: Follower) =>
+                                this.props.followersExplorerVerifiedOnly ? follower.isVerified : true)
+                              .map((follower: Follower, index) =>
+                                <React.Fragment
+                                  key={index}
+                                >
+                                  <FollowerItemConnected
+                                    follower={follower}
+                                  />
+                                </React.Fragment>
+                              )}
                         </List>
                         :
                         <Box mx={2} my={2}>

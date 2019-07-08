@@ -68,7 +68,7 @@ class Lock extends Component<LockProps, LockState> {
     },
     container: AUTH_CONFIG.container,
     theme: {
-      logo: '/logo.png',
+      logo: '/images/logo.png',
       primaryColor: '#3f51b5'
     },
     allowedConnections: [

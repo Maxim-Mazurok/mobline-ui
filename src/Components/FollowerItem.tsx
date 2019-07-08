@@ -91,6 +91,22 @@ class FollowerItem extends Component<FollowerItemProps, FollowerItemState> {
     }
   };
 
+  getVerifiedBadge = () => {
+    if (this.props.follower.hasOwnProperty("isVerified") && this.props.follower.isVerified === true) {
+      return <div
+        style={{
+          backgroundPosition: "center",
+          backgroundSize: "contain",
+          backgroundImage: "url(\"/images/verified.png\")",
+          backgroundRepeat: "no-repeat",
+          height: "1rem",
+          width: "1rem",
+          marginLeft: "0.25rem",
+        }}
+      />;
+    }
+  };
+
   render(): React.ReactElement<FollowerItemProps, React.JSXElementConstructor<FollowerItemState>> {
     return (
       <ListItem
@@ -99,13 +115,20 @@ class FollowerItem extends Component<FollowerItemProps, FollowerItemState> {
         <ListItemAvatar>
           <Avatar alt={this.props.follower.username} src={this.props.follower.profilePicUrl} />
         </ListItemAvatar>
-        <ListItemText primary={this.props.follower.username}
-                      secondary={
-                        this.props.follower.userPk !== "" ?
-                          `ID: ${this.props.follower.userPk}`
-                          :
-                          "No information yet"
-                      }
+        <ListItemText
+          primaryTypographyProps={{ component: "div", style: { display: "flex", alignItems: "center" } }}
+          primary={
+            <React.Fragment>
+              <div>{this.props.follower.username}</div>
+              {this.getVerifiedBadge()}
+            </React.Fragment>
+          }
+          secondary={
+            this.props.follower.userPk !== "" ?
+              `ID: ${this.props.follower.userPk}`
+              :
+              "No information yet"
+          }
         />
         <ListItemSecondaryAction>
           <IconButton

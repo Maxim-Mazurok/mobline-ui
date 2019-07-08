@@ -49,7 +49,7 @@ export const loadFollowers = (): ThunkResult<Promise<void>> => {
 
     axios
       .post(`${API_URL}/get_followers.php`, {
-        competitorPks: state.selectedCompetitors,
+        competitorPks: state.followersExplorer.selectedCompetitors,
       })
       .then(result => {
         dispatch(loadFollowersSuccess(result.data));
