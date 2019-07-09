@@ -27,7 +27,7 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
-    "redux": "^4.0.1",
+    "redux": "^4.0.2",
     "redux-saga": "^1.0.5",
     "redux-thunk": "^2.3.0",
     "typesafe-actions": "^4.4.2",
@@ -60,7 +60,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-redux": "^7.1.1",
     "@types/react-router-dom": "^4.3.4",
-    "npm-check-updates": "^3.1.15",
+    "npm-check-updates": "^3.1.17",
     "redux-devtools-extension": "latest"
   }
 }
