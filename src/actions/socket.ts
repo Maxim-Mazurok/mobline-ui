@@ -180,7 +180,7 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
     if (WS_HEARTBEAT) {
       setInterval(() => {
         socket.send(JSON.stringify({ type: "wsHeartBeat" }));
-      }, 30 * 1000);
+      }, 10 * 1000);
     }
   };
   socket.onclose = () => {
