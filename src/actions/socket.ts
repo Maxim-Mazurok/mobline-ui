@@ -7,7 +7,7 @@ import {
   addCompetitorSuccess,
   IGUsername
 } from "./addCompetitor";
-import { WS_HOST, WS_PORT, WS_SCHEME } from "./index";
+import { WS_HEARTBEAT, WS_HOST, WS_PORT, WS_SCHEME } from "./index";
 import { showSnackbarAction, SnackbarAction, SnackbarType } from "./snackbar";
 import { LoadCompetitorsAction } from "./loadCompetitors";
 import { ThunkDispatch } from "redux-thunk";
@@ -177,6 +177,11 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
   socket.onopen = () => {
     dispatch(wsOpened(true));
     dispatch(wsSubscribe(getState().user.customerId));
+    if (WS_HEARTBEAT) {
+      setInterval(() => {
+        socket.send(JSON.stringify({ type: "wsHeartBeat" }));
+      }, 30 * 1000);
+    }
   };
   socket.onclose = () => {
     dispatch(wsOpened(false));

@@ -25,6 +25,7 @@ export const API_URL = process.env.REACT_APP_API_URL;
 export const WS_HOST = process.env.REACT_APP_WS_HOST;
 export const WS_PORT = process.env.REACT_APP_WS_PORT;
 export const WS_SCHEME = process.env.REACT_APP_WS_SCHEME;
+export const WS_HEARTBEAT = process.env.REACT_APP_WS_HEARTBEAT;
 
 export const SELECT_MENU = 'selectMenuAction';
 export const OPEN_DRAWER = 'openDrawerAction';
