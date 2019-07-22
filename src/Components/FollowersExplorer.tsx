@@ -8,10 +8,10 @@ import {
   Box,
   Checkbox,
   Chip,
-  CircularProgress,
   createStyles,
   FormControlLabel,
   FormGroup,
+  LinearProgress,
   List,
   Paper,
   StyledComponentProps,
@@ -24,7 +24,7 @@ import { selectCompetitor, setVerifiedOnly, unselectCompetitor } from "../action
 import { ChipProps } from "@material-ui/core/Chip";
 import { loadFollowers } from "../actions/loadFollowers";
 import { Follower } from "../reducers/loadFollowers";
-import { FollowerItemConnected } from "./FollowerItem";
+import { FollowerItemConnected, verifiedBadge } from "./FollowerItem";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -103,7 +103,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
     return (
       <React.Fragment>
         {this.props.loadCompetitorsLoading ?
-          <CircularProgress />
+          <LinearProgress />
           :
           this.props.loadCompetitorsError ?
             <Typography
@@ -115,98 +115,108 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
             </Typography>
             :
             this.props.loadCompetitorsCompetitors.length > 0 ?
-              <Paper
-                className={classes.paper}
-              >
-                <Box mx={1} my={2}>
-                  {this.props.loadCompetitorsCompetitors.map((competitor, index) => {
-                    const isSelected = this.props.followersExplorerSelectedCompetitors.indexOf(competitor.userPk) !== -1;
-                      const props: ChipProps = {
-                        color: isSelected ? "primary" : "default",
-                      };
-                      if (isSelected) {
-                        props.onDelete = () => {
-                          this.props.unselectCompetitor(competitor.userPk);
-                        };
-                      } else {
-                        props.onClick = () => {
-                          this.props.selectCompetitor(competitor.userPk);
-                        };
-                      }
-                      return (
-                        <Chip
-                          {...props}
-                          className={classes.chip}
-                          key={index}
-                          avatar={<Avatar alt={competitor.username} src={competitor.profilePicUrl} />}
-                          label={competitor.username}
-                        />
-                      );
-                    }
-                  )}
+              <React.Fragment>
+                <Box mx={2} my={2}>
+                  <Typography
+                    variant="h2"
+                  >
+                    Verified followers {verifiedBadge('span', 'inline-block')}
+                  </Typography>
                 </Box>
-                <Box mx={2} mb={2}>
-                  <FormGroup row>
-                    <FormControlLabel
-                      value="verified only"
-                      control={
-                        <Checkbox
-                          checked={this.props.followersExplorerVerifiedOnly}
-                          onChange={this.handleVerifiedOnlyChange}
-                          value="verified only"
-                          color="primary"
-                        />
+                <Paper
+                  className={classes.paper}
+                >
+                  <Box mx={1} my={2}>
+                    {this.props.loadCompetitorsCompetitors.map((competitor, index) => {
+                        const isSelected = this.props.followersExplorerSelectedCompetitors.indexOf(competitor.userPk) !== -1;
+                        const props: ChipProps = {
+                          color: isSelected ? "primary" : "default",
+                        };
+                        if (isSelected) {
+                          props.onDelete = () => {
+                            this.props.unselectCompetitor(competitor.userPk);
+                          };
+                        } else {
+                          props.onClick = () => {
+                            this.props.selectCompetitor(competitor.userPk);
+                          };
+                        }
+                        return (
+                          <Chip
+                            {...props}
+                            className={classes.chip}
+                            key={index}
+                            avatar={<Avatar alt={competitor.username} src={competitor.profilePicUrl} />}
+                            label={competitor.username}
+                          />
+                        );
                       }
-                      label="Verified only"
-                      labelPlacement="end"
-                    />
-                  </FormGroup>
-                </Box>
-                {
-                  this.props.loadFollowersLoading ?
-                    <Box mx={2} my={2}> {/*TODO: fix a lot of boxes*/}
-                      <CircularProgress />
-                    </Box>
-                    :
-                    this.props.loadFollowersError ?
-                      <Box mx={2} my={2}>
-                        <Typography
-                          variant="h5"
-                          gutterBottom
-                          className={classes.errorMessage}
-                        >
-                          {this.props.loadFollowersError}
-                        </Typography>
+                    )}
+                  </Box>
+                  <Box mx={2} mb={2} hidden>
+                    <FormGroup row>
+                      <FormControlLabel
+                        value="verified only"
+                        control={
+                          <Checkbox
+                            checked={this.props.followersExplorerVerifiedOnly}
+                            onChange={this.handleVerifiedOnlyChange}
+                            value="verified only"
+                            color="primary"
+                            disabled
+                          />
+                        }
+                        label="Verified only"
+                        labelPlacement="end"
+                      />
+                    </FormGroup>
+                  </Box>
+                  {
+                    this.props.loadFollowersLoading ?
+                      <Box mx={2} my={2}> {/*TODO: fix a lot of boxes*/}
+                        <LinearProgress />
                       </Box>
                       :
-                      this.props.loadFollowersFollowers.length > 0 ?
-                        <List>
-                          {
-                            this.props.loadFollowersFollowers
-                              .filter((follower: Follower) =>
-                                this.props.followersExplorerVerifiedOnly ? follower.isVerified : true)
-                              .map((follower: Follower, index) =>
-                                <React.Fragment
-                                  key={index}
-                                >
-                                  <FollowerItemConnected
-                                    follower={follower}
-                                  />
-                                </React.Fragment>
-                              )}
-                        </List>
-                        :
+                      this.props.loadFollowersError ?
                         <Box mx={2} my={2}>
                           <Typography
                             variant="h5"
                             gutterBottom
-                            className={classes.noFollowersFound}
+                            className={classes.errorMessage}
                           >
-                            No followers found.
+                            {this.props.loadFollowersError}
                           </Typography>
                         </Box>
-                }
-              </Paper>
+                        :
+                        this.props.loadFollowersFollowers.length > 0 ?
+                          <List>
+                            {
+                              this.props.loadFollowersFollowers
+                                .filter((follower: Follower) =>
+                                  this.props.followersExplorerVerifiedOnly ? follower.isVerified : true)
+                                .map((follower: Follower, index) =>
+                                  <React.Fragment
+                                    key={index}
+                                  >
+                                    <FollowerItemConnected
+                                      follower={follower}
+                                    />
+                                  </React.Fragment>
+                                )}
+                          </List>
+                          :
+                          <Box mx={2} my={2}>
+                            <Typography
+                              variant="h5"
+                              gutterBottom
+                              className={classes.noFollowersFound}
+                            >
+                              No followers found.
+                            </Typography>
+                          </Box>
+                  }
+                </Paper>
+              </React.Fragment>
               :
               <Typography
                 variant="h5"

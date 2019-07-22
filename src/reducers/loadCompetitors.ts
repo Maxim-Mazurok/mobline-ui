@@ -4,12 +4,9 @@ import {
   SocketAction,
   WS_ADD_COMPETITOR_CALLBACK,
   WS_ADD_COMPETITOR_CALLBACK_QUEUED,
-  WS_PARSE_FOLLOWERS_FINISHED,
   WS_PARSE_FOLLOWERS_LIST_FINISHED,
   WS_PARSE_FOLLOWERS_LIST_STARTED,
-  WS_PARSE_FOLLOWERS_LIST_UPDATED,
-  WS_PARSE_FOLLOWERS_STARTED,
-  WS_PARSE_FOLLOWERS_UPDATED
+  WS_PARSE_FOLLOWERS_LIST_UPDATED
 } from "../actions/socket";
 import { Competitor } from "../types/GlobalState";
 
@@ -50,33 +47,6 @@ export const loadCompetitorsReducer = (state: typeof defaultState.loadCompetitor
       return {
         ...state,
         competitors: [action.payload, ...state.competitors]
-      };
-    case WS_PARSE_FOLLOWERS_STARTED:
-      return {
-        ...state,
-        competitors: state.competitors.map((competitor: Competitor) => competitor.userPk.toString() === action.payload.userPk.toString() ? {
-          ...competitor,
-          parseFollowersStarted: true,
-        } : competitor)
-      };
-    case WS_PARSE_FOLLOWERS_UPDATED:
-      return {
-        ...state,
-        competitors: state.competitors.map((competitor: Competitor) => competitor.userPk.toString() === action.payload.followingPk.toString() ? {
-          ...competitor,
-          parseFollowersProgress: {
-            done: action.payload.done,
-            total: action.payload.total,
-          },
-        } : competitor)
-      };
-    case WS_PARSE_FOLLOWERS_FINISHED:
-      return {
-        ...state,
-        competitors: state.competitors.map((competitor: Competitor) => competitor.userPk.toString() === action.payload.followingPk.toString() ? {
-          ...competitor,
-          parseFollowersFinished: true,
-        } : competitor)
       };
     case WS_PARSE_FOLLOWERS_LIST_STARTED:
       return {

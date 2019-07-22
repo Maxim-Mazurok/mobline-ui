@@ -92,13 +92,6 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
     });
   };
 
-  getFollowersParsedProgress = (): number => {
-    if (this.props.competitor.hasOwnProperty('parseFollowersProgress') && this.props.competitor.parseFollowersProgress !== undefined) {
-      return this.props.competitor.parseFollowersProgress.done / this.props.competitor.parseFollowersProgress.total * 100;
-    }
-    return 0;
-  };
-
   getFollowersListParsedProgress = (): number => {
     if (this.props.competitor.hasOwnProperty('parseFollowersListProgress') && this.props.competitor.parseFollowersListProgress !== undefined) {
       return this.props.competitor.parseFollowersListProgress.done / this.props.competitor.parseFollowersListProgress.total * 100;
@@ -135,25 +128,17 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
                       secondary={
                         this.props.competitor.userPk !== "" ?
                           <React.Fragment>
-                            ID: {this.props.competitor.userPk}
                             {
                               (
-                                (
-                                  (this.props.competitor.hasOwnProperty('parseFollowersStarted') && this.props.competitor.parseFollowersStarted)
-                                  || this.getFollowersParsedProgress() > 0
-                                )
-                                ||
-                                (
-                                  (this.props.competitor.hasOwnProperty('parseFollowersListStarted') && this.props.competitor.parseFollowersListStarted)
-                                  || this.getFollowersListParsedProgress() > 0
-                                )
+                                (this.props.competitor.hasOwnProperty('parseFollowersListStarted') && this.props.competitor.parseFollowersListStarted)
+                                || this.getFollowersListParsedProgress() > 0
                               ) &&
-                              !(
-                                this.props.competitor.hasOwnProperty('parseFollowersFinished') && this.props.competitor.parseFollowersFinished &&
-                                this.props.competitor.hasOwnProperty('parseFollowersListFinished') && this.props.competitor.parseFollowersListFinished
-                              ) &&
-                              <LinearProgress variant="buffer" value={this.getFollowersParsedProgress()}
-                                              valueBuffer={this.getFollowersListParsedProgress()} />
+                              !(this.props.competitor.hasOwnProperty('parseFollowersListFinished') && this.props.competitor.parseFollowersListFinished)
+                              &&
+                              <React.Fragment>
+                                Getting followers: {this.getFollowersListParsedProgress().toFixed()}% done
+                                <LinearProgress variant="determinate" value={this.getFollowersListParsedProgress()} />
+                              </React.Fragment>
                             }
                           </React.Fragment>
                           :

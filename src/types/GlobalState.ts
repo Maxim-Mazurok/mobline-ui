@@ -19,12 +19,6 @@ export interface Competitor {
   isVerified?: boolean,
   followersCount?: number,
   status: string,
-  parseFollowersStarted?: boolean,
-  parseFollowersFinished?: boolean,
-  parseFollowersProgress?: {
-    done: number,
-    total: number,
-  },
   parseFollowersListStarted?: boolean,
   parseFollowersListFinished?: boolean,
   parseFollowersListProgress?: {

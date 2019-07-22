@@ -15,6 +15,21 @@ import { connect } from "react-redux";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import { Follower } from "../reducers/loadFollowers";
 
+export const verifiedBadge = (Element: keyof JSX.IntrinsicElements, display: "block" | "inline-block" = "block") =>
+  <Element
+    style={{
+      backgroundPosition: "center",
+      backgroundSize: "contain",
+      backgroundImage: "url(\"/images/verified.png\")",
+      backgroundRepeat: "no-repeat",
+      height: "1rem",
+      width: "1rem",
+      marginLeft: "0.25rem",
+      verticalAlign: "top",
+      display,
+    }}
+  />;
+
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
@@ -93,17 +108,7 @@ class FollowerItem extends Component<FollowerItemProps, FollowerItemState> {
 
   getVerifiedBadge = () => {
     if (this.props.follower.hasOwnProperty("isVerified") && this.props.follower.isVerified === true) {
-      return <div
-        style={{
-          backgroundPosition: "center",
-          backgroundSize: "contain",
-          backgroundImage: "url(\"/images/verified.png\")",
-          backgroundRepeat: "no-repeat",
-          height: "1rem",
-          width: "1rem",
-          marginLeft: "0.25rem",
-        }}
-      />;
+      return verifiedBadge('div');
     }
   };
 
