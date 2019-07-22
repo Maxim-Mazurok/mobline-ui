@@ -33,7 +33,7 @@ export const menuItems: MenuItem[] = [
   },
   {
     type: MenuItemType.ITEM,
-    text: 'Followers explorer',
+    text: 'Follower Insights',
     icon: People,
     id: MenuItemId.FOLLOWERS_EXPLORER,
   },
