@@ -126,7 +126,8 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
         <ListItemText primary={this.props.competitor.username}
                       secondaryTypographyProps={{ component: "div" }}
                       secondary={
-                        this.props.competitor.userPk !== "" ?
+                        this.props.competitor.userPk !== ""
+                          ?
                           <React.Fragment>
                             {
                               (
@@ -134,15 +135,17 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
                                 || this.getFollowersListParsedProgress() > 0
                               ) &&
                               !(this.props.competitor.hasOwnProperty('parseFollowersListFinished') && this.props.competitor.parseFollowersListFinished)
-                              &&
-                              <React.Fragment>
-                                Getting followers: {this.getFollowersListParsedProgress().toFixed()}% done
-                                <LinearProgress variant="determinate" value={this.getFollowersListParsedProgress()} />
-                              </React.Fragment>
+                                ?
+                                <React.Fragment>
+                                  Getting followers: {this.getFollowersListParsedProgress().toFixed()}% done
+                                  <LinearProgress variant="determinate" value={this.getFollowersListParsedProgress()} />
+                                </React.Fragment>
+                                :
+                                this.props.competitor.status
                             }
                           </React.Fragment>
                           :
-                          this.props.competitor.status && this.props.competitor.status
+                          this.props.competitor.status
                       }
         />
         <ListItemSecondaryAction>
