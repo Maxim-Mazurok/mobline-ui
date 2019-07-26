@@ -43,7 +43,7 @@ const configureStore = (state: GlobalState = defaultState): Store<GlobalState, A
     )
   );
 
-  const socket = setupSocket(store.dispatch as Dispatch<SocketAction | SnackbarAction | AddCompetitorAction> & ThunkDispatch<GlobalState, undefined, LoadCompetitorsAction>, store.getState);
+  const socket = setupSocket(store.dispatch as Dispatch<SocketAction | SnackbarAction | AddCompetitorAction> & ThunkDispatch<GlobalState, undefined, LoadCompetitorsAction>);
   sagaMiddleware.run(handleWSOutgoingMessage, socket);
 
   return store;
