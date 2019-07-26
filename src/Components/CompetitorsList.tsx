@@ -14,7 +14,7 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from "../actions/addCompetitor";
+import { addCompetitor, addCompetitorShowModal } from "../actions/addCompetitor";
 import AddIcon from '@material-ui/icons/Add';
 import { grey, red } from "@material-ui/core/colors";
 import { CompetitorItemConnected } from "./CompetitorItem";
@@ -48,7 +48,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       loadCompetitors,
       addCompetitor,
-      addCompetitorSetUsername,
       addCompetitorShowModal,
     },
     dispatch

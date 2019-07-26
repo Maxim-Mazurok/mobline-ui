@@ -179,7 +179,6 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
           } else if (type === WS_ADD_COMPETITOR_CALLBACK_QUEUED) {
             dispatch(wsAddCompetitorCallbackQueued(data.competitor));
           }
-          break;
         } else {
           const errorMessage = data.hasOwnProperty('error') ? data.error : "Unknown error occurred";
           dispatch(showSnackbarAction({
