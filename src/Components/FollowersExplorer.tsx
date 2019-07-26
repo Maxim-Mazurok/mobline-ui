@@ -207,11 +207,12 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                           :
                           <Box mx={2} my={2}>
                             <Typography
+                              color="textSecondary"
                               variant="h5"
                               gutterBottom
                               className={classes.noFollowersFound}
                             >
-                              No followers found.
+                              No verified followers found.
                             </Typography>
                           </Box>
                   }
