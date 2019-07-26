@@ -1,11 +1,12 @@
 #TODOs:
-- [ ] Detect online/offline to reconnect the websocket - [example](https://github.com/jsmanifest/ws-online-sync)
-- [ ] Reconnect to WS on disconnect
-- [ ] Don't send request to get followers when no competitor is selected
-- [ ] Don't reload competitors when navigation to dashboard, instead, show current and sync them on the background
-- [ ] Create pagination for Follower insights (using `react-infinite-scroller`)
-- [ ] Check that WS is opened before sending anything to it (probably create a queue)
-- [ ] Handle private competitor profile
+- WS-related:
+    - [ ] Detect online/offline to reconnect the websocket - [example](https://github.com/jsmanifest/ws-online-sync)
+    - [ ] Reconnect to WS on disconnect
+    - [ ] Check that WS is opened before sending anything to it (probably create a queue)
+- Optimizations:
+    - [ ] Don't send request to get followers when no competitor is selected
+    - [ ] Don't reload competitors when navigation to dashboard, instead, show current and sync them on the background
+    - [ ] Create pagination for Follower insights (using `react-infinite-scroller`)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
