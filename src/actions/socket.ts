@@ -110,7 +110,6 @@ export const wsParseFollowersListFinished = (data: ParseFollowersListFinished): 
   payload: data,
 });
 
-
 export type SocketAction =
   | ReturnType<typeof wsOpened>
   | ReturnType<typeof wsSubscribe>
@@ -122,18 +121,18 @@ export type SocketAction =
   | ReturnType<typeof wsParseFollowersListFinished>
   ;
 
-const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompetitorAction> & ThunkDispatch<GlobalState, undefined, LoadCompetitorsAction>, getState: () => GlobalState): WebSocket => {
+const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompetitorAction> & ThunkDispatch<GlobalState, undefined, LoadCompetitorsAction>): WebSocket => {
   const socket = new WebSocket(`${WS_SCHEME}://${WS_HOST}:${WS_PORT}`);
 
   socket.onopen = () => {
     dispatch(wsOpened(true));
-    dispatch(wsSubscribe(getState().user.customerId));
     if (WS_HEARTBEAT) {
       setInterval(() => {
         socket.send(JSON.stringify({ type: "wsHeartBeat" }));
       }, 10 * 1000);
     }
   };
+
   socket.onclose = () => {
     dispatch(wsOpened(false));
     dispatch(showSnackbarAction({
@@ -141,6 +140,7 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
       type: SnackbarType.INFO,
     }));
   };
+
   socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
     const type = data.type;

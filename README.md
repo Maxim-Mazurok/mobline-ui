@@ -4,7 +4,7 @@
 - [ ] Don't send request to get followers when no competitor is selected
 - [ ] Don't reload competitors when navigation to dashboard, instead, show current and sync them on the background
 - [ ] Create pagination for Follower insights (using `react-infinite-scroller`)
-- [ ] Fix customerId:null in wsSubscribe when connecting right after auth on fresh new session
+- [ ] Check that WS is opened before sending anything to it (probably create a queue)
 - [ ] Handle private competitor profile
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

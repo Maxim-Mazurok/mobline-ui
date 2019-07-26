@@ -76,9 +76,22 @@ export type AppProps =
 // noinspection JSUnusedGlobalSymbols
 export type RouterAppProps = RouteComponentProps<{}>;
 
-type AppState = {}
+type AppState = {
+  subscribed: boolean,
+}
 
 class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
+  state = {
+    subscribed: false
+  };
+
+  componentDidUpdate(nextProps: AppProps) {
+    if (!this.state.subscribed && nextProps.userCustomerId !== null) {
+      this.setState({ subscribed: true });
+      this.props.wsSubscribe(nextProps.userCustomerId);
+    }
+  }
+
   componentWillMount(): void {
     if (this.props.isLoggedIn && this.props.userCustomerId === null) {
       this.props.getCustomerId();
