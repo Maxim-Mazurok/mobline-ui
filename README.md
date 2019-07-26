@@ -2,7 +2,7 @@
 - WS-related:
     - [ ] Detect online/offline to reconnect the websocket - [example](https://github.com/jsmanifest/ws-online-sync)
     - [ ] Reconnect to WS on disconnect
-    - [ ] Check that WS is opened before sending anything to it (probably create a queue)
+    - [ ] Maybe replace WS setTimeout awaiting with action queue system 
 - Optimizations:
     - [ ] Don't send request to get followers when no competitor is selected
     - [ ] Don't reload competitors when navigation to dashboard, instead, show current and sync them on the background

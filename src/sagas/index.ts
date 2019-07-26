@@ -10,7 +10,20 @@ const handleWSOutgoingMessage = function* handleWSOutgoingMessage(socket: WebSoc
       | ReturnType<typeof wsSubscribe>
       | ReturnType<typeof wsAddCompetitor>
   ) => {
-    socket.send(JSON.stringify(action));
+    if (socket.readyState === socket.OPEN) {
+      socket.send(JSON.stringify(action));
+    } else {
+      const timeoutFunction = (socket: WebSocket) => {
+        setTimeout(() => {
+          if (socket.readyState === socket.OPEN) {
+            socket.send(JSON.stringify(action));
+          } else {
+            timeoutFunction(socket);
+          }
+        }, 100);
+      };
+      timeoutFunction(socket);
+    }
   });
 };
 
