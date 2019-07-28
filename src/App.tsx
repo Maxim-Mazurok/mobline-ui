@@ -113,6 +113,8 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
         return <p>Content will be here soon...</p>;
       case MenuItemId.FOLLOWERS_EXPLORER:
         return <FollowersExplorerConnected />;
+      case MenuItemId.ADS:
+        return <p>Ads will be here soon...</p>;
       case MenuItemId.SETTINGS:
         return <p>Setting will be here soon...</p>;
       default:

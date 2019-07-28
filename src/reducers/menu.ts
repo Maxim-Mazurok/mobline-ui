@@ -1,6 +1,6 @@
 import { CLOSE_DRAWER, MenuAction, OPEN_DRAWER, SELECT_MENU } from "../actions";
 import { defaultState } from "../defaultState";
-import { Dashboard, List, People, PhotoLibrary, Settings, SvgIconComponent } from "@material-ui/icons";
+import { Dashboard, List, People, PhotoLibrary, Settings, SvgIconComponent, TrendingUp } from "@material-ui/icons";
 
 export enum MenuItemType {
   ITEM = 'item',
@@ -20,6 +20,7 @@ export enum MenuItemId {
   COMPETITORS,
   CONTENT,
   FOLLOWERS_EXPLORER,
+  ADS,
   SETTINGS,
 }
 
@@ -50,6 +51,12 @@ export const menuItems: MenuItem[] = [
     text: 'Follower Insights',
     icon: People,
     id: MenuItemId.FOLLOWERS_EXPLORER,
+  },
+  {
+    type: MenuItemType.ITEM,
+    text: 'Ads',
+    icon: TrendingUp,
+    id: MenuItemId.ADS,
   },
   {
     type: MenuItemType.MARGIN_TOP_AUTO,
