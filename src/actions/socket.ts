@@ -24,12 +24,20 @@ export type WS_ADD_COMPETITOR_CALLBACK_QUEUED = 'wsAddCompetitorCallbackQueued';
 
 export const WS_OPENED = 'wsOpened';
 export type WS_OPENED = 'wsOpened';
+
 export const WS_PARSE_FOLLOWERS_LIST_STARTED = 'parse-followers-list-started';
 export type WS_PARSE_FOLLOWERS_LIST_STARTED = 'parse-followers-list-started';
 export const WS_PARSE_FOLLOWERS_LIST_UPDATED = 'parse-followers-list-updated';
 export type WS_PARSE_FOLLOWERS_LIST_UPDATED = 'parse-followers-list-updated';
 export const WS_PARSE_FOLLOWERS_LIST_FINISHED = 'parse-followers-list-finished';
 export type WS_PARSE_FOLLOWERS_LIST_FINISHED = 'parse-followers-list-finished';
+
+export const WS_PARSE_POSTS_STARTED = 'parse-posts-started';
+export type WS_PARSE_POSTS_STARTED = 'parse-posts-started';
+export const WS_PARSE_POSTS_UPDATED = 'parse-posts-updated';
+export type WS_PARSE_POSTS_UPDATED = 'parse-posts-updated';
+export const WS_PARSE_POSTS_FINISHED = 'parse-posts-finished';
+export type WS_PARSE_POSTS_FINISHED = 'parse-posts-finished';
 
 export const wsOpened = (isOpened: boolean): {
   type: WS_OPENED,
@@ -71,42 +79,66 @@ export const wsAddCompetitorCallbackQueued = (competitor: Competitor): {
   payload: competitor,
 });
 
-export type ParseFollowersListStarted = {
+export type ParseActionStarted = {
   userPk: Competitor['userPk'];
 }
 
-export type ParseFollowersListUpdated = {
+export type ParseActionUpdated = {
   done: number,
   total: number,
   userPk: Competitor['userPk'];
 }
 
-export type ParseFollowersListFinished = {
+export type ParseActionFinished = {
   finished: boolean,
   userPk: Competitor['userPk'];
 }
 
-export const wsParseFollowersListStarted = (data: ParseFollowersListStarted): {
+export const wsParseFollowersListStarted = (data: ParseActionStarted): {
   type: WS_PARSE_FOLLOWERS_LIST_STARTED,
-  payload: ParseFollowersListStarted,
+  payload: ParseActionStarted,
 } => ({
   type: WS_PARSE_FOLLOWERS_LIST_STARTED,
   payload: data,
 });
 
-export const wsParseFollowersListUpdated = (data: ParseFollowersListUpdated): {
+export const wsParseFollowersListUpdated = (data: ParseActionUpdated): {
   type: WS_PARSE_FOLLOWERS_LIST_UPDATED,
-  payload: ParseFollowersListUpdated,
+  payload: ParseActionUpdated,
 } => ({
   type: WS_PARSE_FOLLOWERS_LIST_UPDATED,
   payload: data,
 });
 
-export const wsParseFollowersListFinished = (data: ParseFollowersListFinished): {
+export const wsParseFollowersListFinished = (data: ParseActionFinished): {
   type: WS_PARSE_FOLLOWERS_LIST_FINISHED,
-  payload: ParseFollowersListFinished,
+  payload: ParseActionFinished,
 } => ({
   type: WS_PARSE_FOLLOWERS_LIST_FINISHED,
+  payload: data,
+});
+
+export const wsParsePostsStarted = (data: ParseActionStarted): {
+  type: WS_PARSE_POSTS_STARTED,
+  payload: ParseActionStarted,
+} => ({
+  type: WS_PARSE_POSTS_STARTED,
+  payload: data,
+});
+
+export const wsParsePostsUpdated = (data: ParseActionUpdated): {
+  type: WS_PARSE_POSTS_UPDATED,
+  payload: ParseActionUpdated,
+} => ({
+  type: WS_PARSE_POSTS_UPDATED,
+  payload: data,
+});
+
+export const wsParsePostsFinished = (data: ParseActionFinished): {
+  type: WS_PARSE_POSTS_FINISHED,
+  payload: ParseActionFinished,
+} => ({
+  type: WS_PARSE_POSTS_FINISHED,
   payload: data,
 });
 
@@ -116,9 +148,14 @@ export type SocketAction =
   | ReturnType<typeof wsAddCompetitor>
   | ReturnType<typeof wsAddCompetitorCallback>
   | ReturnType<typeof wsAddCompetitorCallbackQueued>
+
   | ReturnType<typeof wsParseFollowersListStarted>
   | ReturnType<typeof wsParseFollowersListUpdated>
   | ReturnType<typeof wsParseFollowersListFinished>
+
+  | ReturnType<typeof wsParsePostsStarted>
+  | ReturnType<typeof wsParsePostsUpdated>
+  | ReturnType<typeof wsParsePostsFinished>
   ;
 
 const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompetitorAction> & ThunkDispatch<GlobalState, undefined, LoadCompetitorsAction>): WebSocket => {
@@ -154,6 +191,19 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
         break;
       case WS_PARSE_FOLLOWERS_LIST_FINISHED:
         dispatch(wsParseFollowersListFinished(data));
+        dispatch(showSnackbarAction({
+          title: "Getting followers list finished",
+          type: SnackbarType.INFO,
+        }));
+        break;
+      case WS_PARSE_POSTS_STARTED:
+        dispatch(wsParsePostsStarted(data));
+        break;
+      case WS_PARSE_POSTS_UPDATED:
+        dispatch(wsParsePostsUpdated(data));
+        break;
+      case WS_PARSE_POSTS_FINISHED:
+        dispatch(wsParsePostsFinished(data));
         dispatch(showSnackbarAction({
           title: "Getting followers list finished",
           type: SnackbarType.INFO,

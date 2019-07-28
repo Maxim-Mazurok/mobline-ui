@@ -137,7 +137,11 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
               >
                 Add
               </Button>
-              {this.props.loading && <CircularProgress size={loadingIconSize} className={classes.buttonProgress} />}
+              {this.props.loading && <CircularProgress
+                size={loadingIconSize}
+                className={classes.buttonProgress}
+                disableShrink
+              />}
             </div>
           </DialogActions>
         </form>

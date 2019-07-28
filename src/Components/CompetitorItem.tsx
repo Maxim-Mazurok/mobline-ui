@@ -10,6 +10,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Tooltip,
 } from "@material-ui/core";
 import { Delete, MoreVert, People, SvgIconComponent, Sync } from "@material-ui/icons";
 import { connect } from "react-redux";
@@ -99,6 +100,27 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
     return 0;
   };
 
+  getFollowersListParsedProgressDetailed = (): string => {
+    if (this.props.competitor.hasOwnProperty('parseFollowersListProgress') && this.props.competitor.parseFollowersListProgress !== undefined) {
+      return `${this.props.competitor.parseFollowersListProgress.done} / ${this.props.competitor.parseFollowersListProgress.total} followers parsed`;
+    }
+    return "";
+  };
+
+  getPostsParsedProgress = (): number => {
+    if (this.props.competitor.hasOwnProperty('parsePostsProgress') && this.props.competitor.parsePostsProgress !== undefined) {
+      return this.props.competitor.parsePostsProgress.done / this.props.competitor.parsePostsProgress.total * 100;
+    }
+    return 0;
+  };
+
+  getPostsParsedProgressDetailed = (): string => {
+    if (this.props.competitor.hasOwnProperty('parsePostsProgress') && this.props.competitor.parsePostsProgress !== undefined) {
+      return `${this.props.competitor.parsePostsProgress.done} / ${this.props.competitor.parsePostsProgress.total} pages parsed`;
+    }
+    return "";
+  };
+
   handleSelect = (optionId: OptionId, userPk: Competitor["userPk"]) => {
     this.handleClose();
     switch (optionId) {
@@ -115,6 +137,25 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
     }
   };
 
+  parsingFollowersList = () =>
+    (
+      (this.props.competitor.hasOwnProperty('parseFollowersListStarted') && this.props.competitor.parseFollowersListStarted)
+      || this.getFollowersListParsedProgress() > 0
+    ) &&
+    !(this.props.competitor.hasOwnProperty('parseFollowersListFinished') && this.props.competitor.parseFollowersListFinished);
+
+  parsingPosts = () =>
+    (
+      (this.props.competitor.hasOwnProperty('parsePostsStarted') && this.props.competitor.parsePostsStarted)
+      || this.getPostsParsedProgress() > 0
+    ) &&
+    !(this.props.competitor.hasOwnProperty('parsePostsFinished') && this.props.competitor.parsePostsFinished);
+
+  processing = () =>
+    this.parsingFollowersList()
+    || this.parsingPosts()
+  ;
+
   render(): React.ReactElement<CompetitorItemProps, React.JSXElementConstructor<CompetitorItemState>> {
     return (
       <ListItem
@@ -130,15 +171,34 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
                           ?
                           <React.Fragment>
                             {
-                              (
-                                (this.props.competitor.hasOwnProperty('parseFollowersListStarted') && this.props.competitor.parseFollowersListStarted)
-                                || this.getFollowersListParsedProgress() > 0
-                              ) &&
-                              !(this.props.competitor.hasOwnProperty('parseFollowersListFinished') && this.props.competitor.parseFollowersListFinished)
-                                ?
+                              this.processing() ?
                                 <React.Fragment>
-                                  Getting followers: {this.getFollowersListParsedProgress().toFixed()}% done
-                                  <LinearProgress variant="determinate" value={this.getFollowersListParsedProgress()} />
+                                  {
+                                    this.parsingFollowersList() &&
+                                    <React.Fragment>
+                                      Getting followers: {this.getFollowersListParsedProgress() > 0
+                                      ? `${this.getFollowersListParsedProgress().toFixed()}% done`
+                                      : `initializing...`}
+                                      <Tooltip title={this.getFollowersListParsedProgressDetailed()} interactive>
+                                        <LinearProgress
+                                          variant={this.getFollowersListParsedProgress() > 0 ? "determinate" : "indeterminate"}
+                                          value={this.getFollowersListParsedProgress()} />
+                                      </Tooltip>
+                                    </React.Fragment>
+                                  }
+                                  {
+                                    this.parsingPosts() &&
+                                    <React.Fragment>
+                                      Getting posts: {this.getPostsParsedProgress() > 0
+                                      ? `${this.getPostsParsedProgress().toFixed()}% done`
+                                      : `initializing...`}
+                                      <Tooltip title={this.getPostsParsedProgressDetailed()} interactive>
+                                        <LinearProgress
+                                          variant={this.getPostsParsedProgress() > 0 ? "determinate" : "indeterminate"}
+                                          value={this.getPostsParsedProgress()} />
+                                      </Tooltip>
+                                    </React.Fragment>
+                                  }
                                 </React.Fragment>
                                 :
                                 this.props.competitor.status

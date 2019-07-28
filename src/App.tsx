@@ -138,7 +138,9 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={10} md={8} xl={6}>
               {this.props.userCustomerIdLoading ?
-                <CircularProgress />
+                <CircularProgress
+                  disableShrink
+                />
                 :
                 this.props.userCustomerIdError ?
                   <Typography

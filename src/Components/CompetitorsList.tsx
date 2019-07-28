@@ -78,7 +78,9 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
     return (
       <React.Fragment>
         {this.props.loadCompetitorsLoading ?
-          <CircularProgress />
+          <CircularProgress
+            disableShrink
+          />
           :
           this.props.loadCompetitorsError ?
             <Typography

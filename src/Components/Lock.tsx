@@ -118,6 +118,7 @@ class Lock extends Component<LockProps, LockState> {
         <Box display="grid" alignContent="center" minHeight="100%">
           {this.state.loading && <CircularProgress
             className={classes.loading}
+            disableShrink
           />}
           <div id={AUTH_CONFIG.container} />
         </Box>

@@ -25,6 +25,12 @@ export interface Competitor {
     done: number,
     total: number,
   },
+  parsePostsStarted?: boolean,
+  parsePostsFinished?: boolean,
+  parsePostsProgress?: {
+    done: number,
+    total: number,
+  },
 }
 
 export default interface GlobalState {
