@@ -9,7 +9,11 @@ const getCustomerIdSuccess = (customerId: number | null): {
   type: GET_CUSTOMER_ID_SUCCESS,
   payload: number | null,
 } => {
-  localStorage.setItem('customerId', customerId ? customerId.toString() : "");
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    // do not save in dev mode
+  } else {
+    localStorage.setItem('customerId', customerId ? customerId.toString() : "");
+  }
   return {
     type: GET_CUSTOMER_ID_SUCCESS,
     payload: customerId,

@@ -8,7 +8,7 @@
     - [ ] Don't reload competitors when navigation to dashboard, instead, show current and sync them on the background
     - [ ] Create pagination for Follower insights (using `react-infinite-scroller`)
 - Deployment:
-    - [ ] Don't save customerId to localstorage (in case of DB reset it will give major headache)
+    - [x] Don't save customerId to localstorage (in case of DB reset it will give major headache) - done for dev mode
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
