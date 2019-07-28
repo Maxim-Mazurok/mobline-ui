@@ -106,7 +106,11 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
   renderCurrentSection() {
     switch (this.props.selectedMenuItemId) {
       case MenuItemId.DASHBOARD:
+        return <p>Dashboard will be here soon...</p>;
+      case MenuItemId.COMPETITORS:
         return <CompetitorsListConnected />;
+      case MenuItemId.CONTENT:
+        return <p>Content will be here soon...</p>;
       case MenuItemId.FOLLOWERS_EXPLORER:
         return <FollowersExplorerConnected />;
       case MenuItemId.SETTINGS:

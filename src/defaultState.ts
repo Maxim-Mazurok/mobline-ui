@@ -25,7 +25,7 @@ const getInitialCustomerId = (): number | null => {
 
 export const defaultState: GlobalState = {
   menu: {
-    selectedMenuItemId: MenuItemId.DASHBOARD,
+    selectedMenuItemId: MenuItemId.COMPETITORS,
     drawerIsOpen: false,
   },
   user: {
