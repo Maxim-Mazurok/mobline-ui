@@ -17,6 +17,8 @@ import handleWSOutgoingMessage from "./sagas";
 import { SnackbarAction } from "./actions/snackbar";
 import { AddCompetitorAction } from "./actions/addCompetitor";
 import { LoadCompetitorsAction } from "./actions/loadCompetitors";
+import { contentExplorerReducer } from "./reducers/content";
+import { loadContentReducer } from "./reducers/loadContent";
 
 const configureStore = (state: GlobalState = defaultState): Store<GlobalState, Actions> => {
   const rootReducer: Reducer<GlobalState, Actions> = combineReducers({
@@ -27,6 +29,8 @@ const configureStore = (state: GlobalState = defaultState): Store<GlobalState, A
     snackbar: snackbarReducer,
     followersExplorer: followersExplorerReducer,
     loadFollowers: loadFollowersReducer,
+    contentExplorer: contentExplorerReducer,
+    loadContent: loadContentReducer,
   });
 
   const sagaMiddleware = createSagaMiddleware();

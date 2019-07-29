@@ -29,6 +29,7 @@ import { red } from "@material-ui/core/colors";
 import { FollowersExplorerConnected } from "./Components/FollowersExplorer";
 import { MenuItemId } from "./reducers/menu";
 import { wsSubscribe } from "./actions/socket";
+import { ContentExplorerConnected } from "./Components/Content";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -110,7 +111,7 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
       case MenuItemId.COMPETITORS:
         return <CompetitorsListConnected />;
       case MenuItemId.CONTENT:
-        return <p>Content will be here soon...</p>;
+        return <ContentExplorerConnected />;
       case MenuItemId.FOLLOWERS_EXPLORER:
         return <FollowersExplorerConnected />;
       case MenuItemId.ADS:

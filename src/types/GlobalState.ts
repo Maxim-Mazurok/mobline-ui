@@ -3,6 +3,7 @@ import { IGUsername } from "../actions/addCompetitor";
 import { SnackbarData } from "../actions/snackbar";
 import { MenuItemId } from "../reducers/menu";
 import { Follower } from "../reducers/loadFollowers";
+import { Content } from "../reducers/loadContent";
 
 export type DrawerIsOpen = boolean;
 
@@ -76,4 +77,12 @@ export default interface GlobalState {
     followers: Follower[],
     error: string | null,
   },
+  loadContent: {
+    loading: boolean,
+    content: Content[],
+    error: string | null,
+  },
+  contentExplorer: {
+    selectedCompetitors: Competitor["userPk"][],
+  }
 }

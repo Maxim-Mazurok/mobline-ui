@@ -73,4 +73,12 @@ export const defaultState: GlobalState = {
     followers: [],
     error: null,
   },
+  loadContent: {
+    loading: false,
+    content: [],
+    error: null,
+  },
+  contentExplorer: {
+    selectedCompetitors: [],
+  },
 };
