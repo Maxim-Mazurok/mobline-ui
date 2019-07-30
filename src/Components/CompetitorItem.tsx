@@ -17,7 +17,8 @@ import { connect } from "react-redux";
 import { Competitor } from "../types/GlobalState";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import { selectMenu, selectSingleCompetitor } from "../actions";
-import { MenuItemId } from "../reducers/menu";
+import { RouteComponentProps, withRouter } from "react-router";
+import { MenuItemId } from "../defaultState";
 
 const mapStateToProps = () => ({});
 
@@ -73,7 +74,7 @@ const options: CompetitorItemMenuOption[] = [
   },
 ];
 
-class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState> {
+class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemProps, CompetitorItemState> {
   state = {
     anchorEl: null,
     open: false,
@@ -126,7 +127,7 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
     switch (optionId) {
       case OptionId.FOLLOWERS:
         this.props.selectSingleCompetitor(userPk);
-        this.props.selectMenu(MenuItemId.FOLLOWERS_EXPLORER);
+        this.props.selectMenu(MenuItemId.FOLLOWERS_EXPLORER, this.props.history);
         break;
       case OptionId.SYNC:
       case OptionId.DELETE:
@@ -246,7 +247,7 @@ class CompetitorItem extends Component<CompetitorItemProps, CompetitorItemState>
   }
 }
 
-export const CompetitorItemConnected = connect(
+export const CompetitorItemConnected = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CompetitorItem);
+)(CompetitorItem));

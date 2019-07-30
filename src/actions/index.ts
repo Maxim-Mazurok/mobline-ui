@@ -11,7 +11,6 @@ import { LoadCompetitorsAction } from "./loadCompetitors";
 import { GetCustomerIdAction } from "./getCustomerId";
 import { AddCompetitorAction } from "./addCompetitor";
 import { SHOW_SNACKBAR, SnackbarAction, SnackbarData } from "./snackbar";
-import { MenuItemId } from "../reducers/menu";
 import {
   SELECT_COMPETITOR,
   SELECT_SINGLE_COMPETITOR,
@@ -20,6 +19,8 @@ import {
 } from "../reducers/followersExplorer";
 import { LoadFollowersAction } from "./loadFollowers";
 import { FollowersExplorerAction } from "./followersExplorer";
+import { History } from "history";
+import { MenuItemId, MenuItemPaths } from "../defaultState";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 export const WS_HOST = process.env.REACT_APP_WS_HOST;
@@ -64,7 +65,10 @@ export type Actions =
   & LoadFollowersAction
   ;
 
-export const selectMenu = (menuItemId: MenuItemId) => action(SELECT_MENU, menuItemId);
+export const selectMenu = (menuItemId: MenuItemId, history: History) => {
+  history.push(MenuItemPaths[menuItemId]);
+  return action(SELECT_MENU, menuItemId);
+};
 export const openDrawer = () => action(OPEN_DRAWER);
 export const closeDrawer = () => action(CLOSE_DRAWER);
 export const handleLogin = (userInfo: UserInfo) => action(HANDLE_LOGIN, userInfo);

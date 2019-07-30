@@ -17,11 +17,11 @@ import {
   withStyles,
 } from "@material-ui/core";
 import { grey, red } from "@material-ui/core/colors";
-import { selectCompetitor, setVerifiedOnly, unselectCompetitor } from "../actions";
+import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectCompetitor } from "../actions";
 import { ChipProps } from "@material-ui/core/Chip";
 import { loadContent } from "../actions/loadContent";
 import { Content } from "../reducers/loadContent";
-import { ContentItemConnected, verifiedBadge } from "./ContentItem";
+import { ContentItemConnected } from "./ContentItem";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -55,6 +55,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       loadCompetitors,
       selectCompetitor,
+      selectSingleCompetitor,
       unselectCompetitor,
       loadContent,
       setVerifiedOnly,
@@ -78,6 +79,13 @@ export type ContentExplorerProps =
 type ContentExplorerState = {}
 
 class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerState> {
+  componentWillMount() {
+    // TODO: check that we load competitors first for case of opening "/content" directly.
+    if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+    }
+  }
+
   componentDidUpdate(prevProps: ContentExplorerProps) {
     if (prevProps.contentExplorerSelectedCompetitors !== this.props.contentExplorerSelectedCompetitors) {
       this.props.loadContent();
@@ -88,10 +96,6 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
     this.props.loadCompetitors();
     this.props.loadContent();
   }
-
-  handleVerifiedOnlyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.setVerifiedOnly(event.target.checked);
-  };
 
   render(): React.ReactElement<ContentExplorerProps, React.JSXElementConstructor<ContentExplorerState>> {
     const { classes } = this.props;
@@ -116,7 +120,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                   <Typography
                     variant="h2"
                   >
-                    Verified contents {verifiedBadge('span', 'inline-block')}
+                    Content
                   </Typography>
                 </Box>
                 <Paper

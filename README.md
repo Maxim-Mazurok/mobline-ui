@@ -7,6 +7,8 @@
     - [ ] Don't send request to get followers when no competitor is selected
     - [ ] Don't reload competitors when navigation to dashboard, instead, show current and sync them on the background
     - [ ] Create pagination for Follower insights (using `react-infinite-scroller`)
+    - [ ] Debounce competitors selection on content/followers page
+    - [ ] Cancel ongoing request on change of competitors selection on content/followers page
 - Deployment:
     - [x] Don't save customerId to localstorage (in case of DB reset it will give major headache) - done for dev mode
 

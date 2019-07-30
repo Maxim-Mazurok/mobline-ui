@@ -3,7 +3,7 @@ import './App.scss';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { TopBarConnected } from "./Components/TopBar";
 import { MainDrawerConnected } from "./Components/MainDrawer";
-import { RouteComponentProps, withRouter } from "react-router";
+import { Redirect, Route, RouteComponentProps, Switch, withRouter } from "react-router";
 import Lock from "./Components/Lock";
 import InviteCode from "./Components/InviteCode";
 import GlobalState from "./types/GlobalState";
@@ -27,9 +27,10 @@ import {
 import AddCompetitor from "./Components/AddCompetitor";
 import { red } from "@material-ui/core/colors";
 import { FollowersExplorerConnected } from "./Components/FollowersExplorer";
-import { MenuItemId } from "./reducers/menu";
 import { wsSubscribe } from "./actions/socket";
 import { ContentExplorerConnected } from "./Components/Content";
+import { DashboardConnected } from "./Components/Dashboard";
+import { MenuItemId, MenuItemPaths } from "./defaultState";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -135,9 +136,6 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
         <InviteCode />
         <AddCompetitor />
         {this.props.inviteCodeIsCorrect && !this.props.isLoggedIn && <Lock />}
-        {/*<h1>*/}
-        {/*  {this.props.userProfile.name}*/}
-        {/*</h1>*/}
         {this.props.isLoggedIn &&
         <Container
           className={classes.mainContainer}
@@ -158,7 +156,19 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
                     {this.props.userCustomerIdError}
                   </Typography>
                   :
-                  this.props.userCustomerId && this.renderCurrentSection()
+                  this.props.userCustomerId &&
+                  <React.Fragment>
+                    <Switch>
+                      <Route path={MenuItemPaths[MenuItemId.DASHBOARD]} component={DashboardConnected} />
+                      <Route path={MenuItemPaths[MenuItemId.COMPETITORS]} component={CompetitorsListConnected} />
+                      <Route path={MenuItemPaths[MenuItemId.CONTENT]} component={ContentExplorerConnected} />
+                      <Route path={MenuItemPaths[MenuItemId.FOLLOWERS_EXPLORER]}
+                             component={FollowersExplorerConnected} />
+                      <Route path={MenuItemPaths[MenuItemId.ADS]} component={DashboardConnected} />
+                      <Route path={MenuItemPaths[MenuItemId.SETTINGS]} component={DashboardConnected} />
+                      <Redirect from="/" to="/dashboard" />
+                    </Switch>
+                  </React.Fragment>
               }
             </Grid>
           </Grid>

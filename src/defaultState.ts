@@ -1,7 +1,24 @@
 import { Auth0UserProfile } from "auth0-js";
 import GlobalState from "./types/GlobalState";
-import { MenuItemId } from "./reducers/menu";
 import { SnackbarType } from "./actions/snackbar";
+
+export enum MenuItemId {
+  DASHBOARD,
+  COMPETITORS,
+  CONTENT,
+  FOLLOWERS_EXPLORER,
+  ADS,
+  SETTINGS,
+}
+
+export const MenuItemPaths = {
+  [MenuItemId.DASHBOARD]: "/dashboard",
+  [MenuItemId.COMPETITORS]: "/competitors",
+  [MenuItemId.CONTENT]: "/content",
+  [MenuItemId.FOLLOWERS_EXPLORER]: "/followers",
+  [MenuItemId.ADS]: "/ads",
+  [MenuItemId.SETTINGS]: "/settings",
+};
 
 const getInitialUserProfile = (): Auth0UserProfile | null => {
   const userProfileString = localStorage.getItem('userProfile');
@@ -23,9 +40,12 @@ const getInitialCustomerId = (): number | null => {
   return null;
 };
 
+// @ts-ignore
+export const getKeyByValue = (object, value): string => Object.keys(object).find(key => object[key] === value);
+
 export const defaultState: GlobalState = {
   menu: {
-    selectedMenuItemId: MenuItemId.COMPETITORS,
+    selectedMenuItemId: parseInt(getKeyByValue(MenuItemPaths, window.location.pathname)) as MenuItemId,
     drawerIsOpen: false,
   },
   user: {

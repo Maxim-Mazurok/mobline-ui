@@ -8,6 +8,8 @@ import { connect } from "react-redux";
 import GlobalState from "../types/GlobalState";
 import { drawerIsOpen } from "../selectors";
 import { menuItems, MenuItemType } from "../reducers/menu";
+import { RouteComponentProps, withRouter } from "react-router";
+import { getKeyByValue, MenuItemId, MenuItemPaths } from "../defaultState";
 
 const mapStateToProps = ({ menu }: GlobalState) => ({
   selectedMenuItemId: menu.selectedMenuItemId,
@@ -30,7 +32,14 @@ export type MainDrawerProps = ReturnType<typeof mapStateToProps> & ReturnType<ty
 
 type MainDrawerState = {}
 
-class MainDrawer extends Component<MainDrawerProps, MainDrawerState> {
+class MainDrawer extends Component<RouteComponentProps<{}> & MainDrawerProps, MainDrawerState> {
+  componentWillReceiveProps(nextProps: Readonly<RouteComponentProps<{}> & MainDrawerProps>, nextContext: any): void {
+    // TODO: make this hack for redirect from "/" to "/dashboard" more beautiful
+    if (this.props.selectedMenuItemId !== parseInt(getKeyByValue(MenuItemPaths, window.location.pathname)) as MenuItemId) {
+      this.props.selectMenu(parseInt(getKeyByValue(MenuItemPaths, window.location.pathname)) as MenuItemId, this.props.history);
+    }
+  }
+
   toggleDrawer = (open: boolean) => {
     open ? this.props.openDrawer() : this.props.closeDrawer();
   };
@@ -76,7 +85,7 @@ class MainDrawer extends Component<MainDrawerProps, MainDrawerState> {
                           button
                           key={index}
                           onClick={() => {
-                            this.props.selectMenu(menuItem.id || 0);
+                            this.props.selectMenu(menuItem.id || 0, this.props.history);
                             this.toggleDrawer(false);
                           }}
                         >
@@ -106,7 +115,7 @@ class MainDrawer extends Component<MainDrawerProps, MainDrawerState> {
   }
 }
 
-export const MainDrawerConnected = connect(
+export const MainDrawerConnected = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MainDrawer);
+)(MainDrawer));

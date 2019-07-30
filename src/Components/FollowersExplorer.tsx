@@ -20,7 +20,7 @@ import {
   withStyles,
 } from "@material-ui/core";
 import { grey, red } from "@material-ui/core/colors";
-import { selectCompetitor, setVerifiedOnly, unselectCompetitor } from "../actions";
+import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectCompetitor } from "../actions";
 import { ChipProps } from "@material-ui/core/Chip";
 import { loadFollowers } from "../actions/loadFollowers";
 import { Follower } from "../reducers/loadFollowers";
@@ -59,6 +59,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       loadCompetitors,
       selectCompetitor,
+      selectSingleCompetitor,
       unselectCompetitor,
       loadFollowers,
       setVerifiedOnly,
@@ -82,6 +83,13 @@ export type FollowersExplorerProps =
 type FollowersExplorerState = {}
 
 class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplorerState> {
+  componentWillMount() {
+    // TODO: check that we load competitors first for case of opening "/followers" directly.
+    if (this.props.followersExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+    }
+  }
+
   componentDidUpdate(prevProps: FollowersExplorerProps) {
     if (prevProps.followersExplorerSelectedCompetitors !== this.props.followersExplorerSelectedCompetitors) {
       this.props.loadFollowers();

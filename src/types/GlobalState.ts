@@ -1,9 +1,9 @@
 import { Auth0UserProfile } from "auth0-js";
 import { IGUsername } from "../actions/addCompetitor";
 import { SnackbarData } from "../actions/snackbar";
-import { MenuItemId } from "../reducers/menu";
 import { Follower } from "../reducers/loadFollowers";
 import { Content } from "../reducers/loadContent";
+import { MenuItemId } from "../defaultState";
 
 export type DrawerIsOpen = boolean;
 

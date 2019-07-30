@@ -1,5 +1,5 @@
 import { CLOSE_DRAWER, MenuAction, OPEN_DRAWER, SELECT_MENU } from "../actions";
-import { defaultState } from "../defaultState";
+import { defaultState, MenuItemId } from "../defaultState";
 import { Dashboard, List, People, PhotoLibrary, Settings, SvgIconComponent, TrendingUp } from "@material-ui/icons";
 
 export enum MenuItemType {
@@ -13,15 +13,6 @@ export type MenuItem = {
   text?: string,
   icon?: SvgIconComponent,
   id?: MenuItemId,
-}
-
-export enum MenuItemId {
-  DASHBOARD,
-  COMPETITORS,
-  CONTENT,
-  FOLLOWERS_EXPLORER,
-  ADS,
-  SETTINGS,
 }
 
 export const menuItems: MenuItem[] = [

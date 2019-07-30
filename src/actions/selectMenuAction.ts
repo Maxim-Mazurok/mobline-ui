@@ -1,5 +1,5 @@
 import { SELECT_MENU } from "./index";
-import { MenuItemId } from "../reducers/menu";
+import { MenuItemId } from "../defaultState";
 
 export const selectMenuAction = (menuItemId: MenuItemId): SelectMenuAction => ({
   type: SELECT_MENU,
