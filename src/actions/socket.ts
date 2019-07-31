@@ -205,7 +205,7 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
       case WS_PARSE_POSTS_FINISHED:
         dispatch(wsParsePostsFinished(data));
         dispatch(showSnackbarAction({
-          title: "Getting followers list finished",
+          title: "Getting posts finished",
           type: SnackbarType.INFO,
         }));
         break;
