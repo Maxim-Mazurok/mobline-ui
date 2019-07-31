@@ -35,6 +35,7 @@ type MainDrawerState = {}
 class MainDrawer extends Component<RouteComponentProps<{}> & MainDrawerProps, MainDrawerState> {
   componentWillReceiveProps(nextProps: Readonly<RouteComponentProps<{}> & MainDrawerProps>, nextContext: any): void {
     // TODO: make this hack for redirect from "/" to "/dashboard" more beautiful
+    // TODO: fix logging in from pages other then "/" (save page, redirect to "/", restore saved page after login)
     if (this.props.selectedMenuItemId !== parseInt(getKeyByValue(MenuItemPaths, window.location.pathname)) as MenuItemId) {
       this.props.selectMenu(parseInt(getKeyByValue(MenuItemPaths, window.location.pathname)) as MenuItemId, this.props.history);
     }

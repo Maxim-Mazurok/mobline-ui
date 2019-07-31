@@ -1,35 +1,48 @@
 import React, { Component } from "react";
 import {
-  Avatar,
+  Card,
+  CardContent,
+  Chip,
+  createStyles,
+  Divider,
+  Grid,
   IconButton,
-  ListItem,
-  ListItemAvatar,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  Menu,
-  MenuItem,
+  Link,
+  Theme,
+  Tooltip,
+  Typography,
+  withStyles,
 } from "@material-ui/core";
-import { MoreVert, SvgIconComponent, Sync } from "@material-ui/icons";
+import { Favorite, Link as LinkIcon, Message, Place, RemoveRedEye } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import { Content } from "../reducers/loadContent";
-import { Competitor } from "../types/GlobalState";
+import { blue, green, grey, orange, pink, red, yellow } from "@material-ui/core/colors";
+import copy from "copy-to-clipboard";
+import { ContentItemMedia } from "./ContentItemMedia";
 
-export const verifiedBadge = (Element: keyof JSX.IntrinsicElements, display: "block" | "inline-block" = "block") =>
-  <Element
-    style={{
-      backgroundPosition: "center",
-      backgroundSize: "contain",
-      backgroundImage: "url(\"/images/verified.png\")",
-      backgroundRepeat: "no-repeat",
-      height: "1rem",
-      width: "1rem",
-      marginLeft: "0.25rem",
-      verticalAlign: "top",
-      display,
-    }}
-  />;
+const styles = (theme: Theme) =>
+  createStyles({
+    chip: {
+      color: grey[50],
+    },
+    chipLink: {
+      display: "inline-block",
+      color: grey[50],
+      marginRight: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    },
+    chipIcon: {
+      color: grey[50],
+    },
+    caption: {
+      marginBottom: theme.spacing(1),
+    },
+    divider: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+    }
+  });
 
 const mapStateToProps = () => ({});
 
@@ -43,120 +56,233 @@ export type ContentItemProps =
   & ReturnType<typeof mapStateToProps>
   & ReturnType<typeof mapDispatchToProps>
   & {
-  content: Content,
+  content: Content
+  classes: {
+    chip: string,
+    chipLink: string,
+    chipIcon: string,
+    caption: string,
+    divider: string,
+  }
 };
 
 type ContentItemState =
   & {
-  anchorEl: null | HTMLElement,
-  open: boolean,
+  linkCopied: boolean
 };
 
-type ContentItemMenuOption = {
-  title: string,
-  icon: SvgIconComponent,
-  id: OptionId,
+const formatNumber = (number: number): string => {
+  if (number < 999) return number.toString();
+  if (number < 999999) return `${Math.round(number / 1000)} K`;
+  return `${Math.round(number / 1000000)} M`;
 };
 
-enum OptionId {
-  CONTENTS,
-  SYNC,
-  DELETE,
-}
+const getEngagementRateBackgroundColor = (engagementRate: number) => {
+  if (engagementRate > 5) return green[500];
+  if (engagementRate > 2) return yellow[500];
+  return red[500];
+};
 
-const options: ContentItemMenuOption[] = [
-  {
-    title: "Sync",
-    icon: Sync,
-    id: OptionId.SYNC,
-  },
-];
+const getEngagementRateTextColor = (engagementRate: number) => {
+  if (engagementRate > 5) return grey[50];
+  if (engagementRate > 2) return grey[800];
+  return grey[50];
+};
 
 class ContentItem extends Component<ContentItemProps, ContentItemState> {
   state = {
-    anchorEl: null,
-    open: false,
-  };
-
-  handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    this.setState({
-      anchorEl: event.currentTarget,
-      open: true,
-    });
-  };
-
-  handleClose = () => {
-    this.setState({
-      anchorEl: null,
-      open: false,
-    });
-  };
-
-  // noinspection JSUnusedLocalSymbols
-  handleSelect = (optionId: OptionId, userPk: Competitor["userPk"]) => {
-    this.handleClose();
-    //TODO: implement
-
-    // noinspection JSRedundantSwitchStatement
-    switch (optionId) {
-      case OptionId.SYNC:
-        //TODO: implement
-        break;
-      default:
-        console.error(`Unknown option selected: ${optionId}`);
-    }
+    linkCopied: false
   };
 
   render(): React.ReactElement<ContentItemProps, React.JSXElementConstructor<ContentItemState>> {
+    const { classes } = this.props;
+
     return (
-      <ListItem
-        alignItems={"flex-start"}
-      >
-        <ListItemAvatar>
-          <Avatar alt={this.props.content.caption || ""} src={this.props.content.content[0].url} />
-        </ListItemAvatar>
-        <ListItemText
-          primaryTypographyProps={{ component: "div", style: { display: "flex", alignItems: "center" } }}
-          primary={
-            <React.Fragment>
-              <div>{this.props.content.caption}</div>
-            </React.Fragment>
-          }
-        />
-        <ListItemSecondaryAction>
-          <IconButton
-            aria-label="More"
-            aria-controls="long-menu"
-            aria-haspopup="true"
-            onClick={this.handleClick}
-          >
-            <MoreVert />
-          </IconButton>
-          <Menu
-            anchorEl={this.state.anchorEl}
-            keepMounted
-            open={this.state.open}
-            onClose={this.handleClose}
-          >
-            {options.map((option, index) => {
-              const Icon = option.icon;
-              if (option.id === OptionId.CONTENTS && this.props.content.pk === "") return null;
-              return (
-                <MenuItem
+      <Grid item xs={12} sm={6} md={4}>
+        <Card>
+          <ContentItemMedia
+            content={this.props.content.content}
+          />
+          <CardContent>
+            <Typography
+              className={classes.caption}
+              variant="body2"
+              color="textSecondary"
+              component="p"
+            >
+              {this.props.content.caption}
+            </Typography>
+            {
+              this.props.content.hashtags.map((hashtag, index) =>
+                <Link
                   key={index}
-                  onClick={() => this.handleSelect(option.id, this.props.content.pk)}
-                >
-                  <ListItemIcon>
-                    <Icon />
-                  </ListItemIcon>
-                  <ListItemText primary={option.title} />
-                </MenuItem>
-              );
-            })
-            }}
-          </Menu>
-        </ListItemSecondaryAction>
-      </ListItem>
+                  className={classes.chipLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://www.instagram.com/explore/tags/${hashtag}/`}>
+                  <Chip
+                    clickable
+                    style={{ backgroundColor: blue[500] }}
+                    className={classes.chip}
+                    size="small"
+                    key={index}
+                    label={`#${hashtag}`}
+                  />
+                </Link>
+              )
+            }
+            {
+              this.props.content.mentions.map((mention, index) =>
+                <Link
+                  key={index}
+                  className={classes.chipLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={`https://www.instagram.com/${mention}/`}>
+                  <Chip
+                    clickable
+                    style={{ backgroundColor: orange[500] }}
+                    className={classes.chip}
+                    size="small"
+                    key={index}
+                    label={`@${mention}`}
+                  />
+                </Link>
+              )
+            }
+            {
+              this.props.content.location &&
+              <Link
+                className={classes.chipLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`https://www.google.com/maps/search/?api=1&query=${this.props.content.location.lat},${this.props.content.location.lng}`}>
+                <Chip
+                  clickable
+                  style={{ backgroundColor: pink[500] }}
+                  className={classes.chip}
+                  size="small"
+                  label={`${this.props.content.location.name}`}
+                  icon={<Place className={classes.chipIcon} />}
+                />
+              </Link>
+            }
+            <Divider className={classes.divider} />
+            <Grid
+              container
+              alignItems={"center"}
+              alignContent={"space-between"}
+              justify={"space-between"}
+            >
+              <Grid item>
+                {
+                  this.props.content.engagementRate &&
+                  <Tooltip title={"Engagement rate"}>
+                    <Chip
+                      style={{
+                        backgroundColor: getEngagementRateBackgroundColor(this.props.content.engagementRate),
+                        color: getEngagementRateTextColor(this.props.content.engagementRate),
+                      }}
+                      size="small"
+                      label={`${this.props.content.engagementRate} %`}
+                    />
+                  </Tooltip>
+                }
+              </Grid>
+              <Grid item>
+                {this.props.content.likeCount !== null &&
+                <Tooltip title={`${this.props.content.likeCount} likes`}>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    <Favorite
+                      fontSize="inherit"
+                      color="inherit"
+                      style={{ verticalAlign: "middle" }}
+                    />
+                    <span
+                      style={{ verticalAlign: "middle" }}
+                    > {formatNumber(this.props.content.likeCount)}</span>
+                  </Typography>
+                </Tooltip>
+                }
+              </Grid>
+              <Grid item>
+                {this.props.content.commentCount !== null &&
+                <Tooltip title={`${this.props.content.commentCount} comments`}>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    <Message
+                      fontSize="inherit"
+                      color="inherit"
+                      style={{ verticalAlign: "middle" }}
+                    />
+                    <span
+                      style={{ verticalAlign: "middle" }}
+                    > {formatNumber(this.props.content.commentCount)}</span>
+                  </Typography>
+                </Tooltip>
+                }
+              </Grid>
+              <Grid item>
+                {this.props.content.viewCount !== null &&
+                <Tooltip title={`${this.props.content.viewCount} views`}>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >
+                    <RemoveRedEye
+                      fontSize="inherit"
+                      color="inherit"
+                      style={{ verticalAlign: "middle" }}
+                    />
+                    <span
+                      style={{ verticalAlign: "middle" }}
+                    > {formatNumber(this.props.content.viewCount)}</span>
+                  </Typography>
+                </Tooltip>
+                }
+              </Grid>
+              <Grid item>
+                {this.props.content.itemUrl !== null &&
+                <Tooltip title={this.state.linkCopied ? "Link copied!" : "Copy media link"}>
+                  <Link
+                    onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => event.preventDefault()}
+                    href={this.props.content.itemUrl}
+                  >
+                    <IconButton
+                      size="small"
+                      onClick={() => {
+                        copy(this.props.content.itemUrl, {
+                          message: 'Press #{key} to copy',
+                          format: "text/plain",
+                        });
+                        this.setState({ linkCopied: true });
+                      }}
+                    >
+                      <LinkIcon />
+                    </IconButton>
+                  </Link>
+                </Tooltip>}
+              </Grid>
+            </Grid>
+          </CardContent>
+          {/*<CardActions disableSpacing>*/}
+          {/*  <IconButton aria-label="add to favorites">*/}
+          {/*    <Favorite />*/}
+          {/*  </IconButton>*/}
+          {/*  <IconButton aria-label="share">*/}
+          {/*    <Share />*/}
+          {/*  </IconButton>*/}
+          {/*</CardActions>*/}
+        </Card>
+      </Grid>
     );
   }
 }
@@ -164,4 +290,4 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
 export const ContentItemConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(ContentItem);
+)(withStyles(styles)(ContentItem));

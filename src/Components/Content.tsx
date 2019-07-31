@@ -8,8 +8,8 @@ import {
   Box,
   Chip,
   createStyles,
+  Grid,
   LinearProgress,
-  List,
   Paper,
   StyledComponentProps,
   Theme,
@@ -20,12 +20,11 @@ import { grey, red } from "@material-ui/core/colors";
 import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectCompetitor } from "../actions";
 import { ChipProps } from "@material-ui/core/Chip";
 import { loadContent } from "../actions/loadContent";
-import { Content } from "../reducers/loadContent";
 import { ContentItemConnected } from "./ContentItem";
 
 const styles = (theme: Theme) =>
   createStyles({
-    noCompetitorsFound: {
+    noContentsFound: {
       color: grey[600],
     },
     errorMessage: {
@@ -69,7 +68,7 @@ export type ContentExplorerProps =
   & StyledComponentProps
   & {
   classes: {
-    noCompetitorsFound: string,
+    noContentsFound: string,
     errorMessage: string,
     chip: string,
     paper: string,
@@ -79,8 +78,9 @@ export type ContentExplorerProps =
 type ContentExplorerState = {}
 
 class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerState> {
-  componentWillMount() {
+  componentWillReceiveProps() {
     // TODO: check that we load competitors first for case of opening "/content" directly.
+    // TODO: don't load content/followers if no competitors selected (flash of error)
     if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
       this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
     }
@@ -153,14 +153,12 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                       }
                     )}
                   </Box>
-                  {
-                    this.props.loadContentLoading ?
-                      <Box mx={2} my={2}> {/*TODO: fix a lot of boxes*/}
+                  <Box mx={2} my={2}>
+                    {
+                      this.props.loadContentLoading ?
                         <LinearProgress />
-                      </Box>
-                      :
-                      this.props.loadContentError ?
-                        <Box mx={2} my={2}>
+                        :
+                        this.props.loadContentError ?
                           <Typography
                             variant="h5"
                             gutterBottom
@@ -168,24 +166,22 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                           >
                             {this.props.loadContentError}
                           </Typography>
-                        </Box>
-                        :
-                        this.props.loadContentContents.length > 0 ?
-                          <List>
-                            {
-                              this.props.loadContentContents
-                                .map((content: Content, index) =>
-                                  <React.Fragment
-                                    key={index}
-                                  >
-                                    <ContentItemConnected
-                                      content={content}
-                                    />
-                                  </React.Fragment>
-                                )}
-                          </List>
                           :
-                          <Box mx={2} my={2}>
+                          this.props.loadContentContents.length > 0 ?
+                            <Grid container spacing={2}>
+                              {
+                                this.props.loadContentContents
+                                  .map((content, index) =>
+                                    <React.Fragment
+                                      key={index}
+                                    >
+                                      <ContentItemConnected
+                                        content={content}
+                                      />
+                                    </React.Fragment>
+                                  )}
+                            </Grid>
+                            :
                             <Typography
                               color="textSecondary"
                               variant="h5"
@@ -194,15 +190,15 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                             >
                               No verified contents found.
                             </Typography>
-                          </Box>
-                  }
+                    }
+                  </Box>
                 </Paper>
               </React.Fragment>
               :
               <Typography
                 variant="h5"
                 gutterBottom
-                className={classes.noCompetitorsFound}
+                className={classes.noContentsFound}
               >
                 No competitors found, add them first.
               </Typography>

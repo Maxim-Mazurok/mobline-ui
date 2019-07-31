@@ -1,4 +1,6 @@
 #TODOs:
+- Bugs:
+    - [ ] Fix redirect URL mismatch on auth
 - WS-related:
     - [ ] Detect online/offline to reconnect the websocket - [example](https://github.com/jsmanifest/ws-online-sync)
     - [ ] Reconnect to WS on disconnect

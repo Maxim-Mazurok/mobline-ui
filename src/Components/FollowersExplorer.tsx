@@ -83,8 +83,8 @@ export type FollowersExplorerProps =
 type FollowersExplorerState = {}
 
 class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplorerState> {
-  componentWillMount() {
-    // TODO: check that we load competitors first for case of opening "/followers" directly.
+  componentWillReceiveProps() {
+    // TODO: check that we load competitors first for case of opening "/content" directly.
     if (this.props.followersExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
       this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
     }

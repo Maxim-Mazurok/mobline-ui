@@ -12,10 +12,16 @@ export const LOAD_CONTENT_STARTED = 'loadContentStarted';
 export type LOAD_CONTENT_STARTED = 'loadContentStarted';
 
 // TODO: create a test to sync these values with backend
-enum MediaType {
+export enum MediaType {
   PHOTO = 1,
   VIDEO = 2,
-  CAROUSEL = 8,
+  // CAROUSEL = 8,
+}
+
+export type MediaItem = {
+  type: MediaType,
+  url: string,
+  coverUrl?: string,
 }
 
 export type Content = {
@@ -47,11 +53,10 @@ export type Content = {
     lng: number
     lat: number
   } | null
-  content: {
-    type: MediaType,
-    url: string,
-  }[]
-  engagementRage: number
+  content: MediaItem[]
+  engagementRate: number
+  hashtags: string[]
+  mentions: string[]
 }
 
 export const loadContentReducer = (state: typeof defaultState.loadContent = defaultState.loadContent, action: LoadContentAction): typeof defaultState.loadContent => {
