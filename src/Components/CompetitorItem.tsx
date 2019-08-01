@@ -250,7 +250,9 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
           >
             {options.map((option, index) => {
               const Icon = option.icon;
+              if (option.id === OptionId.CONTENT && this.props.competitor.userPk === "") return null;
               if (option.id === OptionId.FOLLOWERS && this.props.competitor.userPk === "") return null;
+              if (option.id === OptionId.ADS && this.props.competitor.userPk === "") return null;
               return (
                 <MenuItem
                   key={index}
