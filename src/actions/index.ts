@@ -21,6 +21,7 @@ import { LoadFollowersAction } from "./loadFollowers";
 import { FollowersExplorerAction } from "./followersExplorer";
 import { History } from "history";
 import { MenuItemId, MenuItemPaths } from "../defaultState";
+import { DeleteCompetitorAction } from "./deleteCompetitor";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 export const WS_HOST = process.env.REACT_APP_WS_HOST;
@@ -34,13 +35,6 @@ export const CLOSE_DRAWER = 'closeDrawerAction';
 export const HANDLE_LOGIN = 'handleLoginAction';
 export const USER_PROFILE = 'userProfileAction';
 export const SET_INVITE_CODE = 'setInviteCodeAction';
-
-export const GET_CUSTOMER_ID_SUCCESS = 'getCustomerIdSuccess';
-export type GET_CUSTOMER_ID_SUCCESS = 'getCustomerIdSuccess';
-export const GET_CUSTOMER_ID_FAILURE = 'getCustomerIdFailure';
-export type GET_CUSTOMER_ID_FAILURE = 'getCustomerIdFailure';
-export const GET_CUSTOMER_ID_STARTED = 'getCustomerIdStarted';
-export type GET_CUSTOMER_ID_STARTED = 'getCustomerIdStarted';
 
 export type MenuAction =
   | SelectMenuAction
@@ -63,6 +57,7 @@ export type Actions =
   & SnackbarAction
   & FollowersExplorerAction
   & LoadFollowersAction
+  & DeleteCompetitorAction
   ;
 
 export const selectMenu = (menuItemId: MenuItemId, history: History) => {

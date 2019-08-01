@@ -12,6 +12,7 @@ import {
   WS_PARSE_POSTS_UPDATED
 } from "../actions/socket";
 import { Competitor } from "../types/GlobalState";
+import { DELETE_COMPETITOR_STARTED, DeleteCompetitorAction } from "../actions/deleteCompetitor";
 
 export const LOAD_COMPETITORS_SUCCESS = 'loadCompetitorsSuccess';
 export type LOAD_COMPETITORS_SUCCESS = 'loadCompetitorsSuccess';
@@ -20,7 +21,7 @@ export type LOAD_COMPETITORS_FAILURE = 'loadCompetitorsFailure';
 export const LOAD_COMPETITORS_STARTED = 'loadCompetitorsStarted';
 export type LOAD_COMPETITORS_STARTED = 'loadCompetitorsStarted';
 
-export const loadCompetitorsReducer = (state: typeof defaultState.loadCompetitors = defaultState.loadCompetitors, action: LoadCompetitorsAction | SocketAction): typeof defaultState.loadCompetitors => {
+export const loadCompetitorsReducer = (state: typeof defaultState.loadCompetitors = defaultState.loadCompetitors, action: LoadCompetitorsAction | SocketAction | DeleteCompetitorAction): typeof defaultState.loadCompetitors => {
   switch (action.type) {
     case LOAD_COMPETITORS_STARTED:
       return {
@@ -104,6 +105,14 @@ export const loadCompetitorsReducer = (state: typeof defaultState.loadCompetitor
           ...competitor,
           parsePostsFinished: true,
         } : competitor)
+      };
+    case DELETE_COMPETITOR_STARTED:
+      return {
+        ...state,
+        competitors: state.competitors.filter((competitor: Competitor) =>
+          (action.payload.userPk.toString() !== "" && competitor.userPk.toString() !== action.payload.userPk.toString()) ||
+          (action.payload.username.toString() !== "" && competitor.username.toString() !== action.payload.username.toString())
+        )
       };
     default:
       return state;

@@ -1,13 +1,6 @@
-import {
-  GET_CUSTOMER_ID_FAILURE,
-  GET_CUSTOMER_ID_STARTED,
-  GET_CUSTOMER_ID_SUCCESS,
-  HANDLE_LOGIN,
-  SET_INVITE_CODE,
-  USER_PROFILE,
-  UserAction
-} from "../actions";
+import { HANDLE_LOGIN, SET_INVITE_CODE, USER_PROFILE, UserAction } from "../actions";
 import { defaultState } from "../defaultState";
+import { GET_CUSTOMER_ID_FAILURE, GET_CUSTOMER_ID_STARTED, GET_CUSTOMER_ID_SUCCESS } from "../actions/getCustomerId";
 
 export const userReducer = (state: typeof defaultState.user = defaultState.user, action: UserAction): typeof defaultState.user => {
   switch (action.type) {

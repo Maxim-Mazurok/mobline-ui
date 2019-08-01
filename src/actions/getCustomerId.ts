@@ -1,9 +1,16 @@
 import axios from 'axios';
-import { API_URL, GET_CUSTOMER_ID_FAILURE, GET_CUSTOMER_ID_STARTED, GET_CUSTOMER_ID_SUCCESS } from "./index";
+import { API_URL } from "./index";
 import { ThunkAction } from "redux-thunk";
 import GlobalState from "../types/GlobalState";
 import { Dispatch } from "redux";
 import { showSnackbarAction, SnackbarAction, SnackbarType } from "./snackbar";
+
+export const GET_CUSTOMER_ID_SUCCESS = 'getCustomerIdSuccess';
+export type GET_CUSTOMER_ID_SUCCESS = 'getCustomerIdSuccess';
+export const GET_CUSTOMER_ID_FAILURE = 'getCustomerIdFailure';
+export type GET_CUSTOMER_ID_FAILURE = 'getCustomerIdFailure';
+export const GET_CUSTOMER_ID_STARTED = 'getCustomerIdStarted';
+export type GET_CUSTOMER_ID_STARTED = 'getCustomerIdStarted';
 
 const getCustomerIdSuccess = (customerId: number | null): {
   type: GET_CUSTOMER_ID_SUCCESS,

@@ -12,13 +12,14 @@ import {
   MenuItem,
   Tooltip,
 } from "@material-ui/core";
-import { Delete, MoreVert, People, SvgIconComponent, Sync } from "@material-ui/icons";
+import { Delete, MoreVert, People, PhotoLibrary, SvgIconComponent, Sync, TrendingUp } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { Competitor } from "../types/GlobalState";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import { selectMenu, selectSingleCompetitor } from "../actions";
 import { RouteComponentProps, withRouter } from "react-router";
 import { MenuItemId } from "../defaultState";
+import { deleteCompetitor } from "../actions/deleteCompetitor";
 
 const mapStateToProps = () => ({});
 
@@ -27,6 +28,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       selectSingleCompetitor,
       selectMenu,
+      deleteCompetitor,
     },
     dispatch
   );
@@ -51,16 +53,28 @@ type CompetitorItemMenuOption = {
 };
 
 enum OptionId {
+  CONTENT,
   FOLLOWERS,
+  ADS,
   SYNC,
   DELETE,
 }
 
 const options: CompetitorItemMenuOption[] = [
   {
+    title: "Content",
+    icon: PhotoLibrary,
+    id: OptionId.CONTENT,
+  },
+  {
     title: "Followers",
     icon: People,
     id: OptionId.FOLLOWERS,
+  },
+  {
+    title: "Ads",
+    icon: TrendingUp,
+    id: OptionId.ADS,
   },
   {
     title: "Sync",
@@ -122,15 +136,25 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
     return "";
   };
 
-  handleSelect = (optionId: OptionId, userPk: Competitor["userPk"]) => {
+  handleSelect = (optionId: OptionId, username: Competitor["username"], userPk: Competitor["userPk"]) => {
     this.handleClose();
     switch (optionId) {
+      case OptionId.CONTENT:
+        this.props.selectSingleCompetitor(userPk);
+        this.props.selectMenu(MenuItemId.CONTENT, this.props.history);
+        break;
       case OptionId.FOLLOWERS:
         this.props.selectSingleCompetitor(userPk);
         this.props.selectMenu(MenuItemId.FOLLOWERS_EXPLORER, this.props.history);
         break;
-      case OptionId.SYNC:
+      case OptionId.ADS:
+        this.props.selectSingleCompetitor(userPk);
+        this.props.selectMenu(MenuItemId.ADS, this.props.history);
+        break;
       case OptionId.DELETE:
+        this.props.deleteCompetitor(username, userPk);
+        break;
+      case OptionId.SYNC:
         //TODO: implement
         break;
       default:
@@ -230,7 +254,7 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
               return (
                 <MenuItem
                   key={index}
-                  onClick={() => this.handleSelect(option.id, this.props.competitor.userPk)}
+                  onClick={() => this.handleSelect(option.id, this.props.competitor.username, this.props.competitor.userPk)}
                 >
                   <ListItemIcon>
                     <Icon />
