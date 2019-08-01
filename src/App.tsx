@@ -142,7 +142,7 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
         >
           {/*TODO: remove grid from here, make it per section*/}
           <Grid container>
-            <Grid item xs={12} sm={10}>
+            <Grid item xs={12}>
               {this.props.userCustomerIdLoading ?
                 <CircularProgress
                   disableShrink

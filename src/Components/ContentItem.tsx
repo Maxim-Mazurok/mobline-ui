@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Avatar,
   Card,
   CardContent,
   Chip,
@@ -8,15 +9,18 @@ import {
   Grid,
   IconButton,
   Link,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   Theme,
   Tooltip,
   Typography,
   withStyles,
 } from "@material-ui/core";
-import { Favorite, Link as LinkIcon, Message, Place, RemoveRedEye } from "@material-ui/icons";
+import { Favorite, Link as LinkIcon, LocalOffer, Message, OpenInNew, Place, RemoveRedEye } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { Content } from "../reducers/loadContent";
+import { Content, Product } from "../reducers/loadContent";
 import { blue, green, grey, orange, pink, red, yellow } from "@material-ui/core/colors";
 import copy from "copy-to-clipboard";
 import { ContentItemMedia } from "./ContentItemMedia";
@@ -87,6 +91,30 @@ const getEngagementRateTextColor = (engagementRate: number) => {
   if (engagementRate > 5) return grey[50];
   if (engagementRate > 2) return grey[800];
   return grey[50];
+};
+
+const getPrice = (product: Product) => {
+  if (product.discount > 0) {
+    return (
+      <React.Fragment>
+        <Typography
+          component="span"
+          variant="body2"
+          color="textSecondary"
+        >
+          <del>{product.fullPrice}</del>
+        </Typography>
+        <span> {product.currentPrice} </span>
+        <Chip
+          style={{ backgroundColor: grey[100] }}
+          size="small"
+          label={`−${product.discount}%`}
+        />
+      </React.Fragment>
+    );
+  } else {
+    return product.currentPrice;
+  }
 };
 
 class ContentItem extends Component<ContentItemProps, ContentItemState> {
@@ -166,6 +194,44 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                   icon={<Place className={classes.chipIcon} />}
                 />
               </Link>
+            }
+            {
+              this.props.content.products.length > 0 &&
+              this.props.content.products.map(product =>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar alt="Travis Howard" src={product.mainImage} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <React.Fragment>
+                        <span>{product.name} </span>
+                        <Link
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={product.externalUrl}
+                        >Buy&nbsp;<OpenInNew
+                          fontSize={"inherit"}
+                          style={{ verticalAlign: "middle" }}
+                        /></Link>
+                      </React.Fragment>
+                    }
+                    secondary={
+                      <Typography
+                        component="p"
+                        variant="body2"
+                        color="textPrimary"
+                      >
+                        <LocalOffer
+                          fontSize={"inherit"}
+                          style={{ verticalAlign: "middle" }}
+                        />
+                        <span> {getPrice(product)}</span>
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+              )
             }
             <Divider className={classes.divider} />
             <Grid

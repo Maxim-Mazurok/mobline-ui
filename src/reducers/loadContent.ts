@@ -24,24 +24,26 @@ export type MediaItem = {
   coverUrl?: string,
 }
 
+export type Product = {
+  name: string
+  currentPrice: string
+  fullPrice: string
+  discount: number
+  productId: string
+  merchant: {
+    id: string
+    username: string
+  }
+  mainImage: string
+  externalUrl: string
+  reviewStatus: string
+}
+
 export type Content = {
   pk: Competitor['userPk']
   likeCount: number
   commentCount: number
-  products: {
-    name: string
-    price: number
-    currentPrice: number
-    fullPrice: number
-    productId: string
-    merchant: {
-      id: string
-      username: string
-    }
-    mainImage: string
-    externalUrl: string
-    reviewStatus: string
-  }[]
+  products: Product[]
   mediaType: MediaType
   itemUrl: string
   viewCount: number | null
