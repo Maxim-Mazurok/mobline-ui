@@ -14,10 +14,11 @@
     - [ ] Maybe replace WS setTimeout awaiting with action queue system 
 - Optimizations:
     - [ ] Don't send request to get followers when no competitor is selected
-    - [ ] Create pagination for Follower insights (using `react-infinite-scroller`)
+    - [ ] Create *real* pagination for content/followers on the backend
     - [ ] Debounce competitors selection on content/followers page
     - [ ] Cancel ongoing request on change of competitors selection on content/followers page
     - [ ] (low priority, already optimized using another approach) Don't reload competitors when navigating, instead, show current and sync them on the background
+    - [x] Create pagination for Follower insights and content (using `react-infinite-scroller`)
 - Deployment:
     - [x] Don't save customerId to localstorage (in case of DB reset it will give major headache) - done for dev mode
 

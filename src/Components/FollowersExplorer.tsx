@@ -25,6 +25,7 @@ import { ChipProps } from "@material-ui/core/Chip";
 import { loadFollowers } from "../actions/loadFollowers";
 import { Follower } from "../reducers/loadFollowers";
 import { FollowerItemConnected, verifiedBadge } from "./FollowerItem";
+import InfiniteScroll from "react-infinite-scroller";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -40,7 +41,10 @@ const styles = (theme: Theme) =>
     paper: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(2),
-    }
+    },
+    loader: {
+      margin: theme.spacing(2),
+    },
   });
 
 const mapStateToProps = ({ loadCompetitors, followersExplorer, loadFollowers }: GlobalState) => ({
@@ -77,12 +81,21 @@ export type FollowersExplorerProps =
     errorMessage: string,
     chip: string,
     paper: string,
+    loader: string,
   },
 };
 
-type FollowersExplorerState = {}
+type FollowersExplorerState = {
+  pageNumber: number,
+}
+
+const followersPerPage = 10;
 
 class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplorerState> {
+  state = {
+    pageNumber: 0
+  };
+
   componentDidUpdate(prevProps: FollowersExplorerProps) {
     // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
     if (this.props.followersExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
@@ -95,6 +108,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
       // if selected competitors are changed, reload content
       // TODO(optimization): load only if selected competitors changed (when navigating here, then to other page and then back here without changing selected competitors)
       this.props.loadFollowers();
+      this.setState({ pageNumber: 0 });
     }
   }
 
@@ -108,6 +122,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
     } else {
       // when competitors are loaded and selected - load content
       this.props.loadFollowers();
+      this.setState({ pageNumber: 0 });
     }
   }
 
@@ -191,9 +206,9 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                   </Box>
                   {
                     this.props.loadFollowersLoading ?
-                      <Box mx={2} my={2}> {/*TODO: fix a lot of boxes*/}
-                        <LinearProgress />
-                      </Box>
+                      <LinearProgress
+                        className={classes.loader}
+                      />
                       :
                       this.props.loadFollowersError ?
                         <Box mx={2} my={2}>
@@ -207,22 +222,33 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                         </Box>
                         :
                         this.props.loadFollowersFollowers.length > 0 ?
-                          <List>
-                            {
-                              this.props.loadFollowersFollowers
-                                .splice(0, 45)
-                                .filter((follower: Follower) =>
-                                  this.props.followersExplorerVerifiedOnly ? follower.isVerified : true)
-                                .map((follower: Follower, index) =>
-                                  <React.Fragment
-                                    key={index}
-                                  >
-                                    <FollowerItemConnected
-                                      follower={follower}
-                                    />
-                                  </React.Fragment>
-                                )}
-                          </List>
+                          <InfiniteScroll
+                            pageStart={0}
+                            loadMore={() => this.setState({ pageNumber: this.state.pageNumber + 1 })}
+                            hasMore={this.state.pageNumber * followersPerPage < this.props.loadFollowersFollowers.length}
+                            loader={
+                              <LinearProgress
+                                className={classes.loader}
+                              />
+                            }
+                          >
+                            <List>
+                              {
+                                this.props.loadFollowersFollowers
+                                  .slice(0, this.state.pageNumber * followersPerPage)
+                                  .filter((follower: Follower) =>
+                                    this.props.followersExplorerVerifiedOnly ? follower.isVerified : true)
+                                  .map((follower: Follower, index) =>
+                                    <React.Fragment
+                                      key={index}
+                                    >
+                                      <FollowerItemConnected
+                                        follower={follower}
+                                      />
+                                    </React.Fragment>
+                                  )}
+                            </List>
+                          </InfiniteScroll>
                           :
                           <Box mx={2} my={2}>
                             <Typography

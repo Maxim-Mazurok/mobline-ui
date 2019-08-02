@@ -21,6 +21,7 @@ import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectComp
 import { ChipProps } from "@material-ui/core/Chip";
 import { loadContent } from "../actions/loadContent";
 import { ContentItemConnected } from "./ContentItem";
+import InfiniteScroll from 'react-infinite-scroller';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -36,7 +37,10 @@ const styles = (theme: Theme) =>
     paper: {
       paddingTop: theme.spacing(1),
       paddingBottom: theme.spacing(2),
-    }
+    },
+    loader: {
+      marginTop: theme.spacing(2),
+    },
   });
 
 const mapStateToProps = ({ loadCompetitors, contentExplorer, loadContent }: GlobalState) => ({
@@ -72,12 +76,21 @@ export type ContentExplorerProps =
     errorMessage: string,
     chip: string,
     paper: string,
+    loader: string,
   },
 };
 
-type ContentExplorerState = {}
+type ContentExplorerState = {
+  pageNumber: number,
+}
+
+const postsPerPage = 9;
 
 class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerState> {
+  state = {
+    pageNumber: 0
+  };
+
   componentDidUpdate(prevProps: ContentExplorerProps) {
     // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
     if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
@@ -89,6 +102,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
     ) {
       // if selected competitors are changed, reload content
       this.props.loadContent();
+      this.setState({ pageNumber: 0 });
     }
   }
 
@@ -103,6 +117,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
       // when competitors are loaded and selected - load content
       // TODO(optimization): load only if selected competitors changed (when navigating here, then to other page and then back here without changing selected competitors)
       this.props.loadContent();
+      this.setState({ pageNumber: 0 });
     }
   }
 
@@ -177,20 +192,32 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                           </Typography>
                           :
                           this.props.loadContentContents.length > 0 ?
-                            <Grid container spacing={2}>
-                              {
-                                this.props.loadContentContents
-                                  .splice(0, 9)
-                                  .map((content, index) =>
-                                    <React.Fragment
-                                      key={index}
-                                    >
-                                      <ContentItemConnected
-                                        content={content}
-                                      />
-                                    </React.Fragment>
-                                  )}
-                            </Grid>
+                            <InfiniteScroll
+                              pageStart={0}
+                              loadMore={() => this.setState({ pageNumber: this.state.pageNumber + 1 })}
+                              hasMore={this.state.pageNumber * postsPerPage < this.props.loadContentContents.length}
+                              loader={
+                                <LinearProgress
+                                  className={classes.loader}
+                                />
+                              }
+                            >
+                              <Grid container spacing={2}>
+                                {
+                                  this.props.loadContentContents
+                                    .slice(0, this.state.pageNumber * postsPerPage)
+                                    .map((content, index) =>
+                                      <React.Fragment
+                                        key={index}
+                                      >
+                                        <ContentItemConnected
+                                          content={content}
+                                        />
+                                      </React.Fragment>
+                                    )
+                                }
+                              </Grid>
+                            </InfiniteScroll>
                             :
                             <Typography
                               color="textSecondary"
