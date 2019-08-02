@@ -1,4 +1,8 @@
 #TODOs:
+- Better UI:
+    - [ ] Hide long descriptions for posts (make expandable)
+- Better UX:
+    - [ ] Show "deleting" state for competitor (don't just delete it from UI while request is going, show loading, or something...)
 - Bugs:
     - [x] Fix redirect URL mismatch on auth
 - WS-related:
@@ -7,7 +11,7 @@
     - [ ] Maybe replace WS setTimeout awaiting with action queue system 
 - Optimizations:
     - [ ] Don't send request to get followers when no competitor is selected
-    - [ ] Don't reload competitors when navigation to dashboard, instead, show current and sync them on the background
+WIP>>>    - [ ] Don't reload competitors when navigating, instead, show current and sync them on the background
     - [ ] Create pagination for Follower insights (using `react-infinite-scroller`)
     - [ ] Debounce competitors selection on content/followers page
     - [ ] Cancel ongoing request on change of competitors selection on content/followers page
