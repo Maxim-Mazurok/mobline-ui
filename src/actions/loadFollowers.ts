@@ -43,9 +43,10 @@ type ThunkResult<R> = ThunkAction<R, GlobalState, undefined, LoadFollowersAction
 
 export const loadFollowers = (): ThunkResult<Promise<void>> => {
   return async (dispatch: Dispatch<LoadFollowersAction | SnackbarAction>, getState: () => GlobalState) => {
-    dispatch(loadFollowersStarted());
-
     const state = getState();
+    if (state.loadFollowers.loading) return; // Another loading is in progress
+
+    dispatch(loadFollowersStarted());
 
     axios
       .post(`${API_URL}/get_followers.php`, {

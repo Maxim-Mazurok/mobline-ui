@@ -60,6 +60,7 @@ type ThunkResult<R> = ThunkAction<R, GlobalState, undefined, DeleteCompetitorAct
 
 export const deleteCompetitor = (username = '', userPk = ''): ThunkResult<Promise<void>> => {
   return async (dispatch: Dispatch<DeleteCompetitorAction | SnackbarAction>, getState: () => GlobalState) => {
+    // don't have to check if there's other deleting in progress, because it can be parallel (i.e., deleting multiple competitors at pretty much the same time)
     dispatch(deleteCompetitorStarted(username, userPk));
 
     const state = getState();

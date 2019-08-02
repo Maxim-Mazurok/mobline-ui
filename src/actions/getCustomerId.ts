@@ -51,9 +51,10 @@ type ThunkResult<R> = ThunkAction<R, GlobalState, undefined, GetCustomerIdAction
 
 export const getCustomerId = (): ThunkResult<Promise<void>> => {
   return async (dispatch: Dispatch<GetCustomerIdAction | SnackbarAction>, getState: () => GlobalState) => {
-    dispatch(getCustomerIdStarted());
-
     const state = getState();
+    if (state.user.customerIdLoading) return; // Another loading is in progress
+
+    dispatch(getCustomerIdStarted());
 
     axios
       .post(`${API_URL}/get_customer_id.php`, {

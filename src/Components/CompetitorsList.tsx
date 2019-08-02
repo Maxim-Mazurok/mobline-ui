@@ -69,7 +69,10 @@ type CompetitorsListState = {}
 
 class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListState> {
   componentDidMount(): void {
-    this.props.loadCompetitors();
+    if (this.props.loadCompetitorsCompetitors.length === 0) {
+      // if competitors list is not loaded (empty) - load it
+      this.props.loadCompetitors();
+    }
   }
 
   render(): React.ReactElement<CompetitorsListProps, React.JSXElementConstructor<CompetitorsListState>> {

@@ -83,22 +83,32 @@ export type FollowersExplorerProps =
 type FollowersExplorerState = {}
 
 class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplorerState> {
-  componentWillReceiveProps() {
-    // TODO: check that we load competitors first for case of opening "/content" directly.
-    if (this.props.followersExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
-      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
-    }
-  }
-
   componentDidUpdate(prevProps: FollowersExplorerProps) {
-    if (prevProps.followersExplorerSelectedCompetitors !== this.props.followersExplorerSelectedCompetitors) {
+    // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
+    if (this.props.followersExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
+      // preselect first competitor (when navigating from followers explorer, for example)
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+    } else if (
+      prevProps.followersExplorerSelectedCompetitors !== this.props.followersExplorerSelectedCompetitors
+      && this.props.followersExplorerSelectedCompetitors.length > 0
+    ) {
+      // if selected competitors are changed, reload content
+      // TODO(optimization): load only if selected competitors changed (when navigating here, then to other page and then back here without changing selected competitors)
       this.props.loadFollowers();
     }
   }
 
   componentDidMount(): void {
-    this.props.loadCompetitors();
-    this.props.loadFollowers();
+    if (this.props.followersExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
+      // preselect first competitor (when navigating from followers explorer, for example)
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+    } else if (this.props.loadCompetitorsCompetitors.length === 0) {
+      // if competitors list is not loaded - load it (when navigating directly)
+      this.props.loadCompetitors();
+    } else {
+      // when competitors are loaded and selected - load content
+      this.props.loadFollowers();
+    }
   }
 
   handleVerifiedOnlyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -200,6 +210,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                           <List>
                             {
                               this.props.loadFollowersFollowers
+                                .splice(0, 45)
                                 .filter((follower: Follower) =>
                                   this.props.followersExplorerVerifiedOnly ? follower.isVerified : true)
                                 .map((follower: Follower, index) =>

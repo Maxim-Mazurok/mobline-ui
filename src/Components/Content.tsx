@@ -78,23 +78,32 @@ export type ContentExplorerProps =
 type ContentExplorerState = {}
 
 class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerState> {
-  componentWillReceiveProps() {
-    // TODO: check that we load competitors first for case of opening "/content" directly.
-    // TODO: don't load content/followers if no competitors selected (flash of error)
-    if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
-      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
-    }
-  }
-
   componentDidUpdate(prevProps: ContentExplorerProps) {
-    if (prevProps.contentExplorerSelectedCompetitors !== this.props.contentExplorerSelectedCompetitors) {
+    // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
+    if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
+      // preselect first competitor (when navigating from followers explorer, for example)
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+    } else if (
+      prevProps.contentExplorerSelectedCompetitors !== this.props.contentExplorerSelectedCompetitors
+      && this.props.contentExplorerSelectedCompetitors.length > 0
+    ) {
+      // if selected competitors are changed, reload content
       this.props.loadContent();
     }
   }
 
   componentDidMount(): void {
-    this.props.loadCompetitors();
-    this.props.loadContent();
+    if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
+      // preselect first competitor (when navigating from followers explorer, for example)
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+    } else if (this.props.loadCompetitorsCompetitors.length === 0) {
+      // if competitors list is not loaded - load it (when navigating directly)
+      this.props.loadCompetitors();
+    } else {
+      // when competitors are loaded and selected - load content
+      // TODO(optimization): load only if selected competitors changed (when navigating here, then to other page and then back here without changing selected competitors)
+      this.props.loadContent();
+    }
   }
 
   render(): React.ReactElement<ContentExplorerProps, React.JSXElementConstructor<ContentExplorerState>> {
@@ -171,6 +180,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                             <Grid container spacing={2}>
                               {
                                 this.props.loadContentContents
+                                  .splice(0, 9)
                                   .map((content, index) =>
                                     <React.Fragment
                                       key={index}
@@ -188,7 +198,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                               gutterBottom
                               className={classes.noContentsFound}
                             >
-                              No verified contents found.
+                              No content found.
                             </Typography>
                     }
                   </Box>

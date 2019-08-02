@@ -42,9 +42,10 @@ type ThunkResult<R> = ThunkAction<R, GlobalState, undefined, LoadCompetitorsActi
 
 export const loadCompetitors = (): ThunkResult<Promise<void>> => {
   return async (dispatch: Dispatch<LoadCompetitorsAction | SnackbarAction>, getState: () => GlobalState) => {
-    dispatch(loadCompetitorsStarted());
-
     const state = getState();
+    if (state.loadCompetitors.loading) return; // Another loading is in progress
+
+    dispatch(loadCompetitorsStarted());
 
     axios
       .post(`${API_URL}/get_competitors.php`, {

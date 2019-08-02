@@ -38,9 +38,10 @@ type ThunkResult<R> = ThunkAction<R, GlobalState, undefined, LoadContentAction>;
 
 export const loadContent = (): ThunkResult<Promise<void>> => {
   return async (dispatch: Dispatch<LoadContentAction | SnackbarAction>, getState: () => GlobalState) => {
-    dispatch(loadContentStarted());
-
     const state = getState();
+    if (state.loadContent.loading) return; // Another loading is in progress
+
+    dispatch(loadContentStarted());
 
     axios
       .post(`${API_URL}/get_content.php`, {
