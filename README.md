@@ -1,4 +1,7 @@
 #TODOs:
+- Tests:
+    - [ ] Write test plan
+    - [ ] Write tests
 - Better UI:
     - [ ] Hide long descriptions for posts (make expandable)
 - Better UX:
