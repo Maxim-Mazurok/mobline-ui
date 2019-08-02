@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import GlobalState from "../types/GlobalState";
+import GlobalState, { Competitor } from "../types/GlobalState";
 import { loadCompetitors } from "../actions/loadCompetitors";
 import {
   Avatar,
@@ -160,31 +160,34 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                   className={classes.paper}
                 >
                   <Box mx={1} my={2}>
-                    {this.props.loadCompetitorsCompetitors.map((competitor, index) => {
-                        const isSelected = this.props.followersExplorerSelectedCompetitors.indexOf(competitor.userPk) !== -1;
-                        const props: ChipProps = {
-                          color: isSelected ? "primary" : "default",
-                        };
-                        if (isSelected) {
-                          props.onDelete = () => {
-                            this.props.unselectCompetitor(competitor.userPk);
+                    {this.props.loadCompetitorsCompetitors
+                      .filter((competitor: Competitor) => competitor.userPk !== "") // handle queued competitors
+                      // TODO(duplicate): create single component
+                      .map((competitor, index) => {
+                          const isSelected = this.props.followersExplorerSelectedCompetitors.indexOf(competitor.userPk) !== -1;
+                          const props: ChipProps = {
+                            color: isSelected ? "primary" : "default",
                           };
-                        } else {
-                          props.onClick = () => {
-                            this.props.selectCompetitor(competitor.userPk);
-                          };
+                          if (isSelected) {
+                            props.onDelete = () => {
+                              this.props.unselectCompetitor(competitor.userPk);
+                            };
+                          } else {
+                            props.onClick = () => {
+                              this.props.selectCompetitor(competitor.userPk);
+                            };
+                          }
+                          return (
+                            <Chip
+                              {...props}
+                              className={classes.chip}
+                              key={index}
+                              avatar={<Avatar alt={competitor.username} src={competitor.profilePicUrl} />}
+                              label={competitor.username}
+                            />
+                          );
                         }
-                        return (
-                          <Chip
-                            {...props}
-                            className={classes.chip}
-                            key={index}
-                            avatar={<Avatar alt={competitor.username} src={competitor.profilePicUrl} />}
-                            label={competitor.username}
-                          />
-                        );
-                      }
-                    )}
+                      )}
                   </Box>
                   <Box mx={2} mb={2} hidden>
                     <FormGroup row>
