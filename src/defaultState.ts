@@ -11,15 +11,6 @@ export enum MenuItemId {
   SETTINGS,
 }
 
-export const MenuItemPaths = {
-  [MenuItemId.DASHBOARD]: "/dashboard",
-  [MenuItemId.COMPETITORS]: "/competitors",
-  [MenuItemId.CONTENT]: "/content",
-  [MenuItemId.FOLLOWERS_EXPLORER]: "/followers",
-  [MenuItemId.ADS]: "/ads",
-  [MenuItemId.SETTINGS]: "/settings",
-};
-
 const getInitialUserProfile = (): Auth0UserProfile | null => {
   const userProfileString = localStorage.getItem('userProfile');
   if (userProfileString !== null && userProfileString !== "{}") {
@@ -40,12 +31,8 @@ const getInitialCustomerId = (): number | null => {
   return null;
 };
 
-// @ts-ignore
-export const getKeyByValue = (object, value): string => Object.keys(object).find(key => object[key] === value);
-
 export const defaultState: GlobalState = {
   menu: {
-    selectedMenuItemId: parseInt(getKeyByValue(MenuItemPaths, window.location.pathname)) as MenuItemId,
     drawerIsOpen: false,
   },
   user: {

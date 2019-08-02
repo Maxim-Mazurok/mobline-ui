@@ -3,7 +3,6 @@ import { IGUsername } from "../actions/addCompetitor";
 import { SnackbarData } from "../actions/snackbar";
 import { Follower } from "../reducers/loadFollowers";
 import { Content } from "../reducers/loadContent";
-import { MenuItemId } from "../defaultState";
 
 export type DrawerIsOpen = boolean;
 
@@ -36,7 +35,6 @@ export interface Competitor {
 
 export default interface GlobalState {
   menu: {
-    selectedMenuItemId: MenuItemId,
     drawerIsOpen: DrawerIsOpen,
   },
   user: {

@@ -62,6 +62,7 @@ class Lock extends Component<LockProps, LockState> {
     auth: {
       responseType: 'token id_token',
       sso: false,
+      redirectUrl: `${document.location.origin}/`,
     },
     languageDictionary: {
       title: "Mobline"
@@ -87,6 +88,12 @@ class Lock extends Component<LockProps, LockState> {
     this.lock.on('authenticated', this.handleAuth);
   };
 
+  showLock = () => {
+    localStorage.setItem("redirectAfterAuth", this.props.location.pathname);
+    this.props.history.push("/");
+    this.lock.show();
+  };
+
   componentDidMount() {
     // Avoid showing Lock when hash is parsed.
     if (!(/access_token|id_token|error/.test(this.props.location.hash))) {
@@ -94,7 +101,7 @@ class Lock extends Component<LockProps, LockState> {
         this.lock.checkSession({}, (error, authResult) => {
           if (error || !authResult) {
             this.forceUpdate(() => {
-              this.lock.show();
+              this.showLock();
             });
           } else {
             this.handleAuth(authResult);
@@ -104,7 +111,7 @@ class Lock extends Component<LockProps, LockState> {
       } else {
         this.setState({ loading: false });
         this.forceUpdate(() => {
-          this.lock.show();
+          this.showLock();
         });
       }
     }
@@ -148,6 +155,11 @@ class Lock extends Component<LockProps, LockState> {
           return;
         }
 
+        const redirectAfterAuth = localStorage.getItem("redirectAfterAuth");
+        if (redirectAfterAuth !== null) {
+          localStorage.removeItem("redirectAfterAuth");
+          this.props.history.push(redirectAfterAuth);
+        }
         this.props.handleUserProfile(profile);
         this.props.getCustomerId();
       });

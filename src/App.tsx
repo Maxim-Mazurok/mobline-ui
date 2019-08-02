@@ -3,7 +3,7 @@ import './App.scss';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { TopBarConnected } from "./Components/TopBar";
 import { MainDrawerConnected } from "./Components/MainDrawer";
-import { Redirect, Route, RouteComponentProps, Switch, withRouter } from "react-router";
+import { Route, RouteComponentProps, Switch, withRouter } from "react-router";
 import Lock from "./Components/Lock";
 import InviteCode from "./Components/InviteCode";
 import GlobalState from "./types/GlobalState";
@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import { loadCompetitors } from "./actions/loadCompetitors";
 import { getCustomerId } from "./actions/getCustomerId";
-import { CompetitorsListConnected } from "./Components/CompetitorsList";
 import { SnackbarConnected } from "./Components/Snackbar";
 import {
   CircularProgress,
@@ -26,11 +25,8 @@ import {
 } from "@material-ui/core";
 import AddCompetitor from "./Components/AddCompetitor";
 import { red } from "@material-ui/core/colors";
-import { FollowersExplorerConnected } from "./Components/FollowersExplorer";
 import { wsSubscribe } from "./actions/socket";
-import { ContentExplorerConnected } from "./Components/Content";
-import { DashboardConnected } from "./Components/Dashboard";
-import { MenuItemId, MenuItemPaths } from "./defaultState";
+import { menuItems } from "./reducers/menu";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -53,7 +49,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     dispatch
   );
 
-const mapStateToProps = ({ user, loadCompetitors, menu }: GlobalState) => ({
+const mapStateToProps = ({ user, loadCompetitors }: GlobalState) => ({
   inviteCodeIsCorrect: inviteCodeIsCorrect(user),
   isLoggedIn: isLoggedIn(user),
   userProfile: user.userProfile || { name: "Not logged in" },
@@ -61,7 +57,6 @@ const mapStateToProps = ({ user, loadCompetitors, menu }: GlobalState) => ({
   userCustomerId: user.customerId,
   userCustomerIdLoading: user.customerIdLoading,
   userCustomerIdError: user.customerIdError,
-  selectedMenuItemId: menu.selectedMenuItemId,
 });
 
 export type AppProps =
@@ -101,29 +96,9 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
   }
 
   logout: () => void = () => {
-    //TODO
+    // TODO: implement logout
     alert('logout');
   };
-
-  renderCurrentSection() {
-    switch (this.props.selectedMenuItemId) {
-      case MenuItemId.DASHBOARD:
-        return <p>Dashboard will be here soon...</p>;
-      case MenuItemId.COMPETITORS:
-        return <CompetitorsListConnected />;
-      case MenuItemId.CONTENT:
-        return <ContentExplorerConnected />;
-      case MenuItemId.FOLLOWERS_EXPLORER:
-        return <FollowersExplorerConnected />;
-      case MenuItemId.ADS:
-        return <p>Ads will be here soon...</p>;
-      case MenuItemId.SETTINGS:
-        return <p>Setting will be here soon...</p>;
-      default:
-        console.error(`Unknown section id: ${this.props.selectedMenuItemId}`);
-        return null;
-    }
-  }
 
   render(): React.ReactElement {
     const { classes } = this.props;
@@ -160,14 +135,15 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
                   this.props.userCustomerId &&
                   <React.Fragment>
                     <Switch>
-                      <Route path={MenuItemPaths[MenuItemId.DASHBOARD]} component={DashboardConnected} />
-                      <Route path={MenuItemPaths[MenuItemId.COMPETITORS]} component={CompetitorsListConnected} />
-                      <Route path={MenuItemPaths[MenuItemId.CONTENT]} component={ContentExplorerConnected} />
-                      <Route path={MenuItemPaths[MenuItemId.FOLLOWERS_EXPLORER]}
-                             component={FollowersExplorerConnected} />
-                      <Route path={MenuItemPaths[MenuItemId.ADS]} component={DashboardConnected} />
-                      <Route path={MenuItemPaths[MenuItemId.SETTINGS]} component={DashboardConnected} />
-                      <Redirect from="/" to="/dashboard" />
+                      {Object.entries(menuItems)
+                        .map(([key, menuItem]) => (
+                          <Route
+                            key={key}
+                            exact
+                            path={menuItem.path}
+                            component={menuItem.component} />
+                        ))
+                      }
                     </Switch>
                   </React.Fragment>
               }

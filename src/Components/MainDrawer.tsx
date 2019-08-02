@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { closeDrawer, openDrawer, selectMenu } from "../actions";
+import { closeDrawer, openDrawer } from "../actions";
 import { Divider, List, ListItemIcon, SwipeableDrawer } from "@material-ui/core";
 import { connect } from "react-redux";
 import GlobalState from "../types/GlobalState";
 import { drawerIsOpen } from "../selectors";
-import { menuItems, MenuItemType } from "../reducers/menu";
+import { menuStructure, MenuStructureItemType } from "../reducers/menu";
 import { RouteComponentProps, withRouter } from "react-router";
-import { getKeyByValue, MenuItemId, MenuItemPaths } from "../defaultState";
+import { NavLink, NavLinkProps } from "react-router-dom";
 
 const mapStateToProps = ({ menu }: GlobalState) => ({
-  selectedMenuItemId: menu.selectedMenuItemId,
   drawerIsOpen: drawerIsOpen(menu),
 });
 
@@ -21,7 +20,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       openDrawer,
       closeDrawer,
-      selectMenu,
     },
     dispatch
   );
@@ -33,14 +31,6 @@ export type MainDrawerProps = ReturnType<typeof mapStateToProps> & ReturnType<ty
 type MainDrawerState = {}
 
 class MainDrawer extends Component<RouteComponentProps<{}> & MainDrawerProps, MainDrawerState> {
-  componentWillReceiveProps(nextProps: Readonly<RouteComponentProps<{}> & MainDrawerProps>, nextContext: any): void {
-    // TODO: make this hack for redirect from "/" to "/dashboard" more beautiful
-    // TODO: fix logging in from pages other then "/" (save page, redirect to "/", restore saved page after login)
-    if (this.props.selectedMenuItemId !== parseInt(getKeyByValue(MenuItemPaths, window.location.pathname)) as MenuItemId) {
-      this.props.selectMenu(parseInt(getKeyByValue(MenuItemPaths, window.location.pathname)) as MenuItemId, this.props.history);
-    }
-  }
-
   toggleDrawer = (open: boolean) => {
     open ? this.props.openDrawer() : this.props.closeDrawer();
   };
@@ -61,6 +51,10 @@ class MainDrawer extends Component<RouteComponentProps<{}> & MainDrawerProps, Ma
   };
 
   render(): React.ReactElement<MainDrawerProps, React.JSXElementConstructor<MainDrawerState>> {
+    const CollisionLink = React.forwardRef((props: NavLinkProps, ref: React.Ref<HTMLAnchorElement>) => (
+      <NavLink innerRef={ref} {...props} />
+    ));
+
     return (
       <div>
         <SwipeableDrawer
@@ -76,34 +70,35 @@ class MainDrawer extends Component<RouteComponentProps<{}> & MainDrawerProps, Ma
               style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
             >
               {
-                menuItems.map((menuItem, index) => {
-                  switch (menuItem.type) {
-                    case MenuItemType.ITEM:
-                      const Icon = menuItem.hasOwnProperty('icon') ? menuItem.icon : null;
+                menuStructure.map((menuStructureItem, index) => {
+                  switch (menuStructureItem.type) {
+                    case MenuStructureItemType.ITEM:
                       return (
                         <ListItem
-                          selected={menuItem.hasOwnProperty('id') && this.props.selectedMenuItemId === menuItem.id}
-                          button
                           key={index}
-                          onClick={() => {
-                            this.props.selectMenu(menuItem.id || 0, this.props.history);
-                            this.toggleDrawer(false);
-                          }}
+                          button
+                          component={CollisionLink}
+                          activeClassName={"Mui-selected"}
+                          to={menuStructureItem.item.path}
+                          exact
+                          onClick={() => this.toggleDrawer(false)}
                         >
-                          {Icon && <ListItemIcon><Icon /></ListItemIcon>}
-                          <ListItemText primary={menuItem.text} />
+                          <ListItemIcon>
+                            <menuStructureItem.item.icon />
+                          </ListItemIcon>
+                          <ListItemText primary={menuStructureItem.item.text} />
                         </ListItem>
                       );
-                    case MenuItemType.DIVIDER:
+                    case MenuStructureItemType.DIVIDER:
                       return (
                         <Divider key={index} />
                       );
-                    case MenuItemType.MARGIN_TOP_AUTO:
+                    case MenuStructureItemType.MARGIN_TOP_AUTO:
                       return (
                         <div key={index} style={{ marginTop: 'auto' }} />
                       );
                     default:
-                      console.error(`Unknown menu item type: ${menuItem.type}`, menuItem);
+                      console.error(`Unknown menu item type: ${menuStructureItem.type}`, menuStructureItem);
                       return null;
                   }
                 })

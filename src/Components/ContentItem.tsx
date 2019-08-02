@@ -197,8 +197,11 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
             }
             {
               this.props.content.products.length > 0 &&
-              this.props.content.products.map(product =>
-                <ListItem alignItems="flex-start">
+              this.props.content.products.map((product, index) =>
+                <ListItem
+                  key={index}
+                  alignItems="flex-start"
+                >
                   <ListItemAvatar>
                     <Avatar alt="Travis Howard" src={product.mainImage} />
                   </ListItemAvatar>
@@ -218,7 +221,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     }
                     secondary={
                       <Typography
-                        component="p"
+                        component="div"
                         variant="body2"
                         color="textPrimary"
                       >

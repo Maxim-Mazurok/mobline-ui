@@ -1,75 +1,121 @@
-import { CLOSE_DRAWER, MenuAction, OPEN_DRAWER, SELECT_MENU } from "../actions";
+import { CLOSE_DRAWER, MenuAction, OPEN_DRAWER } from "../actions";
 import { defaultState, MenuItemId } from "../defaultState";
 import { Dashboard, List, People, PhotoLibrary, Settings, SvgIconComponent, TrendingUp } from "@material-ui/icons";
+import { DashboardConnected } from "../Components/Dashboard";
+import { CompetitorsListConnected } from "../Components/CompetitorsList";
+import { ContentExplorerConnected } from "../Components/Content";
+import { FollowersExplorerConnected } from "../Components/FollowersExplorer";
+import { ConnectedComponentClass } from "react-redux";
+import SvgIcon from "@material-ui/core/SvgIcon";
 
-export enum MenuItemType {
+export enum MenuStructureItemType {
   ITEM = 'item',
   DIVIDER = 'divider',
   MARGIN_TOP_AUTO = 'mt-auto',
 }
 
 export type MenuItem = {
-  type: MenuItemType,
-  text?: string,
-  icon?: SvgIconComponent,
-  id?: MenuItemId,
+  text: string,
+  icon: SvgIconComponent,
+  path: string,
+  component: ConnectedComponentClass<any, any>,
 }
 
-export const menuItems: MenuItem[] = [
-  {
-    type: MenuItemType.ITEM,
+export const menuItems: {
+  [key in MenuItemId]: MenuItem
+} = {
+  [MenuItemId.DASHBOARD]: {
     text: 'Dashboard',
     icon: Dashboard,
-    id: MenuItemId.DASHBOARD,
+    path: "/",
+    component: DashboardConnected,
   },
-  {
-    type: MenuItemType.DIVIDER,
-  },
-  {
-    type: MenuItemType.ITEM,
+  [MenuItemId.COMPETITORS]: {
     text: 'Competitors',
     icon: List,
-    id: MenuItemId.COMPETITORS,
+    path: "/competitors",
+    component: CompetitorsListConnected,
   },
-  {
-    type: MenuItemType.ITEM,
+  [MenuItemId.CONTENT]: {
     text: 'Content',
     icon: PhotoLibrary,
-    id: MenuItemId.CONTENT,
+    path: "/content",
+    component: ContentExplorerConnected,
   },
-  {
-    type: MenuItemType.ITEM,
+  [MenuItemId.FOLLOWERS_EXPLORER]: {
     text: 'Follower Insights',
     icon: People,
-    id: MenuItemId.FOLLOWERS_EXPLORER,
+    path: "/followers",
+    component: FollowersExplorerConnected,
   },
-  {
-    type: MenuItemType.ITEM,
+  [MenuItemId.ADS]: {
     text: 'Ads',
     icon: TrendingUp,
-    id: MenuItemId.ADS,
+    path: "/ads",
+    component: DashboardConnected,
   },
-  {
-    type: MenuItemType.MARGIN_TOP_AUTO,
-  },
-  {
-    type: MenuItemType.DIVIDER,
-  },
-  {
-    type: MenuItemType.ITEM,
+  [MenuItemId.SETTINGS]: {
     text: 'Settings',
     icon: Settings,
-    id: MenuItemId.SETTINGS,
+    path: "/settings",
+    component: DashboardConnected,
+  },
+};
+
+type MenuStructureItem = {
+  type: MenuStructureItemType,
+  item: MenuItem,
+};
+
+// TODO: kind of dirty, get rid of dummy menu item
+const dummyMenuItem = {
+  text: '',
+  icon: SvgIcon,
+  path: "",
+  component: DashboardConnected,
+};
+
+export const menuStructure: MenuStructureItem[] = [
+  {
+    type: MenuStructureItemType.ITEM,
+    item: menuItems[MenuItemId.DASHBOARD],
+  },
+  {
+    type: MenuStructureItemType.DIVIDER,
+    item: dummyMenuItem,
+  },
+  {
+    type: MenuStructureItemType.ITEM,
+    item: menuItems[MenuItemId.COMPETITORS],
+  },
+  {
+    type: MenuStructureItemType.ITEM,
+    item: menuItems[MenuItemId.CONTENT],
+  },
+  {
+    type: MenuStructureItemType.ITEM,
+    item: menuItems[MenuItemId.FOLLOWERS_EXPLORER],
+  },
+  {
+    type: MenuStructureItemType.ITEM,
+    item: menuItems[MenuItemId.ADS],
+  },
+  {
+    type: MenuStructureItemType.MARGIN_TOP_AUTO,
+    item: dummyMenuItem,
+  },
+  {
+    type: MenuStructureItemType.DIVIDER,
+    item: dummyMenuItem,
+  },
+  {
+    type: MenuStructureItemType.ITEM,
+    item: menuItems[MenuItemId.SETTINGS],
   }
 ];
 
 export const menuReducer = (state: typeof defaultState.menu = defaultState.menu, action: MenuAction): typeof defaultState.menu => {
   switch (action.type) {
-    case SELECT_MENU:
-      return {
-        ...state,
-        selectedMenuItemId: action.payload,
-      };
     case OPEN_DRAWER:
       return {
         ...state,

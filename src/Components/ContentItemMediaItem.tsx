@@ -40,7 +40,6 @@ export class ContentItemMediaItem extends Component<ContentItemMediaItemProps, C
           }} />
         </div>;
       case MediaType.VIDEO:
-        //TODO: use cover, don't load the video
         return <div
           style={{
             paddingTop: "100%",

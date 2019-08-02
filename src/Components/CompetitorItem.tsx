@@ -16,10 +16,11 @@ import { Delete, MoreVert, People, PhotoLibrary, SvgIconComponent, Sync, Trendin
 import { connect } from "react-redux";
 import { Competitor } from "../types/GlobalState";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { selectMenu, selectSingleCompetitor } from "../actions";
+import { selectSingleCompetitor } from "../actions";
 import { RouteComponentProps, withRouter } from "react-router";
-import { MenuItemId } from "../defaultState";
 import { deleteCompetitor } from "../actions/deleteCompetitor";
+import { menuItems } from "../reducers/menu";
+import { MenuItemId } from "../defaultState";
 
 const mapStateToProps = () => ({});
 
@@ -27,7 +28,6 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
       selectSingleCompetitor,
-      selectMenu,
       deleteCompetitor,
     },
     dispatch
@@ -141,15 +141,15 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
     switch (optionId) {
       case OptionId.CONTENT:
         this.props.selectSingleCompetitor(userPk);
-        this.props.selectMenu(MenuItemId.CONTENT, this.props.history);
+        this.props.history.push(menuItems[MenuItemId.CONTENT].path);
         break;
       case OptionId.FOLLOWERS:
         this.props.selectSingleCompetitor(userPk);
-        this.props.selectMenu(MenuItemId.FOLLOWERS_EXPLORER, this.props.history);
+        this.props.history.push(menuItems[MenuItemId.FOLLOWERS_EXPLORER].path);
         break;
       case OptionId.ADS:
         this.props.selectSingleCompetitor(userPk);
-        this.props.selectMenu(MenuItemId.ADS, this.props.history);
+        this.props.history.push(menuItems[MenuItemId.ADS].path);
         break;
       case OptionId.DELETE:
         this.props.deleteCompetitor(username, userPk);

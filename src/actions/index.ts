@@ -1,4 +1,3 @@
-import { SelectMenuAction } from "./selectMenuAction";
 import { action } from 'typesafe-actions';
 import { Competitor, UserInfo } from "../types/GlobalState";
 import { OpenDrawerAction } from "./openDrawerAction";
@@ -19,8 +18,6 @@ import {
 } from "../reducers/followersExplorer";
 import { LoadFollowersAction } from "./loadFollowers";
 import { FollowersExplorerAction } from "./followersExplorer";
-import { History } from "history";
-import { MenuItemId, MenuItemPaths } from "../defaultState";
 import { DeleteCompetitorAction } from "./deleteCompetitor";
 
 export const API_URL = process.env.REACT_APP_API_URL;
@@ -29,7 +26,6 @@ export const WS_PORT = process.env.REACT_APP_WS_PORT;
 export const WS_SCHEME = process.env.REACT_APP_WS_SCHEME;
 export const WS_HEARTBEAT = process.env.REACT_APP_WS_HEARTBEAT === "true";
 
-export const SELECT_MENU = 'selectMenuAction';
 export const OPEN_DRAWER = 'openDrawerAction';
 export const CLOSE_DRAWER = 'closeDrawerAction';
 export const HANDLE_LOGIN = 'handleLoginAction';
@@ -37,7 +33,6 @@ export const USER_PROFILE = 'userProfileAction';
 export const SET_INVITE_CODE = 'setInviteCodeAction';
 
 export type MenuAction =
-  | SelectMenuAction
   | OpenDrawerAction
   | CloseDrawerAction
   ;
@@ -60,10 +55,6 @@ export type Actions =
   & DeleteCompetitorAction
   ;
 
-export const selectMenu = (menuItemId: MenuItemId, history: History) => {
-  history.push(MenuItemPaths[menuItemId]);
-  return action(SELECT_MENU, menuItemId);
-};
 export const openDrawer = () => action(OPEN_DRAWER);
 export const closeDrawer = () => action(CLOSE_DRAWER);
 export const handleLogin = (userInfo: UserInfo) => action(HANDLE_LOGIN, userInfo);
