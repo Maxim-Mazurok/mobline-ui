@@ -198,11 +198,16 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                               hasMore={this.state.pageNumber * postsPerPage < this.props.loadContentContents.length}
                               loader={
                                 <LinearProgress
+                                  key={1}
                                   className={classes.loader}
                                 />
                               }
                             >
-                              <Grid container spacing={2}>
+                              <Grid
+                                key={0}
+                                container
+                                spacing={2}
+                              >
                                 {
                                   this.props.loadContentContents
                                     .slice(0, this.state.pageNumber * postsPerPage)

@@ -4,6 +4,7 @@ import { MediaItem, MediaType } from "../reducers/loadContent";
 export type ContentItemMediaItemProps =
   & {
   media: MediaItem
+  slickControlsHack: boolean
 };
 
 type ContentItemMediaItemState =
@@ -16,8 +17,14 @@ export class ContentItemMediaItem extends Component<ContentItemMediaItemProps, C
   state = {
     linkCopied: false,
     showVideo: false,
-    //TODO: save video volume globally
+    // TODO: save video volume globally
   };
+
+  // TODO: get rid of this hack (i.e., replace slick with other lib)
+  slickControlsHack = this.props.slickControlsHack ? {
+    disablepictureinpicture: 'disablePictureInPicture',
+    controlsList: "nodownload"
+  } : {};
 
   render(): React.ReactElement<ContentItemMediaItemProps, React.JSXElementConstructor<ContentItemMediaItemState>> {
     switch (this.props.media.type) {
@@ -66,6 +73,7 @@ export class ContentItemMediaItem extends Component<ContentItemMediaItemProps, C
           }
           {this.state.showVideo &&
           <video
+            {...this.slickControlsHack}
             style={{
               position: "absolute",
               top: 0,

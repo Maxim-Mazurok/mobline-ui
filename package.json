@@ -40,8 +40,8 @@
     "typescript": "^3.5.3"
   },
   "resolutions": {
-    "browserslist": "4.6.2",
-    "caniuse-lite": "1.0.30000974"
+    "browserslist": "4.6.6",
+    "caniuse-lite": "1.0.30000987"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -7,6 +7,7 @@
 - Better UX:
     - [ ] Show "deleting" state for competitor (don't just delete it from UI while request is going, show loading, or something...)
 - Bugs:
+    - [ ] (low priority) if video in Slick slider - three dots (download + PIP) in controls can't be clicked in single item and messes up when multiple items. Possible solution - replace slick with other lib.
     - [x] Fix redirect URL mismatch on auth
 - WS-related:
     - [ ] Detect online/offline to reconnect the websocket - [example](https://github.com/jsmanifest/ws-online-sync)

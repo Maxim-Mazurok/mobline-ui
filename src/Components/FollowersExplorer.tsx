@@ -228,11 +228,14 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                             hasMore={this.state.pageNumber * followersPerPage < this.props.loadFollowersFollowers.length}
                             loader={
                               <LinearProgress
+                                key={1}
                                 className={classes.loader}
                               />
                             }
                           >
-                            <List>
+                            <List
+                              key={0}
+                            >
                               {
                                 this.props.loadFollowersFollowers
                                   .slice(0, this.state.pageNumber * followersPerPage)

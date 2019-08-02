@@ -10,6 +10,7 @@
       <w>dbname</w>
       <w>dbpassword</w>
       <w>dbusername</w>
+      <w>disablepictureinpicture</w>
       <w>dotenv</w>
       <w>hashtag</w>
       <w>hashtags</w>
@@ -19,6 +20,7 @@
       <w>mazurok</w>
       <w>mobline</w>
       <w>moblinebeta</w>
+      <w>nodownload</w>
       <w>noopener</w>
       <w>noreferrer</w>
       <w>ondras</w>
