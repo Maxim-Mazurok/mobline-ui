@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { MediaItem, MediaType } from "../reducers/loadContent";
+import React, { Component } from 'react';
+import { MediaItem, MediaType } from '../reducers/loadContent';
 
 export type ContentItemMediaItemProps =
   & {
@@ -22,8 +22,8 @@ export class ContentItemMediaItem extends Component<ContentItemMediaItemProps, C
 
   // TODO: get rid of this hack (i.e., replace slick with other lib)
   slickControlsHack = this.props.slickControlsHack ? {
-    disablepictureinpicture: 'disablePictureInPicture',
-    controlsList: "nodownload"
+    disablePictureInPicture: true,
+    controlsList: 'nodownload',
   } : {};
 
   render(): React.ReactElement<ContentItemMediaItemProps, React.JSXElementConstructor<ContentItemMediaItemState>> {
@@ -31,43 +31,43 @@ export class ContentItemMediaItem extends Component<ContentItemMediaItemProps, C
       case MediaType.PHOTO:
         return <div
           style={{
-            paddingTop: "100%",
+            paddingTop: '100%',
             height: 0,
-            position: "relative",
+            position: 'relative',
           }}>
           <div style={{
             backgroundImage: `url(${this.props.media.url})`,
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            position: "absolute",
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            position: 'absolute',
             top: 0,
-            width: "100%",
-            height: "100%"
+            width: '100%',
+            height: '100%',
           }} />
         </div>;
       case MediaType.VIDEO:
         return <div
           style={{
-            paddingTop: "100%",
+            paddingTop: '100%',
             height: 0,
-            position: "relative",
+            position: 'relative',
           }}>
           {!this.state.showVideo &&
           <React.Fragment>
             <div style={{
               backgroundImage: `url(${this.props.media.coverUrl})`,
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              position: "absolute",
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'cover',
+              position: 'absolute',
               top: 0,
-              width: "100%",
-              height: "100%"
+              width: '100%',
+              height: '100%',
             }} />
             <div
-              onClick={() => this.setState({ showVideo: true })}
-              className={"video"}
+              onClick={() => this.setState({ showVideo: true }) /* TODO: pause video on navigation */}
+              className={'video'}
             />
           </React.Fragment>
           }
@@ -75,10 +75,10 @@ export class ContentItemMediaItem extends Component<ContentItemMediaItemProps, C
           <video
             {...this.slickControlsHack}
             style={{
-              position: "absolute",
+              position: 'absolute',
               top: 0,
-              width: "100%",
-              height: "100%",
+              width: '100%',
+              height: '100%',
             }}
             controls
             autoPlay

@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import './App.scss';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { TopBarConnected } from "./Components/TopBar";
-import { MainDrawerConnected } from "./Components/MainDrawer";
-import { Route, RouteComponentProps, Switch, withRouter } from "react-router";
-import Lock from "./Components/Lock";
-import InviteCode from "./Components/InviteCode";
-import GlobalState from "./types/GlobalState";
-import { inviteCodeIsCorrect, isLoggedIn } from "./selectors";
-import { connect } from "react-redux";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { loadCompetitors } from "./actions/loadCompetitors";
-import { getCustomerId } from "./actions/getCustomerId";
-import { SnackbarConnected } from "./Components/Snackbar";
+import { TopBarConnected } from './Components/TopBar';
+import { MainDrawerConnected } from './Components/MainDrawer';
+import { Route, RouteComponentProps, Switch, withRouter } from 'react-router';
+import Lock from './Components/Lock';
+import InviteCode from './Components/InviteCode';
+import GlobalState from './types/GlobalState';
+import { inviteCodeIsCorrect, isLoggedIn } from './selectors';
+import { connect } from 'react-redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { loadCompetitors } from './actions/loadCompetitors';
+import { getCustomerId } from './actions/getCustomerId';
+import { SnackbarConnected } from './Components/Snackbar';
 import {
   CircularProgress,
   Container,
@@ -21,12 +21,12 @@ import {
   StyledComponentProps,
   Theme,
   Typography,
-  withStyles
-} from "@material-ui/core";
-import AddCompetitor from "./Components/AddCompetitor";
-import { red } from "@material-ui/core/colors";
-import { wsSubscribe } from "./actions/socket";
-import { menuItems } from "./reducers/menu";
+  withStyles,
+} from '@material-ui/core';
+import AddCompetitor from './Components/AddCompetitor';
+import { red } from '@material-ui/core/colors';
+import { wsSubscribe } from './actions/socket';
+import { menuItems } from './reducers/menu';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -89,7 +89,7 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
     }
   }
 
-  componentWillMount(): void {
+  componentDidMount(): void {
     if (this.props.isLoggedIn && this.props.userCustomerId === null) {
       this.props.getCustomerId();
     }
