@@ -1,6 +1,6 @@
-import { defaultState } from "../defaultState";
-import { LoadFollowersAction } from "../actions/loadFollowers";
-import { Competitor } from "../types/GlobalState";
+import { defaultState } from '../defaultState';
+import { LoadFollowersAction } from '../actions/loadFollowers';
+import { Competitor } from '../types/GlobalState';
 
 export const LOAD_FOLLOWERS_SUCCESS = 'loadFollowersSuccess';
 export type LOAD_FOLLOWERS_SUCCESS = 'loadFollowersSuccess';
@@ -12,11 +12,11 @@ export const LOAD_FOLLOWERS_STARTED = 'loadFollowersStarted';
 export type LOAD_FOLLOWERS_STARTED = 'loadFollowersStarted';
 
 export type Follower = {
-  username: Competitor["username"],
-  userPk: Competitor["userPk"],
-  profilePicUrl: Competitor["profilePicUrl"],
-  isVerified?: Competitor["isVerified"],
-  followersCount?: Competitor["followersCount"],
+  username: Competitor['username'],
+  userPk: Competitor['userPk'],
+  profilePicUrl: Competitor['profilePicUrl'],
+  following: Competitor['username'][],
+  isVerified?: Competitor['isVerified'],
 }
 
 export const loadFollowersReducer = (state: typeof defaultState.loadFollowers = defaultState.loadFollowers, action: LoadFollowersAction): typeof defaultState.loadFollowers => {
@@ -24,7 +24,7 @@ export const loadFollowersReducer = (state: typeof defaultState.loadFollowers = 
     case LOAD_FOLLOWERS_STARTED:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case LOAD_FOLLOWERS_SUCCESS:
       return {

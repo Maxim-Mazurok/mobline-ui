@@ -1,26 +1,31 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import GlobalState, { Competitor } from "../types/GlobalState";
-import { loadCompetitors } from "../actions/loadCompetitors";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import GlobalState, { Competitor } from '../types/GlobalState';
+import { loadCompetitors } from '../actions/loadCompetitors';
 import {
   Avatar,
   Box,
   Chip,
   createStyles,
+  Divider,
+  FormControl,
   Grid,
+  InputLabel,
   LinearProgress,
+  MenuItem,
   Paper,
+  Select,
   StyledComponentProps,
   Theme,
   Typography,
   withStyles,
-} from "@material-ui/core";
-import { grey, red } from "@material-ui/core/colors";
-import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectCompetitor } from "../actions";
-import { ChipProps } from "@material-ui/core/Chip";
-import { loadContent } from "../actions/loadContent";
-import { ContentItemConnected } from "./ContentItem";
+} from '@material-ui/core';
+import { grey, red } from '@material-ui/core/colors';
+import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectCompetitor } from '../actions';
+import { ChipProps } from '@material-ui/core/Chip';
+import { loadContent } from '../actions/loadContent';
+import { ContentItemConnected } from './ContentItem';
 import InfiniteScroll from 'react-infinite-scroller';
 
 const styles = (theme: Theme) =>
@@ -63,7 +68,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       loadContent,
       setVerifiedOnly,
     },
-    dispatch
+    dispatch,
   );
 
 export type ContentExplorerProps =
@@ -82,13 +87,26 @@ export type ContentExplorerProps =
 
 type ContentExplorerState = {
   pageNumber: number,
+  sort: SortContent,
 }
 
 const postsPerPage = 9;
 
+enum SortContent {
+  DATE_DESCENDING,
+  DATE_ASCENDING,
+  ENGAGEMENT_RATE_DESCENDING,
+  ENGAGEMENT_RATE_ASCENDING,
+  LIKES_DESCENDING,
+  LIKES_ASCENDING,
+  COMMENTS_DESCENDING,
+  COMMENTS_ASCENDING,
+}
+
 class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerState> {
   state = {
-    pageNumber: 0
+    pageNumber: 0,
+    sort: SortContent.DATE_DESCENDING,
   };
 
   componentDidUpdate(prevProps: ContentExplorerProps) {
@@ -123,6 +141,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
 
   render(): React.ReactElement<ContentExplorerProps, React.JSXElementConstructor<ContentExplorerState>> {
     const { classes } = this.props;
+    const { sort, pageNumber } = this.state;
 
     return (
       <React.Fragment>
@@ -152,12 +171,12 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                 >
                   <Box mx={1} my={2}>
                     {this.props.loadCompetitorsCompetitors
-                      .filter((competitor: Competitor) => competitor.userPk !== "") // handle queued competitors
+                      .filter((competitor: Competitor) => competitor.userPk !== '') // handle queued competitors
                       // TODO(duplicate): create single component
                       .map((competitor, index) => {
                           const isSelected = this.props.contentExplorerSelectedCompetitors.indexOf(competitor.userPk) !== -1;
                           const props: ChipProps = {
-                            color: isSelected ? "primary" : "default",
+                            color: isSelected ? 'primary' : 'default',
                           };
                           if (isSelected) {
                             props.onDelete = () => {
@@ -177,8 +196,36 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                               label={competitor.username}
                             />
                           );
-                        }
+                        },
                       )}
+                  </Box>
+                  <Box mx={2} my={2}>
+                    <FormControl style={{ minWidth: 120 }}>
+                      <InputLabel htmlFor="sort">Sort by:</InputLabel>
+                      <Select
+                        autoWidth
+                        value={sort}
+                        onChange={({ target }) => {
+                          this.setState({ sort: target.value as SortContent });
+                        }}
+                        inputProps={{
+                          name: 'sort',
+                          id: 'sort',
+                        }}
+                      >
+                        <MenuItem value={SortContent.DATE_DESCENDING}>Date: New first</MenuItem>
+                        <MenuItem value={SortContent.DATE_ASCENDING}>Date: Old first</MenuItem>
+                        <Divider />
+                        <MenuItem value={SortContent.ENGAGEMENT_RATE_DESCENDING}>Engagement rate: High to Low</MenuItem>
+                        <MenuItem value={SortContent.ENGAGEMENT_RATE_ASCENDING}>Engagement rate: Low to High</MenuItem>
+                        <Divider />
+                        <MenuItem value={SortContent.LIKES_DESCENDING}>Likes: High to Low</MenuItem>
+                        <MenuItem value={SortContent.LIKES_ASCENDING}>Likes: Low to High</MenuItem>
+                        <Divider />
+                        <MenuItem value={SortContent.COMMENTS_DESCENDING}>Comments: High to Low</MenuItem>
+                        <MenuItem value={SortContent.COMMENTS_ASCENDING}>Comments: Low to High</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Box>
                   <Box mx={2} my={2}>
                     {
@@ -197,8 +244,8 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                           this.props.loadContentContents.length > 0 ?
                             <InfiniteScroll
                               pageStart={0}
-                              loadMore={() => this.setState({ pageNumber: this.state.pageNumber + 1 })}
-                              hasMore={this.state.pageNumber * postsPerPage < this.props.loadContentContents.length}
+                              loadMore={() => this.setState({ pageNumber: pageNumber + 1 })}
+                              hasMore={pageNumber * postsPerPage < this.props.loadContentContents.length}
                               loader={
                                 <LinearProgress
                                   key={1}
@@ -213,7 +260,28 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                               >
                                 {
                                   this.props.loadContentContents
-                                    .slice(0, this.state.pageNumber * postsPerPage)
+                                    .sort((a, b) => {
+                                      switch (sort) {
+                                        case SortContent.ENGAGEMENT_RATE_DESCENDING:
+                                          return b.engagementRate - a.engagementRate;
+                                        case SortContent.COMMENTS_DESCENDING:
+                                          return b.commentCount - a.commentCount;
+                                        case SortContent.LIKES_DESCENDING:
+                                          return b.likeCount - a.likeCount;
+                                        case SortContent.ENGAGEMENT_RATE_ASCENDING:
+                                          return a.engagementRate - b.engagementRate;
+                                        case SortContent.COMMENTS_ASCENDING:
+                                          return a.commentCount - b.commentCount;
+                                        case SortContent.LIKES_ASCENDING:
+                                          return a.likeCount - b.likeCount;
+                                        case SortContent.DATE_ASCENDING:
+                                          return a.timestamp - b.timestamp;
+                                        case SortContent.DATE_DESCENDING:
+                                        default:
+                                          return b.timestamp - a.timestamp;
+                                      }
+                                    })
+                                    .slice(0, pageNumber * postsPerPage)
                                     .map((content, index) =>
                                       <React.Fragment
                                         key={index}
@@ -221,7 +289,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                                         <ContentItemConnected
                                           content={content}
                                         />
-                                      </React.Fragment>
+                                      </React.Fragment>,
                                     )
                                 }
                               </Grid>

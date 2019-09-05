@@ -6,6 +6,9 @@
     - [ ] Hide long descriptions for posts (make expandable)
 - Better UX:
     - [ ] Show "deleting" state for competitor (don't just delete it from UI while request is going, show loading, or something...)
+    - [ ] Add [intro screens](https://mui.wertarbyte.com/#material-auto-rotating-carousel)
+    - [x] Add sorting by date, engagementRate, likes and comments
+    - [x] Increase session duration. Inactivity timeout - 3 days, require log in after 30 days, [docs](https://auth0.com/docs/dashboard/guides/tenants/configure-session-lifetime-settings)
 - Bugs:
     - [ ] (low priority) if video in Slick slider - three dots (download + PIP) in controls can't be clicked in single item and messes up when multiple items. Possible solution - replace slick with other lib.
     - [x] Fix redirect URL mismatch on auth
@@ -22,6 +25,10 @@
     - [x] Create pagination for Follower insights and content (using `react-infinite-scroller`)
 - Deployment:
     - [x] Don't save customerId to localstorage (in case of DB reset it will give major headache) - done for dev mode
+    - [x] Show exactly which accounts user follows in Follower Insights
+    - [ ] Dashboard
+        - [ ] Show post dynamics (number of posts per day)
+        - [ ] (advanced) Maximum dynamics by auto updating data
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

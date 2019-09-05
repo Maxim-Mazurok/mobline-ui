@@ -1,6 +1,6 @@
-import { defaultState } from "../defaultState";
-import { LoadContentAction } from "../actions/loadContent";
-import { Competitor } from "../types/GlobalState";
+import { defaultState } from '../defaultState';
+import { LoadContentAction } from '../actions/loadContent';
+import { Competitor } from '../types/GlobalState';
 
 export const LOAD_CONTENT_SUCCESS = 'loadContentSuccess';
 export type LOAD_CONTENT_SUCCESS = 'loadContentSuccess';
@@ -59,6 +59,7 @@ export type Content = {
   engagementRate: number
   hashtags: string[]
   mentions: string[]
+  timestamp: number
 }
 
 export const loadContentReducer = (state: typeof defaultState.loadContent = defaultState.loadContent, action: LoadContentAction): typeof defaultState.loadContent => {
@@ -66,7 +67,7 @@ export const loadContentReducer = (state: typeof defaultState.loadContent = defa
     case LOAD_CONTENT_STARTED:
       return {
         ...state,
-        loading: true
+        loading: true,
       };
     case LOAD_CONTENT_SUCCESS:
       return {

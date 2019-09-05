@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import GlobalState, { Competitor } from "../types/GlobalState";
-import { loadCompetitors } from "../actions/loadCompetitors";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import GlobalState, { Competitor } from '../types/GlobalState';
+import { loadCompetitors } from '../actions/loadCompetitors';
 import {
   Avatar,
   Box,
@@ -18,14 +18,14 @@ import {
   Theme,
   Typography,
   withStyles,
-} from "@material-ui/core";
-import { grey, red } from "@material-ui/core/colors";
-import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectCompetitor } from "../actions";
-import { ChipProps } from "@material-ui/core/Chip";
-import { loadFollowers } from "../actions/loadFollowers";
-import { Follower } from "../reducers/loadFollowers";
-import { FollowerItemConnected, verifiedBadge } from "./FollowerItem";
-import InfiniteScroll from "react-infinite-scroller";
+} from '@material-ui/core';
+import { grey, red } from '@material-ui/core/colors';
+import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectCompetitor } from '../actions';
+import { ChipProps } from '@material-ui/core/Chip';
+import { loadFollowers } from '../actions/loadFollowers';
+import { Follower } from '../reducers/loadFollowers';
+import { FollowerItemConnected, verifiedBadge } from './FollowerItem';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -68,7 +68,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       loadFollowers,
       setVerifiedOnly,
     },
-    dispatch
+    dispatch,
   );
 
 export type FollowersExplorerProps =
@@ -93,7 +93,7 @@ const followersPerPage = 10;
 
 class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplorerState> {
   state = {
-    pageNumber: 0
+    pageNumber: 0,
   };
 
   componentDidUpdate(prevProps: FollowersExplorerProps) {
@@ -161,12 +161,12 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                 >
                   <Box mx={1} my={2}>
                     {this.props.loadCompetitorsCompetitors
-                      .filter((competitor: Competitor) => competitor.userPk !== "") // handle queued competitors
+                      .filter((competitor: Competitor) => competitor.userPk !== '') // handle queued competitors
                       // TODO(duplicate): create single component
                       .map((competitor, index) => {
                           const isSelected = this.props.followersExplorerSelectedCompetitors.indexOf(competitor.userPk) !== -1;
                           const props: ChipProps = {
-                            color: isSelected ? "primary" : "default",
+                            color: isSelected ? 'primary' : 'default',
                           };
                           if (isSelected) {
                             props.onDelete = () => {
@@ -186,7 +186,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                               label={competitor.username}
                             />
                           );
-                        }
+                        },
                       )}
                   </Box>
                   <Box mx={2} mb={2} hidden>
@@ -241,9 +241,10 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                             >
                               {
                                 this.props.loadFollowersFollowers
-                                  .slice(0, this.state.pageNumber * followersPerPage)
+                                  .sort((a, b) => b.following.length - a.following.length)
                                   .filter((follower: Follower) =>
                                     this.props.followersExplorerVerifiedOnly ? follower.isVerified : true)
+                                  .slice(0, this.state.pageNumber * followersPerPage)
                                   .map((follower: Follower, index) =>
                                     <React.Fragment
                                       key={index}
@@ -251,7 +252,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                                       <FollowerItemConnected
                                         follower={follower}
                                       />
-                                    </React.Fragment>
+                                    </React.Fragment>,
                                   )}
                             </List>
                           </InfiniteScroll>
