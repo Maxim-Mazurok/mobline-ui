@@ -12,12 +12,15 @@ import {
   TextField,
   Typography,
   withStyles,
-} from "@material-ui/core";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { connect } from "react-redux";
-import GlobalState from "../types/GlobalState";
-import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from "../actions/addCompetitor";
-import { red } from "@material-ui/core/colors";
+} from '@material-ui/core';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import GlobalState from '../types/GlobalState';
+import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from '../actions/addCompetitor';
+import { red } from '@material-ui/core/colors';
+import { menuItems } from '../reducers/menu';
+import { MenuItemId } from '../defaultState';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 const mapStateToProps = ({ addCompetitor }: GlobalState) => ({
   error: addCompetitor.error,
@@ -33,7 +36,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       addCompetitorSetUsername,
       addCompetitorShowModal,
     },
-    dispatch
+    dispatch,
   );
 
 export type AddCompetitorProps =
@@ -62,14 +65,14 @@ const styles = () =>
     },
     buttonProgress: {
       position: 'absolute',
-      top: "50%",
-      left: "50%",
+      top: '50%',
+      left: '50%',
       marginTop: -loadingIconSize / 2,
       marginLeft: -loadingIconSize / 2,
     },
   });
 
-class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
+class AddCompetitor extends Component<RouteComponentProps<{}> & AddCompetitorProps, AddCompetitorState> {
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.addCompetitorSetUsername(event.target.value);
   };
@@ -84,7 +87,7 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
     return (
       <Dialog
         fullWidth
-        maxWidth={"sm"}
+        maxWidth={'sm'}
         open={this.props.showModal}
         disableBackdropClick={false}
         onClose={this.closeDialog}
@@ -95,6 +98,7 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
           onSubmit={(event) => {
             event.preventDefault();
             this.props.addCompetitor();
+            this.props.history.push(menuItems[MenuItemId.COMPETITORS].path);
           }}
         >
           <DialogContent>
@@ -108,7 +112,7 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
 
             <TextField
               disabled={this.props.loading}
-              error={typeof this.props.error === "string" && this.props.error.length > 0}
+              error={typeof this.props.error === 'string' && this.props.error.length > 0}
               id="invite-code-input"
               label="Username"
               value={this.props.username}
@@ -119,8 +123,8 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
           </DialogContent>
           <DialogActions>
             <Button
-              variant={"text"}
-              color={"primary"}
+              variant={'text'}
+              color={'primary'}
               disabled={this.props.loading}
               onClick={this.closeDialog}
             >
@@ -130,9 +134,9 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
               className={classes.buttonWrapper}
             >
               <Button
-                type={"submit"}
-                variant={"contained"}
-                color={"primary"}
+                type={'submit'}
+                variant={'contained'}
+                color={'primary'}
                 disabled={this.props.username === '' || this.props.loading}
               >
                 Add
@@ -150,7 +154,7 @@ class AddCompetitor extends Component<AddCompetitorProps, AddCompetitorState> {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(AddCompetitor));
+)(withStyles(styles)(AddCompetitor)));

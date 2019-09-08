@@ -6,6 +6,7 @@ import { loadCompetitors } from '../actions/loadCompetitors';
 import {
   Avatar,
   Box,
+  Button,
   Checkbox,
   Chip,
   createStyles,
@@ -26,6 +27,8 @@ import { loadFollowers } from '../actions/loadFollowers';
 import { Follower } from '../reducers/loadFollowers';
 import { FollowerItemConnected, verifiedBadge } from './FollowerItem';
 import InfiniteScroll from 'react-infinite-scroller';
+import AddIcon from '@material-ui/icons/Add';
+import { addCompetitorShowModal } from '../actions/addCompetitor';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -67,6 +70,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       unselectCompetitor,
       loadFollowers,
       setVerifiedOnly,
+      addCompetitorShowModal,
     },
     dispatch,
   );
@@ -276,7 +280,13 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
                 gutterBottom
                 className={classes.noCompetitorsFound}
               >
-                No competitors found, add them first.
+                No competitors found, <Button
+                variant="outlined"
+                onClick={() => this.props.addCompetitorShowModal()}
+              >
+                <AddIcon />
+                add new competitor
+              </Button> first.
               </Typography>
         }
       </React.Fragment>

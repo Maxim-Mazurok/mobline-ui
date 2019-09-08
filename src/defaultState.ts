@@ -1,6 +1,6 @@
-import { Auth0UserProfile } from "auth0-js";
-import GlobalState from "./types/GlobalState";
-import { SnackbarType } from "./actions/snackbar";
+import { Auth0UserProfile } from 'auth0-js';
+import GlobalState from './types/GlobalState';
+import { SnackbarType } from './actions/snackbar';
 
 export enum MenuItemId {
   DASHBOARD,
@@ -13,7 +13,7 @@ export enum MenuItemId {
 
 const getInitialUserProfile = (): Auth0UserProfile | null => {
   const userProfileString = localStorage.getItem('userProfile');
-  if (userProfileString !== null && userProfileString !== "{}") {
+  if (userProfileString !== null && userProfileString !== '{}') {
     try {
       return JSON.parse(userProfileString);
     } catch (e) {
@@ -24,7 +24,7 @@ const getInitialUserProfile = (): Auth0UserProfile | null => {
 };
 const getInitialCustomerId = (): number | null => {
   const customerIdString = localStorage.getItem('customerId');
-  if (customerIdString !== null && customerIdString !== "") {
+  if (customerIdString !== null && customerIdString !== '') {
     const customerId = parseInt(customerIdString);
     if (!Number.isNaN(customerId)) return customerId;
   }
@@ -39,10 +39,10 @@ export const defaultState: GlobalState = {
     userInfo: {
       accessToken: localStorage.getItem('accessToken') || null,
       idToken: localStorage.getItem('idToken') || null,
-      expiresAt: parseInt(localStorage.getItem('expiresAt') || "0"),
+      expiresAt: parseInt(localStorage.getItem('expiresAt') || '0'),
     },
     userProfile: getInitialUserProfile(),
-    inviteCode: localStorage.getItem('inviteCode') || "",
+    inviteCode: localStorage.getItem('inviteCode') || '',
     customerId: getInitialCustomerId(),
     customerIdLoading: false,
     customerIdError: null,
@@ -54,13 +54,13 @@ export const defaultState: GlobalState = {
   },
   addCompetitor: {
     loading: false,
-    username: "",
+    username: '',
     error: null,
     showModal: false,
   },
   snackbar: {
     type: SnackbarType.HIDDEN,
-    title: "",
+    title: '',
   },
   followersExplorer: {
     selectedCompetitors: [],
@@ -73,7 +73,7 @@ export const defaultState: GlobalState = {
     engagementRate: {
       from: 0,
       to: 100,
-    }
+    },
   },
   loadFollowers: {
     loading: false,
@@ -81,6 +81,11 @@ export const defaultState: GlobalState = {
     error: null,
   },
   loadContent: {
+    loading: false,
+    content: [],
+    error: null,
+  },
+  loadFeedAds: {
     loading: false,
     content: [],
     error: null,

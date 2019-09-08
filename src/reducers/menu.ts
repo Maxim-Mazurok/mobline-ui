@@ -1,12 +1,13 @@
-import { CLOSE_DRAWER, MenuAction, OPEN_DRAWER } from "../actions";
-import { defaultState, MenuItemId } from "../defaultState";
-import { Dashboard, List, People, PhotoLibrary, Settings, SvgIconComponent, TrendingUp } from "@material-ui/icons";
-import { DashboardConnected } from "../Components/Dashboard";
-import { CompetitorsListConnected } from "../Components/CompetitorsList";
-import { ContentExplorerConnected } from "../Components/Content";
-import { FollowersExplorerConnected } from "../Components/FollowersExplorer";
-import { ConnectedComponentClass } from "react-redux";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import { CLOSE_DRAWER, MenuAction, OPEN_DRAWER } from '../actions';
+import { defaultState, MenuItemId } from '../defaultState';
+import { Dashboard, List, People, PhotoLibrary, Settings, SvgIconComponent, TrendingUp } from '@material-ui/icons';
+import { DashboardConnected } from '../Components/Dashboard';
+import { CompetitorsListConnected } from '../Components/CompetitorsList';
+import { ContentExplorerConnected } from '../Components/Content';
+import { FollowersExplorerConnected } from '../Components/FollowersExplorer';
+import { ConnectedComponentClass } from 'react-redux';
+import SvgIcon from '@material-ui/core/SvgIcon';
+import { FeedAdsConnected } from '../Components/FeedAds';
 
 export enum MenuStructureItemType {
   ITEM = 'item',
@@ -52,7 +53,7 @@ export const menuItems: {
     text: 'Ads',
     icon: TrendingUp,
     path: "/ads",
-    component: DashboardConnected,
+    component: FeedAdsConnected,
   },
   [MenuItemId.SETTINGS]: {
     text: 'Settings',

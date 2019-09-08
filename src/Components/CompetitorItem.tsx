@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Avatar,
+  Icon,
   IconButton,
   LinearProgress,
   ListItem,
@@ -11,16 +12,16 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-} from "@material-ui/core";
-import { Delete, MoreVert, People, PhotoLibrary, SvgIconComponent, Sync, TrendingUp } from "@material-ui/icons";
-import { connect } from "react-redux";
-import { Competitor } from "../types/GlobalState";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { selectSingleCompetitor } from "../actions";
-import { RouteComponentProps, withRouter } from "react-router";
-import { deleteCompetitor } from "../actions/deleteCompetitor";
-import { menuItems } from "../reducers/menu";
-import { MenuItemId } from "../defaultState";
+} from '@material-ui/core';
+import { Delete, MoreVert, People, PhotoLibrary, SvgIconComponent, TrendingUp } from '@material-ui/icons';
+import { connect } from 'react-redux';
+import { Competitor } from '../types/GlobalState';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { selectSingleCompetitor } from '../actions';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { deleteCompetitor } from '../actions/deleteCompetitor';
+import { menuItems } from '../reducers/menu';
+import { MenuItemId } from '../defaultState';
 
 const mapStateToProps = () => ({});
 
@@ -30,7 +31,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       selectSingleCompetitor,
       deleteCompetitor,
     },
-    dispatch
+    dispatch,
   );
 
 export type CompetitorItemProps =
@@ -50,41 +51,37 @@ type CompetitorItemMenuOption = {
   title: string,
   icon: SvgIconComponent,
   id: OptionId,
+  color?: 'error',
 };
 
 enum OptionId {
   CONTENT,
   FOLLOWERS,
   ADS,
-  SYNC,
   DELETE,
 }
 
 const options: CompetitorItemMenuOption[] = [
   {
-    title: "Content",
+    title: 'Content',
     icon: PhotoLibrary,
     id: OptionId.CONTENT,
   },
   {
-    title: "Followers",
+    title: 'Followers',
     icon: People,
     id: OptionId.FOLLOWERS,
   },
   {
-    title: "Ads",
+    title: 'Ads',
     icon: TrendingUp,
     id: OptionId.ADS,
   },
   {
-    title: "Sync",
-    icon: Sync,
-    id: OptionId.SYNC,
-  },
-  {
-    title: "Delete",
+    title: 'Delete',
     icon: Delete,
     id: OptionId.DELETE,
+    color: 'error',
   },
 ];
 
@@ -119,7 +116,7 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
     if (this.props.competitor.hasOwnProperty('parseFollowersListProgress') && this.props.competitor.parseFollowersListProgress !== undefined) {
       return `${this.props.competitor.parseFollowersListProgress.done} / ${this.props.competitor.parseFollowersListProgress.total} followers parsed`;
     }
-    return "";
+    return '';
   };
 
   getPostsParsedProgress = (): number => {
@@ -133,10 +130,17 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
     if (this.props.competitor.hasOwnProperty('parsePostsProgress') && this.props.competitor.parsePostsProgress !== undefined) {
       return `${this.props.competitor.parsePostsProgress.done} / ${this.props.competitor.parsePostsProgress.total} pages parsed`;
     }
-    return "";
+    return '';
   };
 
-  handleSelect = (optionId: OptionId, username: Competitor["username"], userPk: Competitor["userPk"]) => {
+  getFeedAdsParsedProgressDetailed = (): string => {
+    if (this.props.competitor.hasOwnProperty('parseFeedAdsProgress') && this.props.competitor.parseFeedAdsProgress !== undefined) {
+      return `${this.props.competitor.parseFeedAdsProgress.done} ads parsed`;
+    }
+    return '';
+  };
+
+  handleSelect = (optionId: OptionId, username: Competitor['username'], userPk: Competitor['userPk']) => {
     this.handleClose();
     switch (optionId) {
       case OptionId.CONTENT:
@@ -153,9 +157,6 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
         break;
       case OptionId.DELETE:
         this.props.deleteCompetitor(username, userPk);
-        break;
-      case OptionId.SYNC:
-        //TODO: implement
         break;
       default:
         console.error(`Unknown option selected: ${optionId}`);
@@ -176,6 +177,13 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
     ) &&
     !(this.props.competitor.hasOwnProperty('parsePostsFinished') && this.props.competitor.parsePostsFinished);
 
+  parsingFeedAds = () =>
+    (
+      (this.props.competitor.hasOwnProperty('parseFeedAdsStarted') && this.props.competitor.parseFeedAdsStarted)
+      || this.getFeedAdsParsedProgressDetailed() !== ''
+    ) &&
+    !(this.props.competitor.hasOwnProperty('parseFeedAdsFinished') && this.props.competitor.parseFeedAdsFinished);
+
   processing = () =>
     this.parsingFollowersList()
     || this.parsingPosts()
@@ -184,15 +192,15 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
   render(): React.ReactElement<CompetitorItemProps, React.JSXElementConstructor<CompetitorItemState>> {
     return (
       <ListItem
-        alignItems={"flex-start"}
+        alignItems={'flex-start'}
       >
         <ListItemAvatar>
           <Avatar alt={this.props.competitor.username} src={this.props.competitor.profilePicUrl} />
         </ListItemAvatar>
         <ListItemText primary={this.props.competitor.username}
-                      secondaryTypographyProps={{ component: "div" }}
+                      secondaryTypographyProps={{ component: 'div' }}
                       secondary={
-                        this.props.competitor.userPk !== ""
+                        this.props.competitor.userPk !== ''
                           ?
                           <React.Fragment>
                             {
@@ -206,7 +214,7 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
                                       : `initializing...`}
                                       <Tooltip title={this.getFollowersListParsedProgressDetailed()} interactive>
                                         <LinearProgress
-                                          variant={this.getFollowersListParsedProgress() > 0 ? "determinate" : "indeterminate"}
+                                          variant={this.getFollowersListParsedProgress() > 0 ? 'determinate' : 'indeterminate'}
                                           value={this.getFollowersListParsedProgress()} />
                                       </Tooltip>
                                     </React.Fragment>
@@ -219,8 +227,21 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
                                       : `initializing...`}
                                       <Tooltip title={this.getPostsParsedProgressDetailed()} interactive>
                                         <LinearProgress
-                                          variant={this.getPostsParsedProgress() > 0 ? "determinate" : "indeterminate"}
+                                          variant={this.getPostsParsedProgress() > 0 ? 'determinate' : 'indeterminate'}
                                           value={this.getPostsParsedProgress()} />
+                                      </Tooltip>
+                                    </React.Fragment>
+                                  }
+                                  {
+                                    this.parsingFeedAds() &&
+                                    <React.Fragment>
+                                      Getting feed ads: {this.getFeedAdsParsedProgressDetailed() !== ''
+                                      ? this.getFeedAdsParsedProgressDetailed()
+                                      : `initializing...`}
+                                      <Tooltip title={this.getFeedAdsParsedProgressDetailed()} interactive>
+                                        <LinearProgress
+                                          variant="indeterminate"
+                                        />
                                       </Tooltip>
                                     </React.Fragment>
                                   }
@@ -250,18 +271,19 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
           >
             {options.map((option, index) => {
               const Icon = option.icon;
-              if (option.id === OptionId.CONTENT && this.props.competitor.userPk === "") return null;
-              if (option.id === OptionId.FOLLOWERS && this.props.competitor.userPk === "") return null;
-              if (option.id === OptionId.ADS && this.props.competitor.userPk === "") return null;
+              if (option.id === OptionId.CONTENT && this.props.competitor.userPk === '') return null;
+              if (option.id === OptionId.FOLLOWERS && this.props.competitor.userPk === '') return null;
+              if (option.id === OptionId.ADS && this.props.competitor.userPk === '') return null;
+              const color = option.color || 'inherit';
               return (
                 <MenuItem
                   key={index}
                   onClick={() => this.handleSelect(option.id, this.props.competitor.username, this.props.competitor.userPk)}
                 >
                   <ListItemIcon>
-                    <Icon />
+                    <Icon color={color} />
                   </ListItemIcon>
-                  <ListItemText primary={option.title} />
+                  <ListItemText primaryTypographyProps={{ color }} primary={option.title} />
                 </MenuItem>
               );
             })

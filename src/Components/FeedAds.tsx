@@ -25,7 +25,7 @@ import {
 import { grey, red } from '@material-ui/core/colors';
 import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectCompetitor } from '../actions';
 import { ChipProps } from '@material-ui/core/Chip';
-import { loadContent } from '../actions/loadContent';
+import { loadFeedAds } from '../actions/loadFeedAds';
 import { ContentItemConnected } from './ContentItem';
 import InfiniteScroll from 'react-infinite-scroller';
 import AddIcon from '@material-ui/icons/Add';
@@ -51,14 +51,14 @@ const styles = (theme: Theme) =>
     },
   });
 
-const mapStateToProps = ({ loadCompetitors, contentExplorer, loadContent }: GlobalState) => ({
+const mapStateToProps = ({ loadCompetitors, contentExplorer, loadFeedAds }: GlobalState) => ({
   loadCompetitorsError: loadCompetitors.error,
   loadCompetitorsCompetitors: loadCompetitors.competitors,
   loadCompetitorsLoading: loadCompetitors.loading,
   contentExplorerSelectedCompetitors: contentExplorer.selectedCompetitors,
-  loadContentError: loadContent.error,
-  loadContentContents: loadContent.content,
-  loadContentLoading: loadContent.loading,
+  loadFeedAdsError: loadFeedAds.error,
+  loadFeedAdsContents: loadFeedAds.content,
+  loadFeedAdsLoading: loadFeedAds.loading,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
@@ -68,14 +68,14 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       selectCompetitor,
       selectSingleCompetitor,
       unselectCompetitor,
-      loadContent,
+      loadFeedAds,
       setVerifiedOnly,
       addCompetitorShowModal,
     },
     dispatch,
   );
 
-export type ContentExplorerProps =
+export type FeedAdsProps =
   ReturnType<typeof mapStateToProps>
   & ReturnType<typeof mapDispatchToProps>
   & StyledComponentProps
@@ -89,7 +89,7 @@ export type ContentExplorerProps =
   },
 };
 
-type ContentExplorerState = {
+type FeedAdsState = {
   pageNumber: number,
   sort: SortContent,
 }
@@ -107,13 +107,13 @@ enum SortContent {
   COMMENTS_ASCENDING,
 }
 
-class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerState> {
+class FeedAds extends Component<FeedAdsProps, FeedAdsState> {
   state = {
     pageNumber: 0,
     sort: SortContent.DATE_DESCENDING,
   };
 
-  componentDidUpdate(prevProps: ContentExplorerProps) {
+  componentDidUpdate(prevProps: FeedAdsProps) {
     // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
     if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
       // preselect first competitor (when navigating from followers explorer, for example)
@@ -123,7 +123,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
       && this.props.contentExplorerSelectedCompetitors.length > 0
     ) {
       // if selected competitors are changed, reload content
-      this.props.loadContent();
+      this.props.loadFeedAds();
       this.setState({ pageNumber: 0 });
     }
   }
@@ -138,12 +138,12 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
     } else {
       // when competitors are loaded and selected - load content
       // TODO(optimization): load only if selected competitors changed (when navigating here, then to other page and then back here without changing selected competitors)
-      this.props.loadContent();
+      this.props.loadFeedAds();
       this.setState({ pageNumber: 0 });
     }
   }
 
-  render(): React.ReactElement<ContentExplorerProps, React.JSXElementConstructor<ContentExplorerState>> {
+  render(): React.ReactElement<FeedAdsProps, React.JSXElementConstructor<FeedAdsState>> {
     const { classes } = this.props;
     const { sort, pageNumber } = this.state;
 
@@ -167,7 +167,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                   <Typography
                     variant="h2"
                   >
-                    Content
+                    Feed Ads
                   </Typography>
                 </Box>
                 <Paper
@@ -233,23 +233,23 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                   </Box>
                   <Box mx={2} my={2}>
                     {
-                      this.props.loadContentLoading ?
+                      this.props.loadFeedAdsLoading ?
                         <LinearProgress />
                         :
-                        this.props.loadContentError ?
+                        this.props.loadFeedAdsError ?
                           <Typography
                             variant="h5"
                             gutterBottom
                             className={classes.errorMessage}
                           >
-                            {this.props.loadContentError}
+                            {this.props.loadFeedAdsError}
                           </Typography>
                           :
-                          this.props.loadContentContents.length > 0 ?
+                          this.props.loadFeedAdsContents.length > 0 ?
                             <InfiniteScroll
                               pageStart={0}
                               loadMore={() => this.setState({ pageNumber: pageNumber + 1 })}
-                              hasMore={pageNumber * postsPerPage < this.props.loadContentContents.length}
+                              hasMore={pageNumber * postsPerPage < this.props.loadFeedAdsContents.length}
                               loader={
                                 <LinearProgress
                                   key={1}
@@ -263,7 +263,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                                 spacing={2}
                               >
                                 {
-                                  this.props.loadContentContents
+                                  this.props.loadFeedAdsContents
                                     .sort((a, b) => {
                                       switch (sort) {
                                         case SortContent.ENGAGEMENT_RATE_DESCENDING:
@@ -305,7 +305,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
                               gutterBottom
                               className={classes.noContentsFound}
                             >
-                              No content found.
+                              No feed ads found.
                             </Typography>
                     }
                   </Box>
@@ -331,7 +331,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
   }
 }
 
-export const ContentExplorerConnected = connect(
+export const FeedAdsConnected = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(ContentExplorer));
+)(withStyles(styles)(FeedAds));

@@ -1,18 +1,21 @@
-import { defaultState } from "../defaultState";
-import { LoadCompetitorsAction } from "../actions/loadCompetitors";
+import { defaultState } from '../defaultState';
+import { LoadCompetitorsAction } from '../actions/loadCompetitors';
 import {
   SocketAction,
   WS_ADD_COMPETITOR_CALLBACK,
   WS_ADD_COMPETITOR_CALLBACK_QUEUED,
+  WS_PARSE_FEED_ADS_FINISHED,
+  WS_PARSE_FEED_ADS_STARTED,
+  WS_PARSE_FEED_ADS_UPDATED,
   WS_PARSE_FOLLOWERS_LIST_FINISHED,
   WS_PARSE_FOLLOWERS_LIST_STARTED,
   WS_PARSE_FOLLOWERS_LIST_UPDATED,
   WS_PARSE_POSTS_FINISHED,
   WS_PARSE_POSTS_STARTED,
-  WS_PARSE_POSTS_UPDATED
-} from "../actions/socket";
-import { Competitor } from "../types/GlobalState";
-import { DELETE_COMPETITOR_STARTED, DeleteCompetitorAction } from "../actions/deleteCompetitor";
+  WS_PARSE_POSTS_UPDATED,
+} from '../actions/socket';
+import { Competitor } from '../types/GlobalState';
+import { DELETE_COMPETITOR_STARTED, DeleteCompetitorAction } from '../actions/deleteCompetitor';
 
 export const LOAD_COMPETITORS_SUCCESS = 'loadCompetitorsSuccess';
 export type LOAD_COMPETITORS_SUCCESS = 'loadCompetitorsSuccess';
@@ -105,6 +108,33 @@ export const loadCompetitorsReducer = (state: typeof defaultState.loadCompetitor
           ...competitor,
           parsePostsFinished: true,
         } : competitor)
+      };
+    case WS_PARSE_FEED_ADS_STARTED:
+      return {
+        ...state,
+        competitors: state.competitors.map((competitor: Competitor) => competitor.userPk.toString() === action.payload.userPk.toString() ? {
+          ...competitor,
+          parseFeedAdsStarted: true,
+        } : competitor),
+      };
+    case WS_PARSE_FEED_ADS_UPDATED:
+      return {
+        ...state,
+        competitors: state.competitors.map((competitor: Competitor) => competitor.userPk.toString() === action.payload.userPk.toString() ? {
+          ...competitor,
+          parseFeedAdsProgress: {
+            done: action.payload.done,
+            total: action.payload.total,
+          },
+        } : competitor),
+      };
+    case WS_PARSE_FEED_ADS_FINISHED:
+      return {
+        ...state,
+        competitors: state.competitors.map((competitor: Competitor) => competitor.userPk.toString() === action.payload.userPk.toString() ? {
+          ...competitor,
+          parseFeedAdsFinished: true,
+        } : competitor),
       };
     case DELETE_COMPETITOR_STARTED:
       return {

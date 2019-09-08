@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import GlobalState, { Competitor } from "../types/GlobalState";
-import { loadCompetitors } from "../actions/loadCompetitors";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import GlobalState, { Competitor } from '../types/GlobalState';
+import { loadCompetitors } from '../actions/loadCompetitors';
 import {
+  Button,
   CircularProgress,
   createStyles,
   Fab,
@@ -13,11 +14,11 @@ import {
   Theme,
   Typography,
   withStyles,
-} from "@material-ui/core";
-import { addCompetitor, addCompetitorShowModal } from "../actions/addCompetitor";
+} from '@material-ui/core';
+import { addCompetitorShowModal } from '../actions/addCompetitor';
 import AddIcon from '@material-ui/icons/Add';
-import { grey, red } from "@material-ui/core/colors";
-import { CompetitorItemConnected } from "./CompetitorItem";
+import { grey, red } from '@material-ui/core/colors';
+import { CompetitorItemConnected } from './CompetitorItem';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -47,10 +48,9 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {
       loadCompetitors,
-      addCompetitor,
       addCompetitorShowModal,
     },
-    dispatch
+    dispatch,
   );
 
 export type CompetitorsListProps =
@@ -104,7 +104,7 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
                       <CompetitorItemConnected
                         competitor={competitor}
                       />
-                    </React.Fragment>
+                    </React.Fragment>,
                   )}
                 </List>
               </Paper>
@@ -114,7 +114,13 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
                 gutterBottom
                 className={classes.noCompetitorsFound}
               >
-                No competitors found, add them first.
+                No competitors found, <Button
+                variant="outlined"
+                onClick={() => this.props.addCompetitorShowModal()}
+              >
+                <AddIcon />
+                add new competitor
+              </Button> first.
               </Typography>
         }
         <div

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Avatar,
   Card,
@@ -16,14 +16,14 @@ import {
   Tooltip,
   Typography,
   withStyles,
-} from "@material-ui/core";
-import { Favorite, Link as LinkIcon, LocalOffer, Message, OpenInNew, Place, RemoveRedEye } from "@material-ui/icons";
-import { connect } from "react-redux";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { Content, Product } from "../reducers/loadContent";
-import { blue, green, grey, orange, pink, red, yellow } from "@material-ui/core/colors";
-import copy from "copy-to-clipboard";
-import { ContentItemMedia } from "./ContentItemMedia";
+} from '@material-ui/core';
+import { Favorite, Link as LinkIcon, LocalOffer, Message, OpenInNew, Place, RemoveRedEye } from '@material-ui/icons';
+import { connect } from 'react-redux';
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { Content, Product } from '../reducers/loadContent';
+import { blue, green, grey, orange, pink, red, yellow } from '@material-ui/core/colors';
+import copy from 'copy-to-clipboard';
+import { ContentItemMedia } from './ContentItemMedia';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -245,7 +245,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
             >
               <Grid item>
                 {
-                  this.props.content.engagementRate &&
+                  this.props.content.engagementRate !== undefined &&
                   <Tooltip title={"Engagement rate"}>
                     <Chip
                       style={{

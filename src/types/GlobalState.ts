@@ -1,8 +1,8 @@
-import { Auth0UserProfile } from "auth0-js";
-import { IGUsername } from "../actions/addCompetitor";
-import { SnackbarData } from "../actions/snackbar";
-import { Follower } from "../reducers/loadFollowers";
-import { Content } from "../reducers/loadContent";
+import { Auth0UserProfile } from 'auth0-js';
+import { IGUsername } from '../actions/addCompetitor';
+import { SnackbarData } from '../actions/snackbar';
+import { Follower } from '../reducers/loadFollowers';
+import { Content } from '../reducers/loadContent';
 
 export type DrawerIsOpen = boolean;
 
@@ -28,6 +28,12 @@ export interface Competitor {
   parsePostsStarted?: boolean,
   parsePostsFinished?: boolean,
   parsePostsProgress?: {
+    done: number,
+    total: number,
+  },
+  parseFeedAdsStarted?: boolean,
+  parseFeedAdsFinished?: boolean,
+  parseFeedAdsProgress?: {
     done: number,
     total: number,
   },
@@ -76,6 +82,11 @@ export default interface GlobalState {
     error: string | null,
   },
   loadContent: {
+    loading: boolean,
+    content: Content[],
+    error: string | null,
+  },
+  loadFeedAds: {
     loading: boolean,
     content: Content[],
     error: string | null,
