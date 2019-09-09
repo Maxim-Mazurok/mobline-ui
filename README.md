@@ -29,6 +29,7 @@
     - [ ] Dashboard
         - [ ] Show post dynamics (number of posts per day)
         - [ ] (advanced) Maximum dynamics by auto updating data
+    - [ ] Add sorting by views count to Feed Ads and Content
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
