@@ -22,6 +22,7 @@ export type MediaItem = {
   type: MediaType,
   url: string,
   coverUrl?: string,
+  text?: string, // for feed ads carousel
 }
 
 export type Product = {

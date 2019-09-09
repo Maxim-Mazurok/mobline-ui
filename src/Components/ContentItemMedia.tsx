@@ -1,21 +1,35 @@
-import React, { Component } from "react";
-import { Content, MediaItem } from "../reducers/loadContent";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import "./ContentItemMedia.scss";
-import { ContentItemMediaItem } from "./ContentItemMediaItem";
+import React, { Component } from 'react';
+import { Content, MediaItem } from '../reducers/loadContent';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import Slider from 'react-slick';
+import './ContentItemMedia.scss';
+import { ContentItemMediaItem } from './ContentItemMediaItem';
+import { createStyles, Theme, Typography, withStyles } from '@material-ui/core';
 
 export type ContentItemMediaProps =
   & {
   content: Content['content']
+} & {
+  classes: {
+    caption: string
+  }
 };
 
 type ContentItemMediaState =
   & {};
 
+const styles = (theme: Theme) =>
+  createStyles({
+    caption: {
+      margin: theme.spacing(2),
+      marginBottom: 0,
+    },
+  });
+
 export class ContentItemMedia extends Component<ContentItemMediaProps, ContentItemMediaState> {
   render(): React.ReactElement<ContentItemMediaProps, React.JSXElementConstructor<ContentItemMediaState>> {
+    const { classes } = this.props;
     const settings = {
       dots: true,
       infinite: true,
@@ -29,7 +43,7 @@ export class ContentItemMedia extends Component<ContentItemMediaProps, ContentIt
         :
         this.props.content.length > 1 ?
           <Slider
-            lazyLoad={"progressive"}
+            lazyLoad={'progressive'}
             {...settings}>
             {
               this.props.content.map((media: MediaItem, index) =>
@@ -40,7 +54,13 @@ export class ContentItemMedia extends Component<ContentItemMediaProps, ContentIt
                     slickControlsHack={true}
                     media={media}
                   />
-                </React.Fragment>
+                  {media.text && <Typography
+                    className={classes.caption}
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                  >{media.text}</Typography>}
+                </React.Fragment>,
               )
             }
           </Slider>
@@ -52,3 +72,5 @@ export class ContentItemMedia extends Component<ContentItemMediaProps, ContentIt
     );
   }
 }
+
+export const ContentItemMediaWithStyles = withStyles(styles)(ContentItemMedia);

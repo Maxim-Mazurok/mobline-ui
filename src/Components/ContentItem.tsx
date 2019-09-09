@@ -23,7 +23,7 @@ import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { Content, Product } from '../reducers/loadContent';
 import { blue, green, grey, orange, pink, red, yellow } from '@material-ui/core/colors';
 import copy from 'copy-to-clipboard';
-import { ContentItemMedia } from './ContentItemMedia';
+import { ContentItemMediaWithStyles } from './ContentItemMedia';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -31,7 +31,7 @@ const styles = (theme: Theme) =>
       color: grey[50],
     },
     chipLink: {
-      display: "inline-block",
+      display: 'inline-block',
       color: grey[50],
       marginRight: theme.spacing(1),
       marginBottom: theme.spacing(1),
@@ -45,7 +45,7 @@ const styles = (theme: Theme) =>
     divider: {
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
-    }
+    },
   });
 
 const mapStateToProps = () => ({});
@@ -53,7 +53,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
   bindActionCreators(
     {},
-    dispatch
+    dispatch,
   );
 
 export type ContentItemProps =
@@ -119,7 +119,7 @@ const getPrice = (product: Product) => {
 
 class ContentItem extends Component<ContentItemProps, ContentItemState> {
   state = {
-    linkCopied: false
+    linkCopied: false,
   };
 
   render(): React.ReactElement<ContentItemProps, React.JSXElementConstructor<ContentItemState>> {
@@ -128,7 +128,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
     return (
       <Grid item xs={12} sm={6} md={4}>
         <Card>
-          <ContentItemMedia
+          <ContentItemMediaWithStyles
             content={this.props.content.content}
           />
           <CardContent>
@@ -156,7 +156,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     key={index}
                     label={`#${hashtag}`}
                   />
-                </Link>
+                </Link>,
               )
             }
             {
@@ -175,7 +175,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     key={index}
                     label={`@${mention}`}
                   />
-                </Link>
+                </Link>,
               )
             }
             {
@@ -214,8 +214,8 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                           rel="noopener noreferrer"
                           href={product.externalUrl}
                         >Buy&nbsp;<OpenInNew
-                          fontSize={"inherit"}
-                          style={{ verticalAlign: "middle" }}
+                          fontSize={'inherit'}
+                          style={{ verticalAlign: 'middle' }}
                         /></Link>
                       </React.Fragment>
                     }
@@ -226,27 +226,27 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                         color="textPrimary"
                       >
                         <LocalOffer
-                          fontSize={"inherit"}
-                          style={{ verticalAlign: "middle" }}
+                          fontSize={'inherit'}
+                          style={{ verticalAlign: 'middle' }}
                         />
                         <span> {getPrice(product)}</span>
                       </Typography>
                     }
                   />
-                </ListItem>
+                </ListItem>,
               )
             }
             <Divider className={classes.divider} />
             <Grid
               container
-              alignItems={"center"}
-              alignContent={"space-between"}
-              justify={"space-between"}
+              alignItems={'center'}
+              alignContent={'space-between'}
+              justify={'space-between'}
             >
               <Grid item>
                 {
                   this.props.content.engagementRate !== undefined &&
-                  <Tooltip title={"Engagement rate"}>
+                  <Tooltip title={'Engagement rate'}>
                     <Chip
                       style={{
                         backgroundColor: getEngagementRateBackgroundColor(this.props.content.engagementRate),
@@ -269,10 +269,10 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     <Favorite
                       fontSize="inherit"
                       color="inherit"
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: 'middle' }}
                     />
                     <span
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: 'middle' }}
                     > {formatNumber(this.props.content.likeCount)}</span>
                   </Typography>
                 </Tooltip>
@@ -289,10 +289,10 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     <Message
                       fontSize="inherit"
                       color="inherit"
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: 'middle' }}
                     />
                     <span
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: 'middle' }}
                     > {formatNumber(this.props.content.commentCount)}</span>
                   </Typography>
                 </Tooltip>
@@ -309,10 +309,10 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     <RemoveRedEye
                       fontSize="inherit"
                       color="inherit"
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: 'middle' }}
                     />
                     <span
-                      style={{ verticalAlign: "middle" }}
+                      style={{ verticalAlign: 'middle' }}
                     > {formatNumber(this.props.content.viewCount)}</span>
                   </Typography>
                 </Tooltip>
@@ -320,7 +320,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
               </Grid>
               <Grid item>
                 {this.props.content.itemUrl !== null &&
-                <Tooltip title={this.state.linkCopied ? "Link copied!" : "Copy media link"}>
+                <Tooltip title={this.state.linkCopied ? 'Link copied!' : 'Copy media link'}>
                   <Link
                     onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => event.preventDefault()}
                     href={this.props.content.itemUrl}
@@ -330,7 +330,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                       onClick={() => {
                         copy(this.props.content.itemUrl, {
                           message: 'Press #{key} to copy',
-                          format: "text/plain",
+                          format: 'text/plain',
                         });
                         this.setState({ linkCopied: true });
                       }}
@@ -342,14 +342,14 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
               </Grid>
             </Grid>
           </CardContent>
-          {/*<CardActions disableSpacing>*/}
-          {/*  <IconButton aria-label="add to favorites">*/}
-          {/*    <Favorite />*/}
-          {/*  </IconButton>*/}
-          {/*  <IconButton aria-label="share">*/}
-          {/*    <Share />*/}
-          {/*  </IconButton>*/}
-          {/*</CardActions>*/}
+          {/*<CardActions disableSpacing>
+            <IconButton aria-label="add to favorites">
+              <Favorite />
+            </IconButton>
+            <IconButton aria-label="share">
+              <Share />
+            </IconButton>
+          </CardActions>*/}
         </Card>
       </Grid>
     );
