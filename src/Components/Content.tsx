@@ -33,6 +33,9 @@ import { addCompetitorShowModal } from '../actions/addCompetitor';
 
 const styles = (theme: Theme) =>
   createStyles({
+    noCompetitorsFound: {
+      color: grey[600],
+    },
     noContentsFound: {
       color: grey[600],
     },
@@ -82,6 +85,7 @@ export type ContentExplorerProps =
   & {
   classes: {
     noContentsFound: string,
+    noCompetitorsFound: string,
     errorMessage: string,
     chip: string,
     paper: string,
@@ -114,6 +118,7 @@ class ContentExplorer extends Component<ContentExplorerProps, ContentExplorerSta
   };
 
   componentDidUpdate(prevProps: ContentExplorerProps) {
+    // TODO: unselect deleted competitors (or validate that they are getting unselected automatically)
     // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
     if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
       // preselect first competitor (when navigating from followers explorer, for example)

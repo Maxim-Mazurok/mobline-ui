@@ -6,20 +6,15 @@ import { Auth0UserProfile } from 'auth0-js';
 import { HandleLoginAction } from './handleLoginAction';
 import { UserProfileAction } from './userProfileAction';
 import { SetInviteCodeAction } from './setInviteCodeAction';
-import { LoadCompetitorsAction } from './loadCompetitors';
 import { GetCustomerIdAction } from './getCustomerId';
-import { AddCompetitorAction } from './addCompetitor';
-import { SHOW_SNACKBAR, SnackbarAction, SnackbarData } from './snackbar';
+import { SHOW_SNACKBAR, SnackbarData } from './snackbar';
 import {
   SELECT_COMPETITOR,
   SELECT_SINGLE_COMPETITOR,
   SET_VERIFIED_ONLY,
   UNSELECT_COMPETITOR,
 } from '../reducers/followersExplorer';
-import { LoadFollowersAction } from './loadFollowers';
-import { FollowersExplorerAction } from './followersExplorer';
-import { DeleteCompetitorAction } from './deleteCompetitor';
-import { LoadFeedAdsAction } from './loadFeedAds';
+import { AnyAction } from 'redux';
 
 export const API_URL = process.env.REACT_APP_API_URL;
 export const WS_HOST = process.env.REACT_APP_WS_HOST;
@@ -45,17 +40,7 @@ export type UserAction =
   | GetCustomerIdAction
   ;
 
-export type Actions =
-  & MenuAction
-  & UserAction
-  & LoadCompetitorsAction
-  & AddCompetitorAction
-  & SnackbarAction
-  & FollowersExplorerAction
-  & LoadFollowersAction
-  & DeleteCompetitorAction
-  & LoadFeedAdsAction
-  ;
+export type Actions = AnyAction;
 
 export const openDrawer = () => action(OPEN_DRAWER);
 export const closeDrawer = () => action(CLOSE_DRAWER);

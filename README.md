@@ -11,6 +11,7 @@
     - [x] Increase session duration. Inactivity timeout - 3 days, require log in after 30 days, [docs](https://auth0.com/docs/dashboard/guides/tenants/configure-session-lifetime-settings)
 - Bugs:
     - [ ] (low priority) if video in Slick slider - three dots (download + PIP) in controls can't be clicked in single item and messes up when multiple items. Possible solution - replace slick with other lib.
+    - [ ] When adding competitor, two gets added to UI
     - [x] Fix redirect URL mismatch on auth
 - WS-related:
     - [ ] Detect online/offline to reconnect the websocket - [example](https://github.com/jsmanifest/ws-online-sync)

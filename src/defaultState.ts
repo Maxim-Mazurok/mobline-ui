@@ -85,6 +85,11 @@ export const defaultState: GlobalState = {
     content: [],
     error: null,
   },
+  loadStats: {
+    loading: false,
+    stats: [],
+    error: null,
+  },
   loadFeedAds: {
     loading: false,
     content: [],

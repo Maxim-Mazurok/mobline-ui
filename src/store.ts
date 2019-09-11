@@ -19,6 +19,7 @@ import { AddCompetitorAction } from './actions/addCompetitor';
 import { LoadCompetitorsAction } from './actions/loadCompetitors';
 import { contentExplorerReducer } from './reducers/content';
 import { loadContentReducer } from './reducers/loadContent';
+import { loadStatsReducer } from './reducers/loadStats';
 import { loadFeedAdsReducer } from './reducers/loadFeedAds';
 
 const configureStore = (state: GlobalState = defaultState): Store<GlobalState, Actions> => {
@@ -32,6 +33,7 @@ const configureStore = (state: GlobalState = defaultState): Store<GlobalState, A
     loadFollowers: loadFollowersReducer,
     contentExplorer: contentExplorerReducer,
     loadContent: loadContentReducer,
+    loadStats: loadStatsReducer,
     loadFeedAds: loadFeedAdsReducer,
   });
 

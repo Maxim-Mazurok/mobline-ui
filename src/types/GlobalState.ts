@@ -3,6 +3,7 @@ import { IGUsername } from '../actions/addCompetitor';
 import { SnackbarData } from '../actions/snackbar';
 import { Follower } from '../reducers/loadFollowers';
 import { Content } from '../reducers/loadContent';
+import { Stats } from '../reducers/loadStats';
 
 export type DrawerIsOpen = boolean;
 
@@ -64,7 +65,7 @@ export default interface GlobalState {
   },
   snackbar: SnackbarData,
   followersExplorer: {
-    selectedCompetitors: Competitor["userPk"][],
+    selectedCompetitors: Competitor['userPk'][],
     verifiedOnly: boolean,
     hideBots: boolean,
     followersCount: {
@@ -86,12 +87,17 @@ export default interface GlobalState {
     content: Content[],
     error: string | null,
   },
+  loadStats: {
+    loading: boolean,
+    stats: Stats[],
+    error: string | null,
+  },
   loadFeedAds: {
     loading: boolean,
     content: Content[],
     error: string | null,
   },
   contentExplorer: {
-    selectedCompetitors: Competitor["userPk"][],
+    selectedCompetitors: Competitor['userPk'][],
   }
 }
