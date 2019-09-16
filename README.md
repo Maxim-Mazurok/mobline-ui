@@ -4,11 +4,19 @@
     - [ ] Write tests
 - Better UI:
     - [ ] Hide long descriptions for posts (make expandable)
+    - [ ] Always show side bar menu
+    - [ ] On competitors page, show some more info (followers number, etc)
+    - [ ] Add posted account to Content page
+    - [ ] Add posted time to Content page
+    - [ ] Add filter (from date to date)
+    - [x] Add links in Follower Insights
+    - [ ] Create settings page (account info, logout and current subscription plan)
 - Better UX:
     - [ ] Show "deleting" state for competitor (don't just delete it from UI while request is going, show loading, or something...)
     - [ ] Add [intro screens](https://mui.wertarbyte.com/#material-auto-rotating-carousel)
     - [x] Add sorting by date, engagementRate, likes and comments
     - [x] Increase session duration. Inactivity timeout - 3 days, require log in after 30 days, [docs](https://auth0.com/docs/dashboard/guides/tenants/configure-session-lifetime-settings)
+      - [ ] It doesn't work, maybe we should restore session manually?
 - Bugs:
     - [ ] (low priority) if video in Slick slider - three dots (download + PIP) in controls can't be clicked in single item and messes up when multiple items. Possible solution - replace slick with other lib.
     - [ ] When adding competitor, two gets added to UI

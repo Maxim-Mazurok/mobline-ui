@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import { Avatar, Link, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { Follower } from '../reducers/loadFollowers';
@@ -55,12 +55,16 @@ class FollowerItem extends Component<FollowerItemProps, FollowerItemState> {
           <Avatar alt={follower.username} src={follower.profilePicUrl} />
         </ListItemAvatar>
         <ListItemText
-          primaryTypographyProps={{ component: 'div', style: { display: 'flex', alignItems: 'center' } }}
           primary={
-            <React.Fragment>
+            <Link
+              style={{ display: 'flex', alignItems: 'center' }}
+              href={`https://www.instagram.com/${follower.username}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <div>{follower.username}</div>
               {this.getVerifiedBadge()}
-            </React.Fragment>
+            </Link>
           }
           secondary={follower.following.join(', ')}
         />

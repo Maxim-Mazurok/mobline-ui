@@ -17,7 +17,6 @@ import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import GlobalState from '../types/GlobalState';
 import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from '../actions/addCompetitor';
-import { red } from '@material-ui/core/colors';
 import { menuItems } from '../reducers/menu';
 import { MenuItemId } from '../defaultState';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -46,7 +45,6 @@ export type AddCompetitorProps =
   & {
   classes: {
     buttonWrapper: string,
-    errorMessage: string,
     buttonProgress: string,
   }
 };
@@ -59,9 +57,6 @@ const styles = () =>
   createStyles({
     buttonWrapper: {
       position: 'relative',
-    },
-    errorMessage: {
-      color: red[900],
     },
     buttonProgress: {
       position: 'absolute',
