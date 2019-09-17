@@ -1,26 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Avatar,
-  IconButton,
-  LinearProgress,
-  ListItem,
-  ListItemAvatar,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  Menu,
-  MenuItem,
-  Tooltip,
-} from '@material-ui/core';
-import { Delete, MoreVert, People, PhotoLibrary, SvgIconComponent, TrendingUp } from '@material-ui/icons';
 import { connect } from 'react-redux';
 import { Competitor } from '../types/GlobalState';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
 import { selectSingleCompetitor } from '../actions';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { deleteCompetitor } from '../actions/deleteCompetitor';
-import { menuItems } from '../reducers/menu';
-import { MenuItemId } from '../defaultState';
+import { CompetitorItemDesign, Progress } from './CompetitorItemDesign';
 
 const mapStateToProps = () => ({});
 
@@ -41,69 +26,9 @@ export type CompetitorItemProps =
 };
 
 type CompetitorItemState =
-  & {
-  anchorEl: null | HTMLElement,
-  open: boolean,
-};
-
-type CompetitorItemMenuOption = {
-  title: string,
-  icon: SvgIconComponent,
-  id: OptionId,
-  color?: 'error',
-};
-
-enum OptionId {
-  CONTENT,
-  FOLLOWERS,
-  ADS,
-  DELETE,
-}
-
-const options: CompetitorItemMenuOption[] = [
-  {
-    title: 'Content',
-    icon: PhotoLibrary,
-    id: OptionId.CONTENT,
-  },
-  {
-    title: 'Followers',
-    icon: People,
-    id: OptionId.FOLLOWERS,
-  },
-  {
-    title: 'Ads',
-    icon: TrendingUp,
-    id: OptionId.ADS,
-  },
-  {
-    title: 'Delete',
-    icon: Delete,
-    id: OptionId.DELETE,
-    color: 'error',
-  },
-];
+  & {};
 
 class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemProps, CompetitorItemState> {
-  state = {
-    anchorEl: null,
-    open: false,
-  };
-
-  handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    this.setState({
-      anchorEl: event.currentTarget,
-      open: true,
-    });
-  };
-
-  handleClose = () => {
-    this.setState({
-      anchorEl: null,
-      open: false,
-    });
-  };
-
   getFollowersListParsedProgress = (): number => {
     if (this.props.competitor.hasOwnProperty('parseFollowersListProgress') && this.props.competitor.parseFollowersListProgress !== undefined) {
       return this.props.competitor.parseFollowersListProgress.done / this.props.competitor.parseFollowersListProgress.total * 100;
@@ -139,29 +64,6 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
     return '';
   };
 
-  handleSelect = (optionId: OptionId, username: Competitor['username'], userPk: Competitor['userPk']) => {
-    this.handleClose();
-    switch (optionId) {
-      case OptionId.CONTENT:
-        this.props.selectSingleCompetitor(userPk);
-        this.props.history.push(menuItems[MenuItemId.CONTENT].path);
-        break;
-      case OptionId.FOLLOWERS:
-        this.props.selectSingleCompetitor(userPk);
-        this.props.history.push(menuItems[MenuItemId.FOLLOWERS_EXPLORER].path);
-        break;
-      case OptionId.ADS:
-        this.props.selectSingleCompetitor(userPk);
-        this.props.history.push(menuItems[MenuItemId.ADS].path);
-        break;
-      case OptionId.DELETE:
-        this.props.deleteCompetitor(username, userPk);
-        break;
-      default:
-        console.error(`Unknown option selected: ${optionId}`);
-    }
-  };
-
   parsingFollowersList = () =>
     (
       (this.props.competitor.hasOwnProperty('parseFollowersListStarted') && this.props.competitor.parseFollowersListStarted)
@@ -189,116 +91,58 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
   ;
 
   render(): React.ReactElement<CompetitorItemProps, React.JSXElementConstructor<CompetitorItemState>> {
-    const { competitor } = this.props;
+    const { competitor, selectSingleCompetitor, deleteCompetitor, history } = this.props;
+
+    const progress: Progress[] = [];
+
+    if (this.parsingFollowersList()) {
+      progress.push({
+        label: 'Getting followers',
+        status: this.getFollowersListParsedProgress() > 0
+          ? `${this.getFollowersListParsedProgress().toFixed()}% done`
+          : `initializing...`,
+        variant: this.getFollowersListParsedProgress() > 0 ? 'determinate' : 'indeterminate',
+        tooltip: this.getFollowersListParsedProgressDetailed(),
+        value: this.getFollowersListParsedProgress(),
+      });
+    }
+
+    if (this.parsingPosts()) {
+      progress.push({
+        label: 'Getting posts',
+        status: this.getPostsParsedProgress() > 0
+          ? `${this.getPostsParsedProgress().toFixed()}% done`
+          : `initializing...`,
+        variant: this.getPostsParsedProgress() > 0 ? 'determinate' : 'indeterminate',
+        tooltip: this.getPostsParsedProgressDetailed(),
+        value: this.getPostsParsedProgress(),
+      });
+    }
+
+    if (this.processing() && this.parsingFeedAds()) {
+      progress.push({
+        label: 'Getting feed ads',
+        status: this.getFeedAdsParsedProgressDetailed() !== ''
+          ? this.getFeedAdsParsedProgressDetailed()
+          : `initializing...`,
+        variant: 'indeterminate',
+        tooltip: this.getFeedAdsParsedProgressDetailed(),
+      });
+    }
 
     return (
-      <ListItem
-        alignItems={'flex-start'}
-      >
-        <ListItemAvatar>
-          <Avatar alt={competitor.username} src={competitor.profilePicUrl} />
-        </ListItemAvatar>
-        <ListItemText primary={
-          <>
-            {competitor.username} |
-            {' '}<b>{competitor.mediaCount}</b> posts |
-            {' '}<b>{competitor.followerCount}</b> followers |
-            {' '}<b>{competitor.followingCount}</b> following
-          </>
-        }
-                      secondaryTypographyProps={{ component: 'div' }}
-                      secondary={
-                        competitor.userPk !== ''
-                          ?
-                          <React.Fragment>
-                            {
-                              this.processing() ?
-                                <React.Fragment>
-                                  {
-                                    this.parsingFollowersList() &&
-                                    <React.Fragment>
-                                      Getting followers: {this.getFollowersListParsedProgress() > 0
-                                      ? `${this.getFollowersListParsedProgress().toFixed()}% done`
-                                      : `initializing...`}
-                                      <Tooltip title={this.getFollowersListParsedProgressDetailed()} interactive>
-                                        <LinearProgress
-                                          variant={this.getFollowersListParsedProgress() > 0 ? 'determinate' : 'indeterminate'}
-                                          value={this.getFollowersListParsedProgress()} />
-                                      </Tooltip>
-                                    </React.Fragment>
-                                  }
-                                  {
-                                    this.parsingPosts() &&
-                                    <React.Fragment>
-                                      Getting posts: {this.getPostsParsedProgress() > 0
-                                      ? `${this.getPostsParsedProgress().toFixed()}% done`
-                                      : `initializing...`}
-                                      <Tooltip title={this.getPostsParsedProgressDetailed()} interactive>
-                                        <LinearProgress
-                                          variant={this.getPostsParsedProgress() > 0 ? 'determinate' : 'indeterminate'}
-                                          value={this.getPostsParsedProgress()} />
-                                      </Tooltip>
-                                    </React.Fragment>
-                                  }
-                                  {
-                                    this.parsingFeedAds() &&
-                                    <React.Fragment>
-                                      Getting feed ads: {this.getFeedAdsParsedProgressDetailed() !== ''
-                                      ? this.getFeedAdsParsedProgressDetailed()
-                                      : `initializing...`}
-                                      <Tooltip title={this.getFeedAdsParsedProgressDetailed()} interactive>
-                                        <LinearProgress
-                                          variant="indeterminate"
-                                        />
-                                      </Tooltip>
-                                    </React.Fragment>
-                                  }
-                                </React.Fragment>
-                                :
-                                competitor.status
-                            }
-                          </React.Fragment>
-                          :
-                          competitor.status
-                      }
-        />
-        <ListItemSecondaryAction>
-          <IconButton
-            aria-label="More"
-            aria-controls="long-menu"
-            aria-haspopup="true"
-            onClick={this.handleClick}
-          >
-            <MoreVert />
-          </IconButton>
-          <Menu
-            anchorEl={this.state.anchorEl}
-            keepMounted
-            open={this.state.open}
-            onClose={this.handleClose}
-          >
-            {options.map((option, index) => {
-              const Icon = option.icon;
-              if (option.id === OptionId.CONTENT && competitor.userPk === '') return null;
-              if (option.id === OptionId.FOLLOWERS && competitor.userPk === '') return null;
-              if (option.id === OptionId.ADS && competitor.userPk === '') return null;
-              const color = option.color || 'inherit';
-              return (
-                <MenuItem
-                  key={index}
-                  onClick={() => this.handleSelect(option.id, competitor.username, competitor.userPk)}
-                >
-                  <ListItemIcon>
-                    <Icon color={color} />
-                  </ListItemIcon>
-                  <ListItemText primaryTypographyProps={{ color }} primary={option.title} />
-                </MenuItem>
-              );
-            })
-            }}
-          </Menu>
-        </ListItemSecondaryAction>
-      </ListItem>
+      <CompetitorItemDesign
+        profilePicUrl={competitor.profilePicUrl}
+        username={competitor.username}
+        posts={competitor.mediaCount}
+        followers={competitor.followerCount}
+        following={competitor.followingCount}
+        progress={progress}
+        userPk={competitor.userPk}
+        selectSingleCompetitor={selectSingleCompetitor}
+        historyPush={history.push}
+        deleteCompetitor={deleteCompetitor}
+      />
     );
   }
 }

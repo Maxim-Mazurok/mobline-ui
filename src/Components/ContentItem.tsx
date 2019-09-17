@@ -75,7 +75,7 @@ type ContentItemState =
   linkCopied: boolean
 };
 
-const formatNumber = (number: number): string => {
+export const formatNumber = (number: number): string => {
   if (number < 999) return number.toString();
   if (number < 999999) return `${Math.round(number / 1000)} K`;
   return `${Math.round(number / 1000000)} M`;
@@ -104,7 +104,7 @@ const getPrice = (product: Product) => {
         >
           <del>{product.fullPrice}</del>
         </Typography>
-        <span> {product.currentPrice} </span>
+        <span>&nbsp;{product.currentPrice} </span>
         <Chip
           style={{ backgroundColor: grey[100] }}
           size="small"
@@ -215,7 +215,6 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                           href={product.externalUrl}
                         >Buy&nbsp;<OpenInNew
                           fontSize={'inherit'}
-                          style={{ verticalAlign: 'middle' }}
                         /></Link>
                       </React.Fragment>
                     }
@@ -227,9 +226,8 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                       >
                         <LocalOffer
                           fontSize={'inherit'}
-                          style={{ verticalAlign: 'middle' }}
                         />
-                        <span> {getPrice(product)}</span>
+                        <span>&nbsp;{getPrice(product)}</span>
                       </Typography>
                     }
                   />
@@ -265,15 +263,16 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     variant="body2"
                     color="textSecondary"
                     component="p"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
                   >
                     <Favorite
                       fontSize="inherit"
                       color="inherit"
-                      style={{ verticalAlign: 'middle' }}
                     />
-                    <span
-                      style={{ verticalAlign: 'middle' }}
-                    > {formatNumber(this.props.content.likeCount)}</span>
+                    <span>&nbsp;{formatNumber(this.props.content.likeCount)}</span>
                   </Typography>
                 </Tooltip>
                 }
@@ -285,15 +284,16 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     variant="body2"
                     color="textSecondary"
                     component="p"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
                   >
                     <Message
                       fontSize="inherit"
                       color="inherit"
-                      style={{ verticalAlign: 'middle' }}
                     />
-                    <span
-                      style={{ verticalAlign: 'middle' }}
-                    > {formatNumber(this.props.content.commentCount)}</span>
+                    <span>&nbsp;{formatNumber(this.props.content.commentCount)}</span>
                   </Typography>
                 </Tooltip>
                 }
@@ -305,15 +305,16 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                     variant="body2"
                     color="textSecondary"
                     component="p"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
                   >
                     <RemoveRedEye
                       fontSize="inherit"
                       color="inherit"
-                      style={{ verticalAlign: 'middle' }}
                     />
-                    <span
-                      style={{ verticalAlign: 'middle' }}
-                    > {formatNumber(this.props.content.viewCount)}</span>
+                    <span>&nbsp;{formatNumber(this.props.content.viewCount)}</span>
                   </Typography>
                 </Tooltip>
                 }

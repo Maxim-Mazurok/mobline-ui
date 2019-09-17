@@ -17,7 +17,6 @@ import {
   CircularProgress,
   Container,
   createStyles,
-  Grid,
   StyledComponentProps,
   Theme,
   Typography,
@@ -46,13 +45,13 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       getCustomerId,
       wsSubscribe,
     },
-    dispatch
+    dispatch,
   );
 
 const mapStateToProps = ({ user, loadCompetitors }: GlobalState) => ({
   inviteCodeIsCorrect: inviteCodeIsCorrect(user),
   isLoggedIn: isLoggedIn(user),
-  userProfile: user.userProfile || { name: "Not logged in" },
+  userProfile: user.userProfile || { name: 'Not logged in' },
   loadCompetitors: loadCompetitors,
   userCustomerId: user.customerId,
   userCustomerIdLoading: user.customerIdLoading,
@@ -79,7 +78,7 @@ type AppState = {
 
 class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
   state = {
-    subscribed: false
+    subscribed: false,
   };
 
   componentDidUpdate(nextProps: AppProps) {
@@ -107,17 +106,20 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
       <React.Fragment>
         <CssBaseline />
         <TopBarConnected title="Mobline" />
-        <MainDrawerConnected />
         <InviteCode />
         <AddCompetitor />
         {this.props.inviteCodeIsCorrect && !this.props.isLoggedIn && <Lock />}
         {this.props.isLoggedIn &&
         <Container
+          maxWidth={'xl'}
           className={classes.mainContainer}
         >
           {/*TODO: remove grid from here, make it per section*/}
-          <Grid container>
-            <Grid item xs={12}>
+          <div style={{ display: 'flex' }}>
+            <MainDrawerConnected />
+            <div style={{
+              flexGrow: 1,
+            }}>
               {this.props.userCustomerIdLoading ?
                 <CircularProgress
                   disableShrink
@@ -147,8 +149,8 @@ class App extends Component<RouteComponentProps<{}> & AppProps, AppState> {
                     </Switch>
                   </React.Fragment>
               }
-            </Grid>
-          </Grid>
+            </div>
+          </div>
         </Container>
         }
         <SnackbarConnected />

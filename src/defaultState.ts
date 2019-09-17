@@ -8,7 +8,7 @@ export enum MenuItemId {
   CONTENT,
   FOLLOWERS_EXPLORER,
   ADS,
-  SETTINGS,
+  HELP,
 }
 
 const getInitialUserProfile = (): Auth0UserProfile | null => {

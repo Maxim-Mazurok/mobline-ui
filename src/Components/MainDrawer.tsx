@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { closeDrawer, openDrawer } from "../actions";
-import { Divider, List, ListItemIcon, SwipeableDrawer } from "@material-ui/core";
-import { connect } from "react-redux";
-import GlobalState from "../types/GlobalState";
-import { drawerIsOpen } from "../selectors";
-import { menuStructure, MenuStructureItemType } from "../reducers/menu";
-import { RouteComponentProps, withRouter } from "react-router";
-import { NavLink, NavLinkProps } from "react-router-dom";
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { closeDrawer, openDrawer } from '../actions';
+import {
+  createStyles,
+  Drawer,
+  Hidden,
+  List,
+  ListItemIcon,
+  StyledComponentProps,
+  SwipeableDrawer,
+  withStyles,
+} from '@material-ui/core';
+import GlobalState from '../types/GlobalState';
+import { drawerIsOpen } from '../selectors';
+import { menuStructure, MenuStructureItemType } from '../reducers/menu';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { NavLink, NavLinkProps } from 'react-router-dom';
+import { connect } from 'react-redux';
+import './MainDrawer.scss';
 
 const mapStateToProps = ({ menu }: GlobalState) => ({
   drawerIsOpen: drawerIsOpen(menu),
@@ -21,14 +31,110 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
       openDrawer,
       closeDrawer,
     },
-    dispatch
+    dispatch,
   );
 
-export type MainDrawerProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps> & {
+export type MainDrawerProps =
+  ReturnType<typeof mapStateToProps>
+  & ReturnType<typeof mapDispatchToProps>
+  & StyledComponentProps
+  & {
+  classes: {
+    drawer: string
+    drawerPaper: string
+  }
+}
+  & {
   title?: string,
 };
 
 type MainDrawerState = {}
+
+const drawerWidth = 240;
+
+const styles = () =>
+  createStyles({
+    drawer: {
+      width: drawerWidth,
+      flexShrink: 0,
+    },
+    drawerPaper: {
+      width: drawerWidth,
+      backgroundColor: 'rgb(251, 251, 251)',
+    },
+  });
+
+const CollisionLink = React.forwardRef((props: NavLinkProps, ref: React.Ref<HTMLAnchorElement>) => (
+  <NavLink innerRef={ref} {...props} />
+));
+
+const drawer = (onClick: () => void) => (
+  <div
+    role="presentation"
+    style={{
+      height: '100%',
+    }}
+  >
+    <List
+      disablePadding
+      style={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: 24,
+        paddingBottom: 32,
+      }}
+    >
+      {
+        menuStructure.map((menuStructureItem, index) => {
+          switch (menuStructureItem.type) {
+            case MenuStructureItemType.ITEM:
+              return (
+                <ListItem
+                  key={index}
+                  button
+                  component={CollisionLink}
+                  activeClassName={'Alex-selected'}
+                  to={menuStructureItem.item.path}
+                  exact
+                  onClick={onClick}
+                >
+                  {
+                    menuStructureItem.item.icon &&
+                    <ListItemIcon style={{
+                      minWidth: 32,
+                    }}>
+                      <menuStructureItem.item.icon />
+                    </ListItemIcon>
+                  }
+                  <ListItemText primary={menuStructureItem.item.text} />
+                </ListItem>
+              );
+            case MenuStructureItemType.MARGIN_TOP_AUTO:
+              return (
+                <div key={index} style={{ marginTop: 'auto' }} />
+              );
+            case MenuStructureItemType.LOGO:
+              return (
+                <div key={index} style={{
+                  height: 24,
+                  marginLeft: 20,
+                  marginBottom: 32,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'left center',
+                  backgroundSize: 'contain',
+                  backgroundImage: 'url(/images/logo-text.svg)',
+                }} />
+              );
+            default:
+              console.error('Unknown menu item type', menuStructureItem);
+              return null;
+          }
+        })
+      }
+    </List>
+  </div>
+);
 
 class MainDrawer extends Component<RouteComponentProps<{}> & MainDrawerProps, MainDrawerState> {
   toggleDrawer = (open: boolean) => {
@@ -51,62 +157,33 @@ class MainDrawer extends Component<RouteComponentProps<{}> & MainDrawerProps, Ma
   };
 
   render(): React.ReactElement<MainDrawerProps, React.JSXElementConstructor<MainDrawerState>> {
-    const CollisionLink = React.forwardRef((props: NavLinkProps, ref: React.Ref<HTMLAnchorElement>) => (
-      <NavLink innerRef={ref} {...props} />
-    ));
+    const { classes } = this.props;
 
     return (
-      <div>
-        <SwipeableDrawer
-          open={this.props.drawerIsOpen}
-          onClose={this.toggleDrawerEvent(false)}
-          onOpen={this.toggleDrawerEvent(true)}
-        >
-          <div
-            role="presentation"
-            style={{ height: '100%' }}
+      <>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            className={classes.drawer}
+            open
+            variant="permanent"
+            classes={{
+              paper: classes.drawerPaper,
+            }}
           >
-            <List
-              style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-            >
-              {
-                menuStructure.map((menuStructureItem, index) => {
-                  switch (menuStructureItem.type) {
-                    case MenuStructureItemType.ITEM:
-                      return (
-                        <ListItem
-                          key={index}
-                          button
-                          component={CollisionLink}
-                          activeClassName={"Mui-selected"}
-                          to={menuStructureItem.item.path}
-                          exact
-                          onClick={() => this.toggleDrawer(false)}
-                        >
-                          <ListItemIcon>
-                            <menuStructureItem.item.icon />
-                          </ListItemIcon>
-                          <ListItemText primary={menuStructureItem.item.text} />
-                        </ListItem>
-                      );
-                    case MenuStructureItemType.DIVIDER:
-                      return (
-                        <Divider key={index} />
-                      );
-                    case MenuStructureItemType.MARGIN_TOP_AUTO:
-                      return (
-                        <div key={index} style={{ marginTop: 'auto' }} />
-                      );
-                    default:
-                      console.error(`Unknown menu item type: ${menuStructureItem.type}`, menuStructureItem);
-                      return null;
-                  }
-                })
-              }
-            </List>
-          </div>
-        </SwipeableDrawer>
-      </div>
+            {drawer(() => this.toggleDrawer(false))}
+          </Drawer>
+        </Hidden>
+        <Hidden smUp implementation="css">
+          <SwipeableDrawer
+            variant="temporary"
+            open={this.props.drawerIsOpen}
+            onClose={this.toggleDrawerEvent(false)}
+            onOpen={this.toggleDrawerEvent(true)}
+          >
+            {drawer(() => this.toggleDrawer(false))}
+          </SwipeableDrawer>
+        </Hidden>
+      </>
     );
   }
 }
@@ -114,4 +191,4 @@ class MainDrawer extends Component<RouteComponentProps<{}> & MainDrawerProps, Ma
 export const MainDrawerConnected = withRouter(connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MainDrawer));
+)(withStyles(styles)(MainDrawer)));

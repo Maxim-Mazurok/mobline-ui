@@ -8,8 +8,7 @@ import {
   CircularProgress,
   createStyles,
   Fab,
-  List,
-  Paper,
+  Grid,
   StyledComponentProps,
   Theme,
   Typography,
@@ -35,6 +34,9 @@ const styles = (theme: Theme) =>
     },
     errorMessage: {
       color: red[900],
+    },
+    grid: {
+      marginTop: theme.spacing(5),
     },
   });
 
@@ -62,6 +64,7 @@ export type CompetitorsListProps =
     fabWrapper: string,
     noCompetitorsFound: string,
     errorMessage: string,
+    grid: string,
   },
 };
 
@@ -95,19 +98,26 @@ class CompetitorsList extends Component<CompetitorsListProps, CompetitorsListSta
             </Typography>
             :
             this.props.loadCompetitorsCompetitors.length > 0 ?
-              <Paper>
-                <List>
-                  {this.props.loadCompetitorsCompetitors.map((competitor: Competitor, index) =>
-                    <React.Fragment
-                      key={index}
-                    >
-                      <CompetitorItemConnected
-                        competitor={competitor}
-                      />
-                    </React.Fragment>,
-                  )}
-                </List>
-              </Paper>
+              <Grid
+                container
+              >
+                {this.props.loadCompetitorsCompetitors.map((competitor: Competitor, index) =>
+                  <Grid
+                    item
+                    key={index}
+                    xl={3}
+                    lg={4}
+                    md={6}
+                    sm={12}
+                    xs={12}
+                    className={classes.grid}
+                  >
+                    <CompetitorItemConnected
+                      competitor={competitor}
+                    />
+                  </Grid>,
+                )}
+              </Grid>
               :
               <Typography
                 variant="h5"

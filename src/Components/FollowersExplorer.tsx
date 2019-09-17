@@ -104,7 +104,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
     // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
     if (this.props.followersExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
       // preselect first competitor (when navigating from followers explorer, for example)
-      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors.filter(x => x.userPk)[0].userPk);
     } else if (
       prevProps.followersExplorerSelectedCompetitors !== this.props.followersExplorerSelectedCompetitors
       && this.props.followersExplorerSelectedCompetitors.length > 0
@@ -119,7 +119,7 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
   componentDidMount(): void {
     if (this.props.followersExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
       // preselect first competitor (when navigating from followers explorer, for example)
-      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors.filter(x => x.userPk)[0].userPk);
     } else if (this.props.loadCompetitorsCompetitors.length === 0) {
       // if competitors list is not loaded - load it (when navigating directly)
       this.props.loadCompetitors();

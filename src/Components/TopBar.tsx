@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import AppBar from "@material-ui/core/AppBar";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import AppBar from '@material-ui/core/AppBar';
 import {
   createStyles,
   IconButton,
@@ -8,19 +8,21 @@ import {
   Theme,
   Toolbar,
   Typography,
-  withStyles
-} from "@material-ui/core";
+  withStyles,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 // import SearchIcon from '@material-ui/icons/Search';
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { openDrawer } from "../actions";
-import { fade } from "@material-ui/core/styles";
-import GlobalState from "../types/GlobalState";
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { openDrawer } from '../actions';
+import GlobalState from '../types/GlobalState';
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      [theme.breakpoints.up('sm')]: {
+        display: 'none',
+      },
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -32,43 +34,43 @@ const styles = (theme: Theme) =>
         display: 'block',
       },
     },
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-      },
-    },
-    searchIcon: {
-      width: theme.spacing(7),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    inputRoot: {
-      color: 'inherit',
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 7),
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: 120,
-        '&:focus': {
-          width: 200,
-        },
-      },
-    },
+    // search: {
+    //   position: 'relative',
+    //   borderRadius: theme.shape.borderRadius,
+    //   backgroundColor: fade(theme.palette.common.white, 0.15),
+    //   '&:hover': {
+    //     backgroundColor: fade(theme.palette.common.white, 0.25),
+    //   },
+    //   marginLeft: 0,
+    //   width: '100%',
+    //   [theme.breakpoints.up('sm')]: {
+    //     marginLeft: theme.spacing(1),
+    //     width: 'auto',
+    //   },
+    // },
+    // searchIcon: {
+    //   width: theme.spacing(7),
+    //   height: '100%',
+    //   position: 'absolute',
+    //   pointerEvents: 'none',
+    //   display: 'flex',
+    //   alignItems: 'center',
+    //   justifyContent: 'center',
+    // },
+    // inputRoot: {
+    //   color: 'inherit',
+    // },
+    // inputInput: {
+    //   padding: theme.spacing(1, 1, 1, 7),
+    //   transition: theme.transitions.create('width'),
+    //   width: '100%',
+    //   [theme.breakpoints.up('sm')]: {
+    //     width: 120,
+    //     '&:focus': {
+    //       width: 200,
+    //     },
+    //   },
+    // },
   });
 
 const mapStateToProps = ({ user }: GlobalState) => ({
@@ -80,7 +82,7 @@ const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) =>
     {
       openDrawer,
     },
-    dispatch
+    dispatch,
   );
 
 export type TopBarProps =
@@ -107,8 +109,13 @@ class TopBar extends Component<TopBarProps, TopBarState> {
     const { classes } = this.props;
 
     return (
-      <div className={classes.root}>
-        <AppBar position="static">
+      <div
+        className={classes.root}
+      >
+        <AppBar
+          className={classes.appBar}
+          position="static"
+        >
           <Toolbar>
             <IconButton
               edge="start"

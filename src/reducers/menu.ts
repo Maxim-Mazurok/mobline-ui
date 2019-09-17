@@ -1,23 +1,27 @@
 import { CLOSE_DRAWER, MenuAction, OPEN_DRAWER } from '../actions';
 import { defaultState, MenuItemId } from '../defaultState';
-import { Dashboard, List, People, PhotoLibrary, Settings, SvgIconComponent, TrendingUp } from '@material-ui/icons';
 import { DashboardConnected } from '../Components/Dashboard';
 import { CompetitorsListConnected } from '../Components/CompetitorsList';
 import { ContentExplorerConnected } from '../Components/Content';
 import { FollowersExplorerConnected } from '../Components/FollowersExplorer';
 import { ConnectedComponentClass } from 'react-redux';
-import SvgIcon from '@material-ui/core/SvgIcon';
 import { FeedAdsConnected } from '../Components/FeedAds';
+import { ReactComponent as Ads } from '../icons/ads.svg';
+import { ReactComponent as Competitors } from '../icons/competitors.svg';
+import { ReactComponent as Content } from '../icons/content.svg';
+import { ReactComponent as Dashboard } from '../icons/dashboard.svg';
+import { ReactComponent as Followers } from '../icons/followers.svg';
+import * as React from 'react';
 
 export enum MenuStructureItemType {
-  ITEM = 'item',
-  DIVIDER = 'divider',
-  MARGIN_TOP_AUTO = 'mt-auto',
+  ITEM,
+  LOGO,
+  MARGIN_TOP_AUTO,
 }
 
 export type MenuItem = {
   text: string,
-  icon: SvgIconComponent,
+  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
   path: string,
   component: ConnectedComponentClass<any, any>,
 }
@@ -28,62 +32,54 @@ export const menuItems: {
   [MenuItemId.DASHBOARD]: {
     text: 'Dashboard',
     icon: Dashboard,
-    path: "/",
+    path: '/',
     component: DashboardConnected,
   },
   [MenuItemId.COMPETITORS]: {
     text: 'Competitors',
-    icon: List,
-    path: "/competitors",
+    icon: Competitors,
+    path: '/competitors',
     component: CompetitorsListConnected,
   },
   [MenuItemId.CONTENT]: {
     text: 'Content',
-    icon: PhotoLibrary,
-    path: "/content",
+    icon: Content,
+    path: '/content',
     component: ContentExplorerConnected,
   },
   [MenuItemId.FOLLOWERS_EXPLORER]: {
     text: 'Follower Insights',
-    icon: People,
-    path: "/followers",
+    icon: Followers,
+    path: '/followers',
     component: FollowersExplorerConnected,
   },
   [MenuItemId.ADS]: {
     text: 'Ads',
-    icon: TrendingUp,
-    path: "/ads",
+    icon: Ads,
+    path: '/ads',
     component: FeedAdsConnected,
   },
-  [MenuItemId.SETTINGS]: {
-    text: 'Settings',
-    icon: Settings,
-    path: "/settings",
+  [MenuItemId.HELP]: {
+    text: 'Help & FAQ ->',
+    path: '#',
     component: DashboardConnected,
   },
 };
 
 type MenuStructureItem = {
-  type: MenuStructureItemType,
-  item: MenuItem,
-};
-
-// TODO: kind of dirty, get rid of dummy menu item
-const dummyMenuItem = {
-  text: '',
-  icon: SvgIcon,
-  path: "",
-  component: DashboardConnected,
+  type: MenuStructureItemType.LOGO | MenuStructureItemType.MARGIN_TOP_AUTO,
+} | {
+  type: MenuStructureItemType.ITEM,
+  item: MenuItem
 };
 
 export const menuStructure: MenuStructureItem[] = [
   {
-    type: MenuStructureItemType.ITEM,
-    item: menuItems[MenuItemId.DASHBOARD],
+    type: MenuStructureItemType.LOGO,
   },
   {
-    type: MenuStructureItemType.DIVIDER,
-    item: dummyMenuItem,
+    type: MenuStructureItemType.ITEM,
+    item: menuItems[MenuItemId.DASHBOARD],
   },
   {
     type: MenuStructureItemType.ITEM,
@@ -103,16 +99,11 @@ export const menuStructure: MenuStructureItem[] = [
   },
   {
     type: MenuStructureItemType.MARGIN_TOP_AUTO,
-    item: dummyMenuItem,
-  },
-  {
-    type: MenuStructureItemType.DIVIDER,
-    item: dummyMenuItem,
   },
   {
     type: MenuStructureItemType.ITEM,
-    item: menuItems[MenuItemId.SETTINGS],
-  }
+    item: menuItems[MenuItemId.HELP],
+  },
 ];
 
 export const menuReducer = (state: typeof defaultState.menu = defaultState.menu, action: MenuAction): typeof defaultState.menu => {

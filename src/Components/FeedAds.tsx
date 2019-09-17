@@ -8,6 +8,7 @@ import {
   Box,
   Button,
   Chip,
+  Container,
   createStyles,
   Divider,
   FormControl,
@@ -117,7 +118,7 @@ class FeedAds extends Component<FeedAdsProps, FeedAdsState> {
     // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
     if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
       // preselect first competitor (when navigating from followers explorer, for example)
-      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors.filter(x => x.userPk)[0].userPk);
     } else if (
       prevProps.contentExplorerSelectedCompetitors !== this.props.contentExplorerSelectedCompetitors
       && this.props.contentExplorerSelectedCompetitors.length > 0
@@ -131,7 +132,7 @@ class FeedAds extends Component<FeedAdsProps, FeedAdsState> {
   componentDidMount(): void {
     if (this.props.contentExplorerSelectedCompetitors.length === 0 && this.props.loadCompetitorsCompetitors.length > 0) {
       // preselect first competitor (when navigating from followers explorer, for example)
-      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors[0].userPk);
+      this.props.selectSingleCompetitor(this.props.loadCompetitorsCompetitors.filter(x => x.userPk)[0].userPk);
     } else if (this.props.loadCompetitorsCompetitors.length === 0) {
       // if competitors list is not loaded - load it (when navigating directly)
       this.props.loadCompetitors();
@@ -148,7 +149,7 @@ class FeedAds extends Component<FeedAdsProps, FeedAdsState> {
     const { sort, pageNumber } = this.state;
 
     return (
-      <React.Fragment>
+      <Container>
         {this.props.loadCompetitorsLoading ?
           <LinearProgress />
           :
@@ -326,7 +327,7 @@ class FeedAds extends Component<FeedAdsProps, FeedAdsState> {
               </Button> first.
               </Typography>
         }
-      </React.Fragment>
+      </Container>
     );
   }
 }
