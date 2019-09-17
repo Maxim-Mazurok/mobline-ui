@@ -10,6 +10,7 @@
     - [ ] Add posted time to Content page
     - [ ] Add filter (from date to date)
     - [x] Add links in Follower Insights
+        - [ ] Should we also add them for competitors?
     - [ ] Create settings page (account info, logout and current subscription plan)
 - Better UX:
     - [ ] Show "deleting" state for competitor (don't just delete it from UI while request is going, show loading, or something...)

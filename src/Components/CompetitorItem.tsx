@@ -189,17 +189,26 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
   ;
 
   render(): React.ReactElement<CompetitorItemProps, React.JSXElementConstructor<CompetitorItemState>> {
+    const { competitor } = this.props;
+
     return (
       <ListItem
         alignItems={'flex-start'}
       >
         <ListItemAvatar>
-          <Avatar alt={this.props.competitor.username} src={this.props.competitor.profilePicUrl} />
+          <Avatar alt={competitor.username} src={competitor.profilePicUrl} />
         </ListItemAvatar>
-        <ListItemText primary={this.props.competitor.username}
+        <ListItemText primary={
+          <>
+            {competitor.username} |
+            {' '}<b>{competitor.mediaCount}</b> posts |
+            {' '}<b>{competitor.followerCount}</b> followers |
+            {' '}<b>{competitor.followingCount}</b> following
+          </>
+        }
                       secondaryTypographyProps={{ component: 'div' }}
                       secondary={
-                        this.props.competitor.userPk !== ''
+                        competitor.userPk !== ''
                           ?
                           <React.Fragment>
                             {
@@ -246,11 +255,11 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
                                   }
                                 </React.Fragment>
                                 :
-                                this.props.competitor.status
+                                competitor.status
                             }
                           </React.Fragment>
                           :
-                          this.props.competitor.status
+                          competitor.status
                       }
         />
         <ListItemSecondaryAction>
@@ -270,14 +279,14 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
           >
             {options.map((option, index) => {
               const Icon = option.icon;
-              if (option.id === OptionId.CONTENT && this.props.competitor.userPk === '') return null;
-              if (option.id === OptionId.FOLLOWERS && this.props.competitor.userPk === '') return null;
-              if (option.id === OptionId.ADS && this.props.competitor.userPk === '') return null;
+              if (option.id === OptionId.CONTENT && competitor.userPk === '') return null;
+              if (option.id === OptionId.FOLLOWERS && competitor.userPk === '') return null;
+              if (option.id === OptionId.ADS && competitor.userPk === '') return null;
               const color = option.color || 'inherit';
               return (
                 <MenuItem
                   key={index}
-                  onClick={() => this.handleSelect(option.id, this.props.competitor.username, this.props.competitor.userPk)}
+                  onClick={() => this.handleSelect(option.id, competitor.username, competitor.userPk)}
                 >
                   <ListItemIcon>
                     <Icon color={color} />
