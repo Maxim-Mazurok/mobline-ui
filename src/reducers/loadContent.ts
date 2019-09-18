@@ -42,6 +42,7 @@ export type Product = {
 
 export type Content = {
   pk: Competitor['userPk']
+  username: Competitor['username']
   likeCount: number
   commentCount: number
   products: Product[]

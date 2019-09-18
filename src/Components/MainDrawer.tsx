@@ -61,6 +61,7 @@ const styles = () =>
     drawerPaper: {
       width: drawerWidth,
       backgroundColor: 'rgb(251, 251, 251)',
+      border: 'none',
     },
   });
 

@@ -24,6 +24,7 @@ import { Content, Product } from '../reducers/loadContent';
 import { blue, green, grey, orange, pink, red, yellow } from '@material-ui/core/colors';
 import copy from 'copy-to-clipboard';
 import { ContentItemMediaWithStyles } from './ContentItemMedia';
+import { format } from 'date-fns';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -41,6 +42,7 @@ const styles = (theme: Theme) =>
     },
     caption: {
       marginBottom: theme.spacing(1),
+      color: '#334e68',
     },
     divider: {
       marginTop: theme.spacing(1),
@@ -123,25 +125,47 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
   };
 
   render(): React.ReactElement<ContentItemProps, React.JSXElementConstructor<ContentItemState>> {
-    const { classes } = this.props;
+    const { classes, content } = this.props;
 
     return (
       <Grid item xs={12} sm={6} md={4}>
         <Card>
           <ContentItemMediaWithStyles
-            content={this.props.content.content}
+            content={content.content}
           />
           <CardContent>
+            <div style={{
+              fontSize: 15,
+              fontWeight: 'bold',
+              lineHeight: 1.3,
+              letterSpacing: -0.11,
+              color: '#1f2933',
+              marginBottom: 4,
+            }}>
+              {content.username}
+            </div>
+            <div style={{
+              fontSize: 13,
+              lineHeight: 1.46,
+              letterSpacing: -0.09,
+              color: '#3e4c59',
+              marginBottom: 16,
+            }}>
+              {/*{formatRelative(new Date(content.timestamp * 1000), new Date())} // TODO: maybe use relative dates*/}
+              {format(new Date(content.timestamp * 1000), 'h:mm a')}
+              &nbsp;&nbsp;&nbsp;
+              {format(new Date(content.timestamp * 1000), 'd LLLL')}
+            </div>
             <Typography
               className={classes.caption}
               variant="body2"
               color="textSecondary"
               component="p"
             >
-              {this.props.content.caption}
+              {content.caption}
             </Typography>
             {
-              this.props.content.hashtags.map((hashtag, index) =>
+              content.hashtags.map((hashtag, index) =>
                 <Link
                   key={index}
                   className={classes.chipLink}
@@ -160,7 +184,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
               )
             }
             {
-              this.props.content.mentions.map((mention, index) =>
+              content.mentions.map((mention, index) =>
                 <Link
                   key={index}
                   className={classes.chipLink}
@@ -179,25 +203,25 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
               )
             }
             {
-              this.props.content.location &&
+              content.location &&
               <Link
                 className={classes.chipLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                href={`https://www.google.com/maps/search/?api=1&query=${this.props.content.location.lat},${this.props.content.location.lng}`}>
+                href={`https://www.google.com/maps/search/?api=1&query=${content.location.lat},${content.location.lng}`}>
                 <Chip
                   clickable
                   style={{ backgroundColor: pink[500] }}
                   className={classes.chip}
                   size="small"
-                  label={`${this.props.content.location.name}`}
+                  label={`${content.location.name}`}
                   icon={<Place className={classes.chipIcon} />}
                 />
               </Link>
             }
             {
-              this.props.content.products.length > 0 &&
-              this.props.content.products.map((product, index) =>
+              content.products.length > 0 &&
+              content.products.map((product, index) =>
                 <ListItem
                   key={index}
                   alignItems="flex-start"
@@ -243,22 +267,22 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
             >
               <Grid item>
                 {
-                  this.props.content.engagementRate !== undefined &&
+                  content.engagementRate !== undefined &&
                   <Tooltip title={'Engagement rate'}>
                     <Chip
                       style={{
-                        backgroundColor: getEngagementRateBackgroundColor(this.props.content.engagementRate),
-                        color: getEngagementRateTextColor(this.props.content.engagementRate),
+                        backgroundColor: getEngagementRateBackgroundColor(content.engagementRate),
+                        color: getEngagementRateTextColor(content.engagementRate),
                       }}
                       size="small"
-                      label={`${this.props.content.engagementRate} %`}
+                      label={`${content.engagementRate} %`}
                     />
                   </Tooltip>
                 }
               </Grid>
               <Grid item>
-                {this.props.content.likeCount !== null &&
-                <Tooltip title={`${this.props.content.likeCount} likes`}>
+                {content.likeCount !== null &&
+                <Tooltip title={`${content.likeCount} likes`}>
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -272,14 +296,14 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                       fontSize="inherit"
                       color="inherit"
                     />
-                    <span>&nbsp;{formatNumber(this.props.content.likeCount)}</span>
+                    <span>&nbsp;{formatNumber(content.likeCount)}</span>
                   </Typography>
                 </Tooltip>
                 }
               </Grid>
               <Grid item>
-                {this.props.content.commentCount !== null &&
-                <Tooltip title={`${this.props.content.commentCount} comments`}>
+                {content.commentCount !== null &&
+                <Tooltip title={`${content.commentCount} comments`}>
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -293,14 +317,14 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                       fontSize="inherit"
                       color="inherit"
                     />
-                    <span>&nbsp;{formatNumber(this.props.content.commentCount)}</span>
+                    <span>&nbsp;{formatNumber(content.commentCount)}</span>
                   </Typography>
                 </Tooltip>
                 }
               </Grid>
               <Grid item>
-                {this.props.content.viewCount !== null &&
-                <Tooltip title={`${this.props.content.viewCount} views`}>
+                {content.viewCount !== null &&
+                <Tooltip title={`${content.viewCount} views`}>
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -314,22 +338,22 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
                       fontSize="inherit"
                       color="inherit"
                     />
-                    <span>&nbsp;{formatNumber(this.props.content.viewCount)}</span>
+                    <span>&nbsp;{formatNumber(content.viewCount)}</span>
                   </Typography>
                 </Tooltip>
                 }
               </Grid>
               <Grid item>
-                {this.props.content.itemUrl !== null &&
+                {content.itemUrl !== null &&
                 <Tooltip title={this.state.linkCopied ? 'Link copied!' : 'Copy media link'}>
                   <Link
                     onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => event.preventDefault()}
-                    href={this.props.content.itemUrl}
+                    href={content.itemUrl}
                   >
                     <IconButton
                       size="small"
                       onClick={() => {
-                        copy(this.props.content.itemUrl, {
+                        copy(content.itemUrl, {
                           message: 'Press #{key} to copy',
                           format: 'text/plain',
                         });
