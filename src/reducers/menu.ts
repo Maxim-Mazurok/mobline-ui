@@ -12,6 +12,7 @@ import { ReactComponent as Content } from '../icons/content.svg';
 import { ReactComponent as Dashboard } from '../icons/dashboard.svg';
 import { ReactComponent as Followers } from '../icons/followers.svg';
 import * as React from 'react';
+import { SettingsConnected } from '../Components/Settings';
 
 export enum MenuStructureItemType {
   ITEM,
@@ -59,10 +60,10 @@ export const menuItems: {
     path: '/ads',
     component: FeedAdsConnected,
   },
-  [MenuItemId.HELP]: {
-    text: 'Help & FAQ ->',
-    path: '#',
-    component: DashboardConnected,
+  [MenuItemId.SETTINGS]: {
+    text: 'Settings →',
+    path: '/settings',
+    component: SettingsConnected,
   },
 };
 
@@ -102,7 +103,7 @@ export const menuStructure: MenuStructureItem[] = [
   },
   {
     type: MenuStructureItemType.ITEM,
-    item: menuItems[MenuItemId.HELP],
+    item: menuItems[MenuItemId.SETTINGS],
   },
 ];
 

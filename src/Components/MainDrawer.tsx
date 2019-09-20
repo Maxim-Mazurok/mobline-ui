@@ -108,7 +108,16 @@ const drawer = (onClick: () => void) => (
                       <menuStructureItem.item.icon />
                     </ListItemIcon>
                   }
-                  <ListItemText primary={menuStructureItem.item.text} />
+                  <ListItemText
+                    primary={menuStructureItem.item.text}
+                    primaryTypographyProps={{
+                      style: {
+                        fontSize: menuStructureItem.item.path === '/settings' ? 15 : 16,
+                        lineHeight: menuStructureItem.item.path === '/settings' ? 1.53 : 1.44,
+                        letterSpacing: menuStructureItem.item.path === '/settings' ? -0.1 : -0.11,
+                        color: menuStructureItem.item.path === '/settings' ? '#1f2933' : '#3e4c59',
+                      },
+                    }} />
                 </ListItem>
               );
             case MenuStructureItemType.MARGIN_TOP_AUTO:

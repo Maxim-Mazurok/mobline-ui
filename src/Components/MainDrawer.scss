@@ -5,6 +5,7 @@
 
   span {
     font-weight: bold;
+    color: #1f2933 !important;
   }
 }
 
@@ -14,6 +15,10 @@
 
 .MuiListItem-root:not(.Alex-selected):hover {
   svg g {
-    fill: rgba(254, 3, 89, 0.5);
+    fill: rgb(254, 3, 89);
   }
+}
+
+a.MuiListItem-button:not(:last-child) {
+  margin-bottom: 8px;
 }

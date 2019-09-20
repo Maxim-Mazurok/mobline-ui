@@ -1,0 +1,33 @@
+#select-sort {
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: -0.1px;
+  color: #1f2933;
+}
+
+label[for="sort"] + div:before,
+label[for="sort"] + div:after {
+  border: none !important;
+}
+
+label[for="sort"] + .MuiInput-formControl {
+  margin: 0;
+
+  .MuiSelect-icon {
+    color: #1f2933;
+  }
+}
+
+#alex-chips {
+  .MuiChip-root:not(.MuiChip-colorPrimary) {
+    background-color: #d1e2f5;
+
+    .MuiChip-label {
+      padding-right: 8px;
+    }
+  }
+
+  .MuiChip-deleteIcon {
+    margin-right: 8px;
+  }
+}

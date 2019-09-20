@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+	<g fill="none" fill-rule="evenodd">
+		<circle cx="8" cy="8" r="8" fill="#FFF"/>
+		<g fill="#1F2933">
+			<path d="M3 9V7h10v2z"/>
+			<path d="M7 3h2v10H7z"/>
+		</g>
+	</g>
+</svg>

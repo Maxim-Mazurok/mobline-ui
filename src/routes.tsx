@@ -9,6 +9,9 @@ import { ThemeProvider } from '@material-ui/styles';
 
 const theme = createMuiTheme({
   palette: {
+    primary: {
+      main: '#fe0359',
+    },
     background: {
       default: '#fff',
     },
@@ -16,6 +19,7 @@ const theme = createMuiTheme({
   typography: {
     fontFamily: [
       'Inter',
+      'Inter UI Regular',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',

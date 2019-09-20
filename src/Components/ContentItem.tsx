@@ -128,7 +128,7 @@ class ContentItem extends Component<ContentItemProps, ContentItemState> {
     const { classes, content } = this.props;
 
     return (
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={12} md={6} lg={4}>
         <Card>
           <ContentItemMediaWithStyles
             content={content.content}

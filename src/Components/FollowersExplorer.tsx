@@ -25,7 +25,7 @@ import { selectCompetitor, selectSingleCompetitor, setVerifiedOnly, unselectComp
 import { ChipProps } from '@material-ui/core/Chip';
 import { loadFollowers } from '../actions/loadFollowers';
 import { Follower } from '../reducers/loadFollowers';
-import { FollowerItemConnected, verifiedBadge } from './FollowerItem';
+import { FollowerItemConnected } from './FollowerItem';
 import InfiniteScroll from 'react-infinite-scroller';
 import AddIcon from '@material-ui/icons/Add';
 import { addCompetitorShowModal } from '../actions/addCompetitor';
@@ -154,11 +154,15 @@ class FollowersExplorer extends Component<FollowersExplorerProps, FollowersExplo
             this.props.loadCompetitorsCompetitors.length > 0 ?
               <React.Fragment>
                 <Box mx={2} my={2}>
-                  <Typography
-                    variant="h2"
-                  >
-                    Verified followers {verifiedBadge('span', 'inline-block')}
-                  </Typography>
+                  <div style={{
+                    fontSize: 34,
+                    fontWeight: 'bold',
+                    lineHeight: 1.3,
+                    letterSpacing: -0.23,
+                    color: '#1f2933',
+                  }}>
+                    Follower Insights
+                  </div>
                 </Box>
                 <Paper
                   className={classes.paper}

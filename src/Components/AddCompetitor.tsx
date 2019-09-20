@@ -7,7 +7,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Link,
   StyledComponentProps,
   TextField,
   Typography,
@@ -20,6 +19,7 @@ import { addCompetitor, addCompetitorSetUsername, addCompetitorShowModal } from 
 import { menuItems } from '../reducers/menu';
 import { MenuItemId } from '../defaultState';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ReactComponent as IconAdd } from '../icons/icon-add.svg';
 
 const mapStateToProps = ({ addCompetitor }: GlobalState) => ({
   error: addCompetitor.error,
@@ -88,7 +88,7 @@ class AddCompetitor extends Component<RouteComponentProps<{}> & AddCompetitorPro
         onClose={this.closeDialog}
         onBackdropClick={this.closeDialog}
       >
-        <DialogTitle>Add competitor</DialogTitle>
+        <DialogTitle><IconAdd /> Add competitor</DialogTitle>
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -98,18 +98,15 @@ class AddCompetitor extends Component<RouteComponentProps<{}> & AddCompetitorPro
         >
           <DialogContent>
             <Typography component="p">
-              Enter instagram handle of your competitor.<br />
-            </Typography>
-            <Typography component="p">
-              For example, to add <Link href="https://instagram.com/maxim_mazurok">maxim_mazurok</Link>, enter
-              "maxim_mazurok", without the at ("@") sign.
+              Enter instagram name of your competitor.<br />
+              Without the "@" sign.
             </Typography>
 
             <TextField
               disabled={this.props.loading}
               error={typeof this.props.error === 'string' && this.props.error.length > 0}
               id="invite-code-input"
-              label="Username"
+              label="Instagram Username"
               value={this.props.username}
               onChange={this.handleChange}
               margin="normal"

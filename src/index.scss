@@ -15,3 +15,7 @@ body {
 .MuiBox-root {
   outline: transparent none 0;
 }
+
+.MuiButton-root {
+  text-transform: lowercase !important;
+}
