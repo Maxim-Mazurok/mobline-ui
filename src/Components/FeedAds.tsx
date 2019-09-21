@@ -56,6 +56,9 @@ const styles = (theme: Theme) =>
     loader: {
       marginTop: theme.spacing(2),
     },
+    noCompetitorsFound: {
+      color: grey[600],
+    },
   });
 
 const mapStateToProps = ({ loadCompetitors, contentExplorer, loadFeedAds }: GlobalState) => ({
@@ -93,6 +96,7 @@ export type FeedAdsProps =
     chip: string,
     paper: string,
     loader: string,
+    noCompetitorsFound: string,
   },
 };
 

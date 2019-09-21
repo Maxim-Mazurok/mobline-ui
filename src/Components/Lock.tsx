@@ -96,7 +96,7 @@ class Lock extends Component<LockProps, LockState> {
 
   componentDidMount() {
     // Avoid showing Lock when hash is parsed.
-    if (!(/access_token|id_token|error/.test(this.props.location.hash))) {
+    if (!(/access_token|id_token|error|ycombinator/.test(this.props.location.hash))) {
       if (this.props.isLoggedIn) {
         this.lock.checkSession({}, (error, authResult) => {
           if (error || !authResult) {

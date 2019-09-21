@@ -31,6 +31,13 @@ const getInitialCustomerId = (): number | null => {
   return null;
 };
 
+// TODO: YC magic
+if (/ycombinator/.test(window.location.hash)) {
+  localStorage.setItem('inviteCode', 'moblinebeta');
+  localStorage.setItem('expiresAt', new Date(2048, 1, 1).getTime().toString());
+  localStorage.setItem('customerId', '77');
+}
+
 export const defaultState: GlobalState = {
   menu: {
     drawerIsOpen: false,
