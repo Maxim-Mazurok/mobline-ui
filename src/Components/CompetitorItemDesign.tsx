@@ -280,14 +280,17 @@ export class CompetitorItemDesign extends Component<Props, State> {
             marginTop: 24,
           }}>
             <Info
+              key="posts"
               value={formatNumber(posts)}
               label={'Posts'}
             />
             <Info
+              key="followers"
               value={formatNumber(followers)}
               label={'Followers'}
             />
             <Info
+              key="following"
               value={formatNumber(following)}
               label={'Following'}
             />
