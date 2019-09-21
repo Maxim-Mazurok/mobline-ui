@@ -32,6 +32,10 @@ import AddIcon from '@material-ui/icons/Add';
 import { addCompetitorShowModal } from '../actions/addCompetitor';
 import { ReactComponent as IconAdd } from '../icons/icon-add.svg';
 import { ReactComponent as IconClose } from '../icons/icon-close.svg';
+import { ReactComponent as IconBubbles } from '../icons/bubbles.svg';
+import { menuItems } from '../reducers/menu';
+import { MenuItemId } from '../defaultState';
+import { Link } from 'react-router-dom';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -43,6 +47,7 @@ const styles = (theme: Theme) =>
     },
     chip: {
       margin: theme.spacing(1),
+      fontWeight: 'bold',
     },
     paper: {
       paddingTop: theme.spacing(1),
@@ -365,8 +370,14 @@ class FeedAds extends Component<FeedAdsProps, FeedAdsState> {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            marginBottom: 64,
                           }}>
+                            <div style={{
+                              marginTop: 64,
+                              textAlign: 'center',
+                              marginBottom: 24,
+                            }}>
+                              <IconBubbles />
+                            </div>
                             <div style={{
                               fontSize: 34,
                               fontWeight: 'bold',
@@ -399,7 +410,8 @@ class FeedAds extends Component<FeedAdsProps, FeedAdsState> {
                               color: '#334e68',
                               maxWidth: 352,
                             }}>
-                              Meanwhile, explore content which works for your competitors.
+                              Meanwhile, <Link to={menuItems[MenuItemId.CONTENT].path}>explore content</Link> which
+                              works for your competitors.
                             </div>
                           </div>
                   }
