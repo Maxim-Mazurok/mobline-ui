@@ -279,18 +279,18 @@ export class CompetitorItemDesign extends Component<Props, State> {
             paddingBottom: 14,
             marginTop: 24,
           }}>
-            {posts && <Info
+            <Info
               value={formatNumber(posts)}
               label={'Posts'}
-            />}
-            {followers && <Info
+            />
+            <Info
               value={formatNumber(followers)}
               label={'Followers'}
-            />}
-            {following && <Info
+            />
+            <Info
               value={formatNumber(following)}
               label={'Following'}
-            />}
+            />
           </div>
         }
         {progress && progress.length > 0 &&

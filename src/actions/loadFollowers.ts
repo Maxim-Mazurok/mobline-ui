@@ -1,15 +1,15 @@
 import axios from 'axios';
-import { ThunkAction } from "redux-thunk";
-import GlobalState from "../types/GlobalState";
-import { Dispatch } from "redux";
+import { ThunkAction } from 'redux-thunk';
+import GlobalState from '../types/GlobalState';
+import { Dispatch } from 'redux';
 import {
   Follower,
   LOAD_FOLLOWERS_FAILURE,
   LOAD_FOLLOWERS_STARTED,
-  LOAD_FOLLOWERS_SUCCESS
-} from "../reducers/loadFollowers";
-import { showSnackbarAction, SnackbarAction, SnackbarType } from "./snackbar";
-import { API_URL } from "./index";
+  LOAD_FOLLOWERS_SUCCESS,
+} from '../reducers/loadFollowers';
+import { showSnackbarAction, SnackbarAction, SnackbarType } from './snackbar';
+import { API_URL } from './index';
 
 const loadFollowersSuccess = (followers: Follower[]): {
   type: LOAD_FOLLOWERS_SUCCESS,
@@ -61,7 +61,7 @@ export const loadFollowers = (): ThunkResult<Promise<void>> => {
         if (errorMessage === "Select at least one competitor.") {
           dispatch(showSnackbarAction({
             title: errorMessage,
-            type: SnackbarType.INFO,
+            type: SnackbarType.ERROR,
           }));
         } else {
           dispatch(showSnackbarAction({

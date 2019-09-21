@@ -56,7 +56,7 @@ export const loadStats = (): ThunkResult<Promise<void>> => {
         if (errorMessage === 'Select at least one competitor.') {
           dispatch(showSnackbarAction({
             title: errorMessage,
-            type: SnackbarType.INFO,
+            type: SnackbarType.ERROR,
           }));
         } else {
           dispatch(showSnackbarAction({

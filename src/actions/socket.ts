@@ -209,7 +209,7 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
     dispatch(wsOpened(false));
     dispatch(showSnackbarAction({
       title: 'Disconnected from server, reload the page',
-      type: SnackbarType.INFO,
+      type: SnackbarType.ERROR,
     }));
   };
 
@@ -228,7 +228,7 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
         dispatch(wsParseFollowersListFinished(data));
         dispatch(showSnackbarAction({
           title: 'Getting followers list finished',
-          type: SnackbarType.INFO,
+          type: SnackbarType.SUCCESS,
         }));
         break;
       case WS_PARSE_POSTS_STARTED:
@@ -241,7 +241,7 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
         dispatch(wsParsePostsFinished(data));
         dispatch(showSnackbarAction({
           title: 'Getting posts finished',
-          type: SnackbarType.INFO,
+          type: SnackbarType.SUCCESS,
         }));
         break;
       case WS_PARSE_FEED_ADS_STARTED:
@@ -254,7 +254,7 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
         dispatch(wsParseFeedAdsFinished(data));
         dispatch(showSnackbarAction({
           title: 'Getting feed ads finished',
-          type: SnackbarType.INFO,
+          type: SnackbarType.SUCCESS,
         }));
         break;
       case WS_ADD_COMPETITOR_CALLBACK:
@@ -262,14 +262,14 @@ const setupSocket = (dispatch: Dispatch<SocketAction | SnackbarAction | AddCompe
         if (data.hasOwnProperty('info')) {
           dispatch(showSnackbarAction({
             title: data.info,
-            type: SnackbarType.INFO,
+            type: SnackbarType.SUCCESS,
           }));
         } else if (data.hasOwnProperty('ok')) {
           // dispatch(loadCompetitors()).then();
           dispatch(addCompetitorShowModal(false));
           dispatch(showSnackbarAction({
             title: data.ok,
-            type: SnackbarType.INFO,
+            type: SnackbarType.SUCCESS,
           }));
           dispatch(addCompetitorSuccess());
           if (type === WS_ADD_COMPETITOR_CALLBACK) {
