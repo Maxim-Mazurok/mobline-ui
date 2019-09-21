@@ -3,15 +3,15 @@
 import React, { Component } from 'react';
 import Auth0Lock from 'auth0-lock';
 import { AUTH_CONFIG } from '../Auth/auth0-variables';
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
-import { handleLogin, handleUserProfile } from "../actions";
-import GlobalState from "../types/GlobalState";
-import { connect } from "react-redux";
-import { Auth0UserProfile } from "auth0-js";
-import { Box, CircularProgress, createStyles, Modal, StyledComponentProps, withStyles } from "@material-ui/core";
-import { RouteComponentProps, withRouter } from "react-router";
-import { getCustomerId } from "../actions/getCustomerId";
-import { isLoggedIn } from "../selectors";
+import { AnyAction, bindActionCreators, Dispatch } from 'redux';
+import { handleLogin, handleUserProfile } from '../actions';
+import GlobalState from '../types/GlobalState';
+import { connect } from 'react-redux';
+import { Auth0UserProfile } from 'auth0-js';
+import { Box, CircularProgress, createStyles, Modal, StyledComponentProps, withStyles } from '@material-ui/core';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { getCustomerId } from '../actions/getCustomerId';
+import { isLoggedIn } from '../selectors';
 
 export const calcExpiresAt = (expiresIn: number) => (expiresIn * 1000) + new Date().getTime();
 
@@ -69,8 +69,8 @@ class Lock extends Component<LockProps, LockState> {
     },
     container: AUTH_CONFIG.container,
     theme: {
-      logo: '/images/logo.png',
-      primaryColor: '#3f51b5'
+      logo: '/images/logo-auth0.svg',
+      primaryColor: '#fe0359',
     },
     allowedConnections: [
       'Username-Password-Authentication',

@@ -5,10 +5,42 @@ body {
 }
 
 .auth0-lock-widget {
+  font-family: Inter, sans-serif;
   box-shadow: rgba(0, 0, 0, 0.2) 0 1px 8px 0, rgba(0, 0, 0, 0.14) 0 3px 4px 0, rgba(0, 0, 0, 0.12) 0 3px 3px -2px;
 
   .auth0-lock-cred-pane-internal-wrapper {
     height: auto !important;
+  }
+
+  .auth0-lock-header-logo {
+    height: 32px !important;
+    margin-top: 32px !important;
+    margin-bottom: 32px !important;
+  }
+
+  .auth0-lock-name {
+    display: none !important;
+  }
+
+  .auth0-lock-header-bg {
+    background-color: #fff !important;
+  }
+
+  .auth0-lock-header-bg-blur,
+  .auth0-lock-header-bg-solid {
+    display: none !important;
+  }
+
+  .auth0-label-submit {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.12px !important;
+    transform: none !important;
+    text-transform: none !important;
+
+    span {
+      display: none !important;
+    }
   }
 }
 
