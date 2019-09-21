@@ -280,17 +280,14 @@ export class CompetitorItemDesign extends Component<Props, State> {
             marginTop: 24,
           }}>
             <Info
-              key="posts"
               value={formatNumber(posts)}
               label={'Posts'}
             />
             <Info
-              key="followers"
               value={formatNumber(followers)}
               label={'Followers'}
             />
             <Info
-              key="following"
               value={formatNumber(following)}
               label={'Following'}
             />
@@ -304,6 +301,7 @@ export class CompetitorItemDesign extends Component<Props, State> {
             progress.map(
               ({ label, status, variant, tooltip, value }: Progress) =>
                 <Progress
+                  key={label}
                   label={label}
                   status={status}
                   variant={variant}
