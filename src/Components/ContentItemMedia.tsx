@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Content, MediaItem } from '../reducers/loadContent';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import Slider from 'react-slick';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { Carousel } from 'react-responsive-carousel';
 import './ContentItemMedia.scss';
 import { ContentItemMediaItem } from './ContentItemMediaItem';
 import { createStyles, Theme, Typography, withStyles } from '@material-ui/core';
@@ -31,19 +30,15 @@ export class ContentItemMedia extends Component<ContentItemMediaProps, ContentIt
   render(): React.ReactElement<ContentItemMediaProps, React.JSXElementConstructor<ContentItemMediaState>> {
     const { classes } = this.props;
     const settings = {
-      dots: true,
-      infinite: true,
-      speed: 300,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      cssEase: 'cubic-bezier(0.165, 0.840, 0.440, 1.000)',
+      infiniteLoop: true,
+      showThumbs: false,
+      showStatus: false,
     };
     return (
       this.props.content.length === 0 ? <React.Fragment />
         :
         this.props.content.length > 1 ?
-          <Slider
-            lazyLoad={'progressive'}
+          <Carousel
             {...settings}>
             {
               this.props.content.map((media: MediaItem, index) =>
@@ -63,7 +58,7 @@ export class ContentItemMedia extends Component<ContentItemMediaProps, ContentIt
                 </React.Fragment>,
               )
             }
-          </Slider>
+          </Carousel>
           :
           <ContentItemMediaItem
             slickControlsHack={false}
