@@ -97,22 +97,7 @@ const Progress = ({ label, status, variant, tooltip, value = 0 }: Progress) => (
   </div>
 );
 
-const ProgressFollowers = ({ label, status, variant, tooltip, value = 0, done = 0 }: Progress) => done >= 1000 ? (
-  <div>
-    <div style={{
-      fontSize: 13,
-      lineHeight: 1.3,
-      letterSpacing: -0.09,
-      color: '#486581',
-      marginBottom: 8,
-      marginTop: 16,
-    }}>
-      <Tooltip title={tooltip} interactive>
-        <span>First 1,000 followers parsed. Parsing continues in background.</span>
-      </Tooltip>
-    </div>
-  </div>
-) : (
+const ProgressFollowers = ({ label, status, variant, tooltip, value = 0, done = 0 }: Progress) => done >= 1000 ? null : (
   <div>
     <div style={{
       fontSize: 13,
