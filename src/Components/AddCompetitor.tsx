@@ -98,7 +98,7 @@ class AddCompetitor extends Component<RouteComponentProps<{}> & AddCompetitorPro
         >
           <DialogContent>
             <Typography component="p">
-              Enter instagram name of your competitor.<br />
+              Enter the Instagram name of your competitor.<br />
               Without the "@" sign.
             </Typography>
 
