@@ -22,6 +22,7 @@ export type Progress = {
   tooltip: string,
   variant: 'determinate' | 'indeterminate',
   value?: number,
+  done?: number,
 }
 
 type Props = {
@@ -32,6 +33,7 @@ type Props = {
   followers: number,
   following: number,
   progress?: Progress[],
+  progressFollowers?: Progress[],
   selectSingleCompetitor: (competitorPk: Competitor['userPk']) => void,
   deleteCompetitor: (username?: string, userPk?: string) => void,
   historyPush: (path: Path) => void,
@@ -75,6 +77,42 @@ const BorderLinearProgress = withStyles({
 })(LinearProgress);
 
 const Progress = ({ label, status, variant, tooltip, value = 0 }: Progress) => (
+  <div>
+    <div style={{
+      fontSize: 13,
+      lineHeight: 1.3,
+      letterSpacing: -0.09,
+      color: '#486581',
+      marginBottom: 8,
+      marginTop: 16,
+    }}>
+      {label}{': '}<b>{status}</b>
+    </div>
+    <Tooltip title={tooltip} interactive>
+      <BorderLinearProgress
+        variant={variant}
+        value={value}
+      />
+    </Tooltip>
+  </div>
+);
+
+const ProgressFollowers = ({ label, status, variant, tooltip, value = 0, done = 0 }: Progress) => done >= 1000 ? (
+  <div>
+    <div style={{
+      fontSize: 13,
+      lineHeight: 1.3,
+      letterSpacing: -0.09,
+      color: '#486581',
+      marginBottom: 8,
+      marginTop: 16,
+    }}>
+      <Tooltip title={tooltip} interactive>
+        <span>First 1,000 followers parsed. Parsing continues in background.</span>
+      </Tooltip>
+    </div>
+  </div>
+) : (
   <div>
     <div style={{
       fontSize: 13,
@@ -191,6 +229,7 @@ export class CompetitorItemDesign extends Component<Props, State> {
       followers,
       following,
       progress,
+      progressFollowers,
     } = this.props;
     return (
       <div style={{
@@ -307,6 +346,25 @@ export class CompetitorItemDesign extends Component<Props, State> {
                   variant={variant}
                   tooltip={tooltip}
                   value={value}
+                />)
+          }
+        </div>
+        }
+        {progressFollowers && progressFollowers.length > 0 &&
+        <div style={{
+          marginTop: 32,
+        }}>
+          {
+            progressFollowers.map(
+              ({ label, status, variant, tooltip, value, done }: Progress) =>
+                <ProgressFollowers
+                  key={label}
+                  label={label}
+                  status={status}
+                  variant={variant}
+                  tooltip={tooltip}
+                  value={value}
+                  done={done}
                 />)
           }
         </div>

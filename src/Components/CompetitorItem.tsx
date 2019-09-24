@@ -94,9 +94,10 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
     const { competitor, selectSingleCompetitor, deleteCompetitor, history } = this.props;
 
     const progress: Progress[] = [];
+    const progressFollowers: Progress[] = [];
 
     if (this.parsingFollowersList()) {
-      progress.push({
+      progressFollowers.push({
         label: 'Getting followers',
         status: this.getFollowersListParsedProgress() > 0
           ? `${this.getFollowersListParsedProgress().toFixed()}% done`
@@ -104,6 +105,7 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
         variant: this.getFollowersListParsedProgress() > 0 ? 'determinate' : 'indeterminate',
         tooltip: this.getFollowersListParsedProgressDetailed(),
         value: this.getFollowersListParsedProgress(),
+        done: this.props.competitor.parseFollowersListProgress ? this.props.competitor.parseFollowersListProgress.done : 0,
       });
     }
 
@@ -138,6 +140,7 @@ class CompetitorItem extends Component<RouteComponentProps<{}> & CompetitorItemP
         followers={competitor.followerCount}
         following={competitor.followingCount}
         progress={progress}
+        progressFollowers={progressFollowers}
         userPk={competitor.userPk}
         selectSingleCompetitor={selectSingleCompetitor}
         historyPush={history.push}
