@@ -11,13 +11,19 @@ export const LOAD_STATS_STARTED = 'loadStatsStarted';
 export type LOAD_STATS_STARTED = 'loadStatsStarted';
 
 export type Stats = {
-  labels: string[],
-  datasets: Array<{
-    fill: boolean,
-    data: number[],
-    label: string,
-    borderColor: string,
-  }>
+  annotations: Array<{
+    xMin: string,
+    xMax: string
+  }>,
+  data: {
+    labels: string[],
+    datasets: Array<{
+      fill: boolean,
+      data: number[],
+      label: string,
+      borderColor: string,
+    }>
+  }
 }
 
 export const loadStatsReducer = (state: typeof defaultState.loadStats = defaultState.loadStats, action: LoadStatsAction): typeof defaultState.loadStats => {

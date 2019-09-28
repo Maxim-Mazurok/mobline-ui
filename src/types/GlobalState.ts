@@ -91,7 +91,7 @@ export default interface GlobalState {
   },
   loadStats: {
     loading: boolean,
-    stats: Stats[],
+    stats: Stats | null,
     error: string | null,
   },
   loadFeedAds: {

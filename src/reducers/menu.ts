@@ -4,7 +4,7 @@ import { DashboardConnected } from '../Components/Dashboard';
 import { CompetitorsListConnected } from '../Components/CompetitorsList';
 import { ContentExplorerConnected } from '../Components/Content';
 import { FollowersExplorerConnected } from '../Components/FollowersExplorer';
-import { ConnectedComponentClass } from 'react-redux';
+import { ConnectedComponent } from 'react-redux';
 import { FeedAdsConnected } from '../Components/FeedAds';
 import { ReactComponent as Ads } from '../icons/ads.svg';
 import { ReactComponent as Competitors } from '../icons/competitors.svg';
@@ -24,7 +24,7 @@ export type MenuItem = {
   text: string,
   icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>,
   path: string,
-  component: ConnectedComponentClass<any, any>,
+  component: ConnectedComponent<any, any>,
 }
 
 export const menuItems: {

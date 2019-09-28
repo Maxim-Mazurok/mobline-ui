@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router';
+import { connect } from 'react-redux';
 
 export type SettingsProps =
   & {};
@@ -24,4 +25,6 @@ function Settings(): React.ReactElement<SettingsProps, React.JSXElementConstruct
 }
 
 
-export const SettingsConnected = withRouter(Settings);
+export const SettingsConnected = connect()(
+  withRouter(Settings),
+);

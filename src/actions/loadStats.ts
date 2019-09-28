@@ -6,9 +6,9 @@ import { LOAD_STATS_FAILURE, LOAD_STATS_STARTED, LOAD_STATS_SUCCESS, Stats } fro
 import { showSnackbarAction, SnackbarAction, SnackbarType } from './snackbar';
 import { API_URL } from './index';
 
-const loadStatsSuccess = (stats: Stats[]): {
+const loadStatsSuccess = (stats: Stats): {
   type: LOAD_STATS_SUCCESS,
-  payload: Stats[],
+  payload: Stats,
 } => ({
   type: LOAD_STATS_SUCCESS,
   payload: stats,

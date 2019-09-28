@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { addCompetitorShowModal } from '../actions/addCompetitor';
 import AddIcon from '@material-ui/icons/Add';
 import { Line } from 'react-chartjs-2';
+import 'chartjs-plugin-annotation';
 
 const styles = () =>
   createStyles({
@@ -90,7 +91,14 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
   }
 
   render(): React.ReactElement<DashboardProps, React.JSXElementConstructor<DashboardState>> {
-    const { classes } = this.props;
+    const { classes, loadStatsStats } = this.props;
+
+    let yMax = 0;
+    if (loadStatsStats) {
+      loadStatsStats.data.datasets.forEach(dataset => dataset.data.forEach(datum => {
+        if (datum > yMax) yMax = datum;
+      }));
+    }
 
     return (
       this.props.loadCompetitorsLoading ?
@@ -118,14 +126,72 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
                   {this.props.loadStatsError}
                 </Typography>
                 :
-                this.props.loadStatsStats.length > 0 ?
+                loadStatsStats ?
                   <>
                     <Typography
                       variant="h2"
                     >
                       Posts per day
                     </Typography>
-                    <Line data={this.props.loadStatsStats[0]} />
+                    <div style={{
+                      position: 'relative',
+                      height: '80vh',
+                      width: '100%',
+                    }}>
+                      <Line
+                        data={loadStatsStats.data}
+                        options={{
+                          responsive: true,
+                          elements: {
+                            line: {
+                              tension: 0.000001,
+                            },
+                          },
+                          annotation: {
+                            annotations:
+                              loadStatsStats.annotations.map(annotation => ({
+                                type: 'box',
+                                xScaleID: 'x-axis-0',
+                                yScaleID: 'y-axis-0',
+                                xMin: annotation.xMin,
+                                xMax: annotation.xMax,
+                                yMin: 0,
+                                yMax,
+                                backgroundColor: 'rgba(254, 3, 89, 0.1)',
+                                borderWidth: 0,
+                                borderColor: 'rgba(0, 0, 0, 0)',
+                              })),
+                          },
+                          legend: {
+                            labels: {
+                              usePointStyle: true,
+                            },
+                          },
+                          scales: {
+                            xAxes: [{
+                              gridLines: {
+                                display: false,
+                              },
+                            }],
+                            yAxes: [{
+                              ticks: {
+                                stepSize: 1,
+                              },
+                              gridLines: {
+                                display: false,
+                              },
+                            }],
+                          },
+                        }}
+                        plugins={[{
+                          beforeInit: function (chart: any) {
+                            chart.legend.afterFit = function () {
+                              this.height = this.height + 20;
+                            };
+                          },
+                        }]}
+                      />
+                    </div>
                   </>
                   : <Typography
                     color="textSecondary"
