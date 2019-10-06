@@ -1,5 +1,6 @@
 import { defaultState } from '../defaultState';
 import { LoadStatsAction } from '../actions/loadStats';
+import { ChartType } from '../Components/Dashboard';
 
 export const LOAD_STATS_SUCCESS = 'loadStatsSuccess';
 export type LOAD_STATS_SUCCESS = 'loadStatsSuccess';
@@ -10,8 +11,8 @@ export type LOAD_STATS_FAILURE = 'loadStatsFailure';
 export const LOAD_STATS_STARTED = 'loadStatsStarted';
 export type LOAD_STATS_STARTED = 'loadStatsStarted';
 
-export type Stats = {
-  annotations: Array<{
+type StatsItem = {
+  annotations?: Array<{
     xMin: string,
     xMax: string
   }>,
@@ -24,6 +25,10 @@ export type Stats = {
       borderColor: string,
     }>
   }
+}
+
+export type Stats = {
+  [key in ChartType]: StatsItem
 }
 
 export const loadStatsReducer = (state: typeof defaultState.loadStats = defaultState.loadStats, action: LoadStatsAction): typeof defaultState.loadStats => {

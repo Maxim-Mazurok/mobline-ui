@@ -33,7 +33,8 @@
 }
 
 
-#select-sort {
+#select-sort,
+#select-chart {
   font-weight: bold;
   font-size: 15px;
   letter-spacing: -0.1px;
@@ -41,10 +42,13 @@
 }
 
 label[for="sort"] + div:before,
-label[for="sort"] + div:after {
+label[for="sort"] + div:after,
+label[for="chart"] + div:before,
+label[for="chart"] + div:after {
   border: none !important;
 }
 
+label[for="chart"] + .MuiInput-formControl,
 label[for="sort"] + .MuiInput-formControl {
   margin: 0;
 

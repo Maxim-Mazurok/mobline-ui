@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import { AnyAction, bindActionCreators, Dispatch } from 'redux';
-import { Button, createStyles, LinearProgress, StyledComponentProps, Typography, withStyles } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  createStyles,
+  FormControl,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Select,
+  StyledComponentProps,
+  Typography,
+  withStyles,
+} from '@material-ui/core';
 import { loadStats } from '../actions/loadStats';
 import GlobalState, { Competitor } from '../types/GlobalState';
 import { loadCompetitors } from '../actions/loadCompetitors';
@@ -58,9 +70,21 @@ export type DashboardProps =
   },
 };
 
-type DashboardState = {}
+export enum ChartType {
+  POSTS_PER_DAY,
+  POSTS_PER_WEEK,
+  POSTS_PER_MONTH,
+}
+
+type DashboardState = {
+  chart: ChartType
+}
 
 class Dashboard extends Component<DashboardProps, DashboardState> {
+  state = {
+    chart: ChartType.POSTS_PER_WEEK,
+  };
+
   componentDidUpdate(prevProps: DashboardProps) {
     // TODO(repetition): make it generic for Dashboard, Content, Followers, etc.
     // TODO(repetition): think about merging this with componentDidMount to eliminate repetition
@@ -92,10 +116,11 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
 
   render(): React.ReactElement<DashboardProps, React.JSXElementConstructor<DashboardState>> {
     const { classes, loadStatsStats } = this.props;
+    const { chart } = this.state;
 
     let yMax = 0;
     if (loadStatsStats) {
-      loadStatsStats.data.datasets.forEach(dataset => dataset.data.forEach(datum => {
+      loadStatsStats[chart].data.datasets.forEach(dataset => dataset.data.forEach(datum => {
         if (datum > yMax) yMax = datum;
       }));
     }
@@ -128,69 +153,238 @@ class Dashboard extends Component<DashboardProps, DashboardState> {
                 :
                 loadStatsStats ?
                   <>
-                    <Typography
-                      variant="h2"
-                    >
-                      Posts per day
-                    </Typography>
+                    <Box my={2}>
+                      <div style={{
+                        fontSize: 34,
+                        fontWeight: 'bold',
+                        lineHeight: 1.3,
+                        letterSpacing: -0.23,
+                        color: '#1f2933',
+                      }}>
+                        Dashboard
+                      </div>
+                    </Box>
                     <div style={{
-                      position: 'relative',
-                      height: '80vh',
-                      width: '100%',
+                      borderRadius: 4,
+                      border: 'solid 1.2px #f1f5f8',
                     }}>
-                      <Line
-                        data={loadStatsStats.data}
-                        options={{
-                          responsive: true,
-                          elements: {
-                            line: {
-                              tension: 0.000001,
+                      <div style={{
+                        backgroundColor: '#f1f5f8',
+                        paddingTop: 20,
+                        paddingBottom: 20,
+                        paddingLeft: 32,
+                        paddingRight: 32,
+                      }}>
+                        <div style={{
+                          marginTop: -30,
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}>
+                          <FormControl style={{
+                            minWidth: 120,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'baseline',
+                            borderRadius: 4,
+                            border: 'solid 1px #d1e2f5',
+                            marginTop: 30,
+                          }}>
+                            <InputLabel htmlFor="sort" style={{
+                              position: 'static',
+                              fontSize: 15,
+                              letterSpacing: -0.1,
+                              color: '#3e4c59',
+                              transform: 'none',
+                              marginLeft: 10,
+                              marginRight: 6,
+                            }}>show</InputLabel>
+                            <Select
+                              autoWidth
+                              value={chart}
+                              onChange={({ target }) => {
+                                this.setState({ chart: target.value as ChartType });
+                              }}
+                              inputProps={{
+                                name: 'chart',
+                                id: 'chart',
+                              }}
+                            >
+                              <MenuItem value={ChartType.POSTS_PER_DAY}>Posts per day</MenuItem>
+                              <MenuItem value={ChartType.POSTS_PER_WEEK}>Posts per week</MenuItem>
+                              <MenuItem value={ChartType.POSTS_PER_MONTH}>Posts per month</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </div>
+                      </div>
+                      <div style={{
+                        position: 'relative',
+                        padding: '20px 32px',
+                        height: '75vh',
+                        width: '100%',
+                      }}>
+                        {chart === 0 && <Line
+                          data={loadStatsStats[0].data}
+                          options={{
+                            responsive: true,
+                            elements: {
+                              line: {
+                                tension: 0.000001,
+                              },
                             },
-                          },
-                          annotation: {
-                            annotations:
-                              loadStatsStats.annotations.map(annotation => ({
-                                type: 'box',
-                                xScaleID: 'x-axis-0',
-                                yScaleID: 'y-axis-0',
-                                xMin: annotation.xMin,
-                                xMax: annotation.xMax,
-                                yMin: 0,
-                                yMax,
-                                backgroundColor: 'rgba(254, 3, 89, 0.1)',
-                                borderWidth: 0,
-                                borderColor: 'rgba(0, 0, 0, 0)',
-                              })),
-                          },
-                          legend: {
-                            labels: {
-                              usePointStyle: true,
+                            annotation: {
+                              annotations:
+                                (loadStatsStats[0].annotations || []).map(annotation => ({
+                                  type: 'box',
+                                  xScaleID: 'x-axis-0',
+                                  yScaleID: 'y-axis-0',
+                                  xMin: annotation.xMin,
+                                  xMax: annotation.xMax,
+                                  yMin: 0,
+                                  yMax,
+                                  backgroundColor: 'rgba(254, 3, 89, 0.1)',
+                                  borderWidth: 0,
+                                  borderColor: 'rgba(0, 0, 0, 0)',
+                                })),
                             },
-                          },
-                          scales: {
-                            xAxes: [{
-                              gridLines: {
-                                display: false,
+                            legend: {
+                              labels: {
+                                usePointStyle: true,
                               },
-                            }],
-                            yAxes: [{
-                              ticks: {
-                                stepSize: 1,
+                            },
+                            scales: {
+                              xAxes: [{
+                                gridLines: {
+                                  display: false,
+                                },
+                              }],
+                              yAxes: [{
+                                ticks: {
+                                  beginAtZero: true,
+                                  callback: (value: number) => value % 1 === 0 ? value : undefined,
+                                },
+                                gridLines: {
+                                  display: false,
+                                },
+                              }],
+                            },
+                          }}
+                          plugins={[{
+                            beforeInit: function (chart: any) {
+                              chart.legend.afterFit = function () {
+                                this.height = this.height + 20;
+                              };
+                            },
+                          }]}
+                        />}
+                        {chart === 1 && <Line
+                          data={loadStatsStats[1].data}
+                          options={{
+                            responsive: true,
+                            elements: {
+                              line: {
+                                tension: 0.000001,
                               },
-                              gridLines: {
-                                display: false,
+                            },
+                            annotation: {
+                              annotations:
+                                (loadStatsStats[1].annotations || []).map(annotation => ({
+                                  type: 'box',
+                                  xScaleID: 'x-axis-0',
+                                  yScaleID: 'y-axis-0',
+                                  xMin: annotation.xMin,
+                                  xMax: annotation.xMax,
+                                  yMin: 0,
+                                  yMax,
+                                  backgroundColor: 'rgba(254, 3, 89, 0.1)',
+                                  borderWidth: 0,
+                                  borderColor: 'rgba(0, 0, 0, 0)',
+                                })),
+                            },
+                            legend: {
+                              labels: {
+                                usePointStyle: true,
                               },
-                            }],
-                          },
-                        }}
-                        plugins={[{
-                          beforeInit: function (chart: any) {
-                            chart.legend.afterFit = function () {
-                              this.height = this.height + 20;
-                            };
-                          },
-                        }]}
-                      />
+                            },
+                            scales: {
+                              xAxes: [{
+                                gridLines: {
+                                  display: false,
+                                },
+                              }],
+                              yAxes: [{
+                                ticks: {
+                                  beginAtZero: true,
+                                  callback: (value: number) => value % 1 === 0 ? value : undefined,
+                                },
+                                gridLines: {
+                                  display: false,
+                                },
+                              }],
+                            },
+                          }}
+                          plugins={[{
+                            beforeInit: function (chart: any) {
+                              chart.legend.afterFit = function () {
+                                this.height = this.height + 20;
+                              };
+                            },
+                          }]}
+                        />}
+                        {chart === 2 && <Line
+                          data={loadStatsStats[2].data}
+                          options={{
+                            responsive: true,
+                            elements: {
+                              line: {
+                                tension: 0.000001,
+                              },
+                            },
+                            annotation: {
+                              annotations:
+                                (loadStatsStats[2].annotations || []).map(annotation => ({
+                                  type: 'box',
+                                  xScaleID: 'x-axis-0',
+                                  yScaleID: 'y-axis-0',
+                                  xMin: annotation.xMin,
+                                  xMax: annotation.xMax,
+                                  yMin: 0,
+                                  yMax,
+                                  backgroundColor: 'rgba(254, 3, 89, 0.1)',
+                                  borderWidth: 0,
+                                  borderColor: 'rgba(0, 0, 0, 0)',
+                                })),
+                            },
+                            legend: {
+                              labels: {
+                                usePointStyle: true,
+                              },
+                            },
+                            scales: {
+                              xAxes: [{
+                                gridLines: {
+                                  display: false,
+                                },
+                              }],
+                              yAxes: [{
+                                ticks: {
+                                  beginAtZero: true,
+                                  callback: (value: number) => value % 1 === 0 ? value : undefined,
+                                },
+                                gridLines: {
+                                  display: false,
+                                },
+                              }],
+                            },
+                          }}
+                          plugins={[{
+                            beforeInit: function (chart: any) {
+                              chart.legend.afterFit = function () {
+                                this.height = this.height + 20;
+                              };
+                            },
+                          }]}
+                        />}
+                      </div>
                     </div>
                   </>
                   : <Typography
