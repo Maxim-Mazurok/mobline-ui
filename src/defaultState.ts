@@ -36,6 +36,13 @@ if (/ycombinator/.test(window.location.hash)) {
   localStorage.setItem('inviteCode', 'moblinebeta');
   localStorage.setItem('expiresAt', new Date(2048, 1, 1).getTime().toString());
   localStorage.setItem('customerId', '77');
+} else {
+  // TODO: Demo magic
+  if (/demo/.test(window.location.hash)) {
+    localStorage.setItem('inviteCode', 'moblinebeta');
+    localStorage.setItem('expiresAt', new Date(2048, 1, 1).getTime().toString());
+    localStorage.setItem('customerId', '66');
+  }
 }
 
 export const defaultState: GlobalState = {
